@@ -1,0 +1,10 @@
+{
+  "pylint.args": ["--rcfile=config/.pylintrc"],
+  "flake8.args": [
+    "--config=config/.flake8"
+  ],
+  "editor.defaultFoldingRangeProvider": "ms-python.black-formatter",
+  "editor.defaultFormatter": "ms-python.black-formatter",
+  "editor.formatOnSave": true,
+  "prettier.enable": false
+}

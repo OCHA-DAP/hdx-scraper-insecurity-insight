@@ -1,0 +1,6 @@
+# --rcfile config/.pylintrc
+[FORMAT]
+max-line-length=100
+
+[MESSAGE CONTROL]
+disable=missing-function-docstring
