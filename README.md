@@ -7,4 +7,8 @@ python -m venv venv_hdx_insecurity
 source venv_hdx_insecurity/Scripts/activate
 ```
 
-In the first instance we will do read only operations against
+The code is installed with
+
+```shell
+pip install -e .
+```

@@ -3,4 +3,15 @@
 max-line-length=100
 
 [MESSAGE CONTROL]
-disable=missing-function-docstring
+disable=raw-checker-failed,
+        bad-inline-option,
+        locally-disabled,
+        file-ignored,
+        suppressed-message,
+        useless-suppression,
+        deprecated-pragma,
+        use-symbolic-message-instead,
+        missing-module-docstring,
+        missing-class-docstring,
+        missing-function-docstring,
+        logging-fstring-interpolation
