@@ -3,3 +3,5 @@ venv_hdx_insecurity/
 *.pyc
 
 src/hdx_scraper_insecurity_insight.egg-info/
+
+src/hdx_scraper_insecurity_insight/spreadsheets/
