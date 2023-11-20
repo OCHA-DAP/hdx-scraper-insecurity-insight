@@ -1,0 +1,1892 @@
+[
+    {
+        "date": "2020-01",
+        "country": "Bangladesh",
+        "country_iso": "BGD",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 24120,
+        "victim_status": null
+    },
+    {
+        "date": "2020-01",
+        "country": "Mali",
+        "country_iso": "MLI",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "2",
+        "aidworkers_arrested": null,
+        "event_id": 24104,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-01",
+        "country": "Afghanistan",
+        "country_iso": "AFG",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "1",
+        "event_id": 24119,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-01",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 24131,
+        "victim_status": null
+    },
+    {
+        "date": "2020-01",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 26347,
+        "victim_status": null
+    },
+    {
+        "date": "2020-01",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": "2",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 25751,
+        "victim_status": null
+    },
+    {
+        "date": "2020-01",
+        "country": "South Sudan",
+        "country_iso": "SSD",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 26341,
+        "victim_status": null
+    },
+    {
+        "date": "2020-01",
+        "country": "Iraq",
+        "country_iso": "IRQ",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "4",
+        "aidworkers_arrested": null,
+        "event_id": 24277,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-01",
+        "country": "Ethiopia",
+        "country_iso": "ETH",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "2",
+        "event_id": 29025,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-01",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 26226,
+        "victim_status": null
+    },
+    {
+        "date": "2020-01",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 24136,
+        "victim_status": null
+    },
+    {
+        "date": "2020-01",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 26223,
+        "victim_status": null
+    },
+    {
+        "date": "2020-01",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "1",
+        "event_id": 33678,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-01",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 24144,
+        "victim_status": null
+    },
+    {
+        "date": "2020-01",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 24145,
+        "victim_status": null
+    },
+    {
+        "date": "2020-01",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 24148,
+        "victim_status": null
+    },
+    {
+        "date": "2020-01",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": "5",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 26496,
+        "victim_status": null
+    },
+    {
+        "date": "2020-01",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 26475,
+        "victim_status": null
+    },
+    {
+        "date": "2020-01",
+        "country": "Cameroon",
+        "country_iso": "CMR",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "4",
+        "aidworkers_arrested": null,
+        "event_id": 26689,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-01",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 25661,
+        "victim_status": null
+    },
+    {
+        "date": "2020-02",
+        "country": "DRC",
+        "country_iso": "COD",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 25426,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-02",
+        "country": "Somalia",
+        "country_iso": "SOM",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "3",
+        "aidworkers_arrested": null,
+        "event_id": 24200,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-02",
+        "country": "DRC",
+        "country_iso": "COD",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 24198,
+        "victim_status": null
+    },
+    {
+        "date": "2020-02",
+        "country": "Haiti",
+        "country_iso": "HTI",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 28365,
+        "victim_status": null
+    },
+    {
+        "date": "2020-02",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 26240,
+        "victim_status": null
+    },
+    {
+        "date": "2020-02",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 24320,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-02",
+        "country": "South Sudan",
+        "country_iso": "SSD",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 24201,
+        "victim_status": null
+    },
+    {
+        "date": "2020-02",
+        "country": "South Sudan",
+        "country_iso": "SSD",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 25640,
+        "victim_status": null
+    },
+    {
+        "date": "2020-02",
+        "country": "CAR",
+        "country_iso": "CAF",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 24960,
+        "victim_status": null
+    },
+    {
+        "date": "2020-02",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": "2",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 24208,
+        "victim_status": null
+    },
+    {
+        "date": "2020-02",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 24214,
+        "victim_status": null
+    },
+    {
+        "date": "2020-02",
+        "country": "DRC",
+        "country_iso": "COD",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "3",
+        "aidworkers_arrested": null,
+        "event_id": 24961,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-02",
+        "country": "Somalia",
+        "country_iso": "SOM",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "1",
+        "event_id": 35536,
+        "victim_status": "StillInCaptivity"
+    },
+    {
+        "date": "2020-02",
+        "country": "Haiti",
+        "country_iso": "HTI",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 29160,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-02",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 26880,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-02",
+        "country": "South Sudan",
+        "country_iso": "SSD",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 24963,
+        "victim_status": null
+    },
+    {
+        "date": "2020-02",
+        "country": "Ethiopia",
+        "country_iso": "ETH",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "15",
+        "event_id": 24199,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-03",
+        "country": "CAR",
+        "country_iso": "CAF",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 24964,
+        "victim_status": null
+    },
+    {
+        "date": "2020-03",
+        "country": "Nigeria",
+        "country_iso": "NGA",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 27504,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-03",
+        "country": "South Sudan",
+        "country_iso": "SSD",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 24273,
+        "victim_status": null
+    },
+    {
+        "date": "2020-03",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 26629,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-03",
+        "country": "Yemen",
+        "country_iso": "YEM",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "4",
+        "event_id": 25756,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-03",
+        "country": "DRC",
+        "country_iso": "COD",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 24271,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-03",
+        "country": "Burkina Faso",
+        "country_iso": "BFA",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 25277,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-03",
+        "country": "Colombia",
+        "country_iso": "COL",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "1",
+        "event_id": 29632,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-03",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "4",
+        "event_id": 24280,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-03",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 24313,
+        "victim_status": null
+    },
+    {
+        "date": "2020-03",
+        "country": "Yemen",
+        "country_iso": "YEM",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "2",
+        "aidworkers_arrested": null,
+        "event_id": 24315,
+        "victim_status": "Killed"
+    },
+    {
+        "date": "2020-03",
+        "country": "Yemen",
+        "country_iso": "YEM",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 25755,
+        "victim_status": null
+    },
+    {
+        "date": "2020-03",
+        "country": "Afghanistan",
+        "country_iso": "AFG",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "5",
+        "aidworkers_arrested": null,
+        "event_id": 24962,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-03",
+        "country": "South Sudan",
+        "country_iso": "SSD",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 24274,
+        "victim_status": null
+    },
+    {
+        "date": "2020-03",
+        "country": "Sudan",
+        "country_iso": "SDN",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "5",
+        "event_id": 25642,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-03",
+        "country": "DRC",
+        "country_iso": "COD",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "3",
+        "aidworkers_arrested": null,
+        "event_id": 24325,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-04",
+        "country": "Myanmar",
+        "country_iso": "MMR",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "14",
+        "event_id": 27231,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-04",
+        "country": "South Sudan",
+        "country_iso": "SSD",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 24330,
+        "victim_status": null
+    },
+    {
+        "date": "2020-04",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "2",
+        "event_id": 34093,
+        "victim_status": "StillInCaptivity"
+    },
+    {
+        "date": "2020-04",
+        "country": "Somalia",
+        "country_iso": "SOM",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "2",
+        "aidworkers_arrested": null,
+        "event_id": 24329,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-04",
+        "country": "Mali",
+        "country_iso": "MLI",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "4",
+        "aidworkers_arrested": null,
+        "event_id": 24328,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-04",
+        "country": "South Sudan",
+        "country_iso": "SSD",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 24331,
+        "victim_status": null
+    },
+    {
+        "date": "2020-04",
+        "country": "DRC",
+        "country_iso": "COD",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "4",
+        "aidworkers_arrested": null,
+        "event_id": 24326,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-04",
+        "country": "DRC",
+        "country_iso": "COD",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "3",
+        "aidworkers_arrested": null,
+        "event_id": 25425,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-04",
+        "country": "Cameroon",
+        "country_iso": "CMR",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 28360,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-04",
+        "country": "Myanmar",
+        "country_iso": "MMR",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 24334,
+        "victim_status": null
+    },
+    {
+        "date": "2020-04",
+        "country": "Cameroon",
+        "country_iso": "CMR",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "5",
+        "aidworkers_arrested": null,
+        "event_id": 28362,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-04",
+        "country": "Ethiopia",
+        "country_iso": "ETH",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "1",
+        "event_id": 29026,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-04",
+        "country": "Nigeria",
+        "country_iso": "NGA",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 25931,
+        "victim_status": null
+    },
+    {
+        "date": "2020-04",
+        "country": "Mozambique",
+        "country_iso": "MOZ",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 24376,
+        "victim_status": "Escaped"
+    },
+    {
+        "date": "2020-05",
+        "country": "Uganda",
+        "country_iso": "UGA",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 33945,
+        "victim_status": null
+    },
+    {
+        "date": "2020-05",
+        "country": "Somalia",
+        "country_iso": "SOM",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "3",
+        "aidworkers_arrested": null,
+        "event_id": 24411,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-05",
+        "country": "Uganda",
+        "country_iso": "UGA",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 26476,
+        "victim_status": null
+    },
+    {
+        "date": "2020-05",
+        "country": "Afghanistan",
+        "country_iso": "AFG",
+        "aidworkers_killed": "2",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 25182,
+        "victim_status": null
+    },
+    {
+        "date": "2020-05",
+        "country": "Turkey",
+        "country_iso": "TUR",
+        "aidworkers_killed": "2",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 24506,
+        "victim_status": null
+    },
+    {
+        "date": "2020-05",
+        "country": "South Sudan",
+        "country_iso": "SSD",
+        "aidworkers_killed": "3",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 24498,
+        "victim_status": null
+    },
+    {
+        "date": "2020-05",
+        "country": "Mexico",
+        "country_iso": "MEX",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "13",
+        "event_id": 24950,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-05",
+        "country": "CAR",
+        "country_iso": "CAF",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "6",
+        "aidworkers_arrested": null,
+        "event_id": 24531,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-05",
+        "country": "Somalia",
+        "country_iso": "SOM",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "7",
+        "aidworkers_arrested": null,
+        "event_id": 24483,
+        "victim_status": "Killed"
+    },
+    {
+        "date": "2020-05",
+        "country": "Afghanistan",
+        "country_iso": "AFG",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 28340,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-05",
+        "country": "Cameroon",
+        "country_iso": "CMR",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "7",
+        "aidworkers_arrested": null,
+        "event_id": 25549,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-05",
+        "country": "Cameroon",
+        "country_iso": "CMR",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 25218,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-05",
+        "country": "Burkina Faso",
+        "country_iso": "BFA",
+        "aidworkers_killed": "2",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 24358,
+        "victim_status": null
+    },
+    {
+        "date": "2020-06",
+        "country": "Nigeria",
+        "country_iso": "NGA",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "4",
+        "aidworkers_arrested": null,
+        "event_id": 26570,
+        "victim_status": "Killed"
+    },
+    {
+        "date": "2020-06",
+        "country": "Mali",
+        "country_iso": "MLI",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "3",
+        "aidworkers_arrested": null,
+        "event_id": 25560,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-06",
+        "country": "Nigeria",
+        "country_iso": "NGA",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "3",
+        "aidworkers_arrested": null,
+        "event_id": 24891,
+        "victim_status": "Killed"
+    },
+    {
+        "date": "2020-06",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "1",
+        "event_id": 34120,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-06",
+        "country": "Haiti",
+        "country_iso": "HTI",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 28367,
+        "victim_status": "Escaped"
+    },
+    {
+        "date": "2020-06",
+        "country": "Mali",
+        "country_iso": "MLI",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "3",
+        "aidworkers_arrested": null,
+        "event_id": 24815,
+        "victim_status": "Freed, NoInformation"
+    },
+    {
+        "date": "2020-06",
+        "country": "Philippines",
+        "country_iso": "PHL",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 29168,
+        "victim_status": "Killed"
+    },
+    {
+        "date": "2020-06",
+        "country": "Somalia",
+        "country_iso": "SOM",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 24819,
+        "victim_status": null
+    },
+    {
+        "date": "2020-06",
+        "country": "Mali",
+        "country_iso": "MLI",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 24816,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-06",
+        "country": "Nigeria",
+        "country_iso": "NGA",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 27851,
+        "victim_status": "Killed"
+    },
+    {
+        "date": "2020-06",
+        "country": "South Sudan",
+        "country_iso": "SSD",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 26343,
+        "victim_status": null
+    },
+    {
+        "date": "2020-06",
+        "country": "Yemen",
+        "country_iso": "YEM",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 39068,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-06",
+        "country": "Mali",
+        "country_iso": "MLI",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "3",
+        "aidworkers_arrested": null,
+        "event_id": 24817,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-06",
+        "country": "Iran",
+        "country_iso": "IRN",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "3",
+        "event_id": 24827,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-06",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 24874,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-06",
+        "country": "Mali",
+        "country_iso": "MLI",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "4",
+        "event_id": 25559,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-06",
+        "country": "Niger",
+        "country_iso": "NER",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "10",
+        "aidworkers_arrested": null,
+        "event_id": 24818,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-06",
+        "country": "Burkina Faso",
+        "country_iso": "BFA",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "2",
+        "event_id": 24813,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-06",
+        "country": "DRC",
+        "country_iso": "COD",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 25318,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-06",
+        "country": "DRC",
+        "country_iso": "COD",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 24814,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-06",
+        "country": "South Sudan",
+        "country_iso": "SSD",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 24826,
+        "victim_status": null
+    },
+    {
+        "date": "2020-07",
+        "country": "South Sudan",
+        "country_iso": "SSD",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 25007,
+        "victim_status": null
+    },
+    {
+        "date": "2020-07",
+        "country": "Libya",
+        "country_iso": "LBY",
+        "aidworkers_killed": "2",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 25009,
+        "victim_status": null
+    },
+    {
+        "date": "2020-07",
+        "country": "Yemen",
+        "country_iso": "YEM",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "2",
+        "aidworkers_arrested": null,
+        "event_id": 25010,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-07",
+        "country": "Mali",
+        "country_iso": "MLI",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "2",
+        "aidworkers_arrested": null,
+        "event_id": 24999,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-07",
+        "country": "Cameroon",
+        "country_iso": "CMR",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 24998,
+        "victim_status": "Killed"
+    },
+    {
+        "date": "2020-07",
+        "country": "DRC",
+        "country_iso": "COD",
+        "aidworkers_killed": "3",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 25314,
+        "victim_status": null
+    },
+    {
+        "date": "2020-07",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": "2",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 26337,
+        "victim_status": null
+    },
+    {
+        "date": "2020-07",
+        "country": "South Sudan",
+        "country_iso": "SSD",
+        "aidworkers_killed": "2",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 25008,
+        "victim_status": null
+    },
+    {
+        "date": "2020-07",
+        "country": "Colombia",
+        "country_iso": "COL",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 25050,
+        "victim_status": null
+    },
+    {
+        "date": "2020-07",
+        "country": "South Sudan",
+        "country_iso": "SSD",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 24990,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-07",
+        "country": "Mali",
+        "country_iso": "MLI",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 24944,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-07",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "1",
+        "event_id": 25644,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-08",
+        "country": "Burkina Faso",
+        "country_iso": "BFA",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "4",
+        "aidworkers_arrested": null,
+        "event_id": 25224,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-08",
+        "country": "Burkina Faso",
+        "country_iso": "BFA",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "2",
+        "aidworkers_arrested": null,
+        "event_id": 26688,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-08",
+        "country": "Libya",
+        "country_iso": "LBY",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "1",
+        "event_id": 25822,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-08",
+        "country": "Cameroon",
+        "country_iso": "CMR",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 25225,
+        "victim_status": "Killed, NotAnswered"
+    },
+    {
+        "date": "2020-08",
+        "country": "Mali",
+        "country_iso": "MLI",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 25226,
+        "victim_status": null
+    },
+    {
+        "date": "2020-08",
+        "country": "Burkina Faso",
+        "country_iso": "BFA",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 25243,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-08",
+        "country": "Niger",
+        "country_iso": "NER",
+        "aidworkers_killed": "7",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 25242,
+        "victim_status": null
+    },
+    {
+        "date": "2020-08",
+        "country": "Guatemala",
+        "country_iso": "GTM",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 25227,
+        "victim_status": null
+    },
+    {
+        "date": "2020-08",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "1",
+        "event_id": 25352,
+        "victim_status": "StillInCaptivity"
+    },
+    {
+        "date": "2020-08",
+        "country": "Afghanistan",
+        "country_iso": "AFG",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 26334,
+        "victim_status": null
+    },
+    {
+        "date": "2020-08",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "1",
+        "event_id": 34140,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-08",
+        "country": "DRC",
+        "country_iso": "COD",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 25359,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-08",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 25461,
+        "victim_status": null
+    },
+    {
+        "date": "2020-08",
+        "country": "Cameroon",
+        "country_iso": "CMR",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "4",
+        "aidworkers_arrested": null,
+        "event_id": 28364,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-08",
+        "country": "USA",
+        "country_iso": "USA",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "9",
+        "event_id": 25462,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-09",
+        "country": "Bangladesh",
+        "country_iso": "BGD",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 25460,
+        "victim_status": null
+    },
+    {
+        "date": "2020-09",
+        "country": "South Sudan",
+        "country_iso": "SSD",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "1",
+        "event_id": 27990,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-09",
+        "country": "South Sudan",
+        "country_iso": "SSD",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 25742,
+        "victim_status": null
+    },
+    {
+        "date": "2020-09",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": "2",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 26559,
+        "victim_status": null
+    },
+    {
+        "date": "2020-09",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 25752,
+        "victim_status": null
+    },
+    {
+        "date": "2020-09",
+        "country": "DRC",
+        "country_iso": "COD",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 26879,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-09",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 25746,
+        "victim_status": null
+    },
+    {
+        "date": "2020-09",
+        "country": "Nigeria",
+        "country_iso": "NGA",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 25737,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-09",
+        "country": "Burkina Faso",
+        "country_iso": "BFA",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "2",
+        "aidworkers_arrested": null,
+        "event_id": 25729,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-09",
+        "country": "DRC",
+        "country_iso": "COD",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 25734,
+        "victim_status": null
+    },
+    {
+        "date": "2020-09",
+        "country": "DRC",
+        "country_iso": "COD",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "3",
+        "aidworkers_arrested": null,
+        "event_id": 25790,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-09",
+        "country": "Somalia",
+        "country_iso": "SOM",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 25738,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-09",
+        "country": "Solomon Islands",
+        "country_iso": "SLB",
+        "aidworkers_killed": "2",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 25744,
+        "victim_status": null
+    },
+    {
+        "date": "2020-09",
+        "country": "DRC",
+        "country_iso": "COD",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "3",
+        "aidworkers_arrested": null,
+        "event_id": 25818,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-09",
+        "country": "Thailand",
+        "country_iso": "THA",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 25750,
+        "victim_status": null
+    },
+    {
+        "date": "2020-09",
+        "country": "DRC",
+        "country_iso": "COD",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 25792,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-09",
+        "country": "Yemen",
+        "country_iso": "YEM",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 39069,
+        "victim_status": null
+    },
+    {
+        "date": "2020-09",
+        "country": "South Sudan",
+        "country_iso": "SSD",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 25823,
+        "victim_status": null
+    },
+    {
+        "date": "2020-10",
+        "country": "South Sudan",
+        "country_iso": "SSD",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 25827,
+        "victim_status": null
+    },
+    {
+        "date": "2020-10",
+        "country": "Afghanistan",
+        "country_iso": "AFG",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "2",
+        "aidworkers_arrested": null,
+        "event_id": 28341,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-10",
+        "country": "Israel",
+        "country_iso": "ISR",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "5",
+        "event_id": 25837,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-10",
+        "country": "Yemen",
+        "country_iso": "YEM",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "2",
+        "event_id": 25838,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-10",
+        "country": "South Sudan",
+        "country_iso": "SSD",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 26117,
+        "victim_status": null
+    },
+    {
+        "date": "2020-10",
+        "country": "France",
+        "country_iso": "FRA",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "1",
+        "event_id": 26130,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-10",
+        "country": "Afghanistan",
+        "country_iso": "AFG",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 28343,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-10",
+        "country": "DRC",
+        "country_iso": "COD",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "2",
+        "aidworkers_arrested": null,
+        "event_id": 26074,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-10",
+        "country": "Nigeria",
+        "country_iso": "NGA",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 26221,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-10",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "1",
+        "event_id": 26209,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-10",
+        "country": "South Sudan",
+        "country_iso": "SSD",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 26122,
+        "victim_status": null
+    },
+    {
+        "date": "2020-10",
+        "country": "Iraq",
+        "country_iso": "IRQ",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 39066,
+        "victim_status": "Killed"
+    },
+    {
+        "date": "2020-10",
+        "country": "Somalia",
+        "country_iso": "SOM",
+        "aidworkers_killed": "2",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 26280,
+        "victim_status": null
+    },
+    {
+        "date": "2020-10",
+        "country": "Azerbaijan",
+        "country_iso": "AZE",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 25938,
+        "victim_status": null
+    },
+    {
+        "date": "2020-10",
+        "country": "South Sudan",
+        "country_iso": "SSD",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 26290,
+        "victim_status": null
+    },
+    {
+        "date": "2020-10",
+        "country": "DRC",
+        "country_iso": "COD",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "4",
+        "aidworkers_arrested": null,
+        "event_id": 26755,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-10",
+        "country": "South Sudan",
+        "country_iso": "SSD",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 26291,
+        "victim_status": null
+    },
+    {
+        "date": "2020-10",
+        "country": "Somalia",
+        "country_iso": "SOM",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 26281,
+        "victim_status": null
+    },
+    {
+        "date": "2020-10",
+        "country": "DRC",
+        "country_iso": "COD",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "3",
+        "aidworkers_arrested": null,
+        "event_id": 26253,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-10",
+        "country": "DRC",
+        "country_iso": "COD",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 26251,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-11",
+        "country": "DRC",
+        "country_iso": "COD",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "3",
+        "aidworkers_arrested": null,
+        "event_id": 26563,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-11",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": "2",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 26451,
+        "victim_status": null
+    },
+    {
+        "date": "2020-11",
+        "country": "South Sudan",
+        "country_iso": "SSD",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 26587,
+        "victim_status": null
+    },
+    {
+        "date": "2020-11",
+        "country": "Mali",
+        "country_iso": "MLI",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "2",
+        "aidworkers_arrested": null,
+        "event_id": 26581,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-11",
+        "country": "South Sudan",
+        "country_iso": "SSD",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "2",
+        "event_id": 26588,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-11",
+        "country": "DRC",
+        "country_iso": "COD",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 26292,
+        "victim_status": null
+    },
+    {
+        "date": "2020-11",
+        "country": "Ethiopia",
+        "country_iso": "ETH",
+        "aidworkers_killed": "4",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 26333,
+        "victim_status": null
+    },
+    {
+        "date": "2020-11",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 26351,
+        "victim_status": null
+    },
+    {
+        "date": "2020-11",
+        "country": "Mali",
+        "country_iso": "MLI",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "6",
+        "aidworkers_arrested": null,
+        "event_id": 26336,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-11",
+        "country": "Afghanistan",
+        "country_iso": "AFG",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "1",
+        "event_id": 26345,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-11",
+        "country": "Nigeria",
+        "country_iso": "NGA",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 26340,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-12",
+        "country": "Ethiopia",
+        "country_iso": "ETH",
+        "aidworkers_killed": "1",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 26544,
+        "victim_status": null
+    },
+    {
+        "date": "2020-12",
+        "country": "Cameroon",
+        "country_iso": "CMR",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 26503,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-12",
+        "country": "Colombia",
+        "country_iso": "COL",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 26564,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-12",
+        "country": "Ethiopia",
+        "country_iso": "ETH",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": "4",
+        "event_id": 26495,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-12",
+        "country": "Nigeria",
+        "country_iso": "NGA",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "2",
+        "aidworkers_arrested": null,
+        "event_id": 26498,
+        "victim_status": "NoInformation"
+    },
+    {
+        "date": "2020-12",
+        "country": "Nigeria",
+        "country_iso": "NGA",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 26625,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-12",
+        "country": "Afghanistan",
+        "country_iso": "AFG",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "2",
+        "aidworkers_arrested": null,
+        "event_id": 28358,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-12",
+        "country": "Syria",
+        "country_iso": "SYR",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 26502,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-12",
+        "country": "Nigeria",
+        "country_iso": "NGA",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 27477,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-12",
+        "country": "Niger",
+        "country_iso": "NER",
+        "aidworkers_killed": null,
+        "aidworkers_kidnapped": "1",
+        "aidworkers_arrested": null,
+        "event_id": 26554,
+        "victim_status": "Freed"
+    },
+    {
+        "date": "2020-12",
+        "country": "Yemen",
+        "country_iso": "YEM",
+        "aidworkers_killed": "3",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 27314,
+        "victim_status": null
+    },
+    {
+        "date": "2020-12",
+        "country": "Yemen",
+        "country_iso": "YEM",
+        "aidworkers_killed": "3",
+        "aidworkers_kidnapped": null,
+        "aidworkers_arrested": null,
+        "event_id": 26561,
+        "victim_status": null
+    }
+]
