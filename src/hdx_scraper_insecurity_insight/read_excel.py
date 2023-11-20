@@ -1,0 +1,148 @@
+#!/usr/bin/env python
+# encoding: utf-8
+
+"""
+This code is for establishing field mappings and HXL codes for the existing data to the new API
+Ian Hopkinson 2023-11-18
+"""
+
+
+import datetime
+import json
+import os
+import pandas as pd
+
+from hdx_scraper_insecurity_insight.utilities import write_dictionary
+
+
+DATA_FOLDER = "c:\\BigData\\insecurity-insight"
+
+FIELD_MAPPINGS = {
+    "Aid Workers Killed": "aidworkers_killed",
+    "Aid Workers Injured": "aidworkers_injured",
+    "Aid Workers Kidnapped": "aidworkers_kidnapped",
+    "Aid Workers Arrested": "aidworkers_arrested",
+    "SiND Event ID": "event_id",
+}
+
+EXPECTED_COUNTRY_LIST = [
+    "OPT",
+    "MMR",
+    "SDN",
+    "SYR",
+    "AFG",
+    "BFA",
+    "CMR",
+    "UKR",
+    "SSD",
+    "COD",
+    "ETH",
+    "NGA",
+    "YEM",
+    "MLI",
+    "NER",
+    "IRQ",
+    "LBY",
+    "MOZ",
+    "HTI",
+    "SOM",
+    "CAF",
+    "MEX",
+    "PAK",
+    "IRN",
+    "LBN",
+]
+
+
+# Datamesh style schema file
+# dataset_name,timestamp,upstream,field_name,field_number,field_type,terms,tags,description
+def analyse_schema(dataset_name: str, resource_filename: str, api_response_filename: str) -> str:
+    print("*********************************************", flush=True)
+    print("* Insecurity Insight - Generate schema.csv  *", flush=True)
+    print(f"* Invoked at: {datetime.datetime.now().isoformat(): <23} *", flush=True)
+    print("*********************************************", flush=True)
+    resource_df = pd.read_excel(os.path.join(DATA_FOLDER, resource_filename))
+    print(resource_df, flush=True)
+    # Get column headers
+    column_names = resource_df.columns.tolist()
+
+    # Get HXL tags
+    hxl_tags = resource_df.loc[0, :].values.flatten().tolist()
+
+    # Get relevant cached API response
+    with open(
+        os.path.join(os.path.dirname(__file__), "api-samples", api_response_filename),
+        "r",
+        encoding="UTF-8",
+    ) as api_response_filehandle:
+        api_response = json.load(api_response_filehandle)
+
+    api_fields = list(api_response[0].keys())
+
+    # Collect the set of country ISO codes
+    country_codes = {x["Country ISO"] for x in api_response}
+    print("\nCountries in API data but not currently on HDX", flush=True)
+    print(country_codes.difference(set(EXPECTED_COUNTRY_LIST)))
+
+    print("\nCountries on HDX but not in API data", flush=True)
+    print(set(EXPECTED_COUNTRY_LIST).difference(country_codes))
+
+    # print(country_codes, flush=True)
+
+    # Display Original fields, HXL and matching API field
+    columns = zip(column_names, hxl_tags)
+
+    # dataset_name,timestamp,upstream,field_name,field_number,field_type,terms,tags,description
+    output_template = {
+        "dataset_name": None,
+        "timestamp": None,
+        "upstream": None,  # API field name
+        "field_name": None,  # Excel field name
+        "field_number": None,
+        "field_type": None,
+        "terms": None,  # Use this for HXL tags
+        "tags": None,
+        "descriptions": None,
+    }
+
+    output_rows = []
+    schema_output_filepath = os.path.join(os.path.dirname(__file__), "metadata", "schema.csv")
+
+    timestamp = datetime.datetime.now().isoformat()
+
+    for i, column in enumerate(columns):
+        # KIKA requires this normalisation
+        # normalised_column = FIELD_MAPPINGS.get(
+        #     column[0], column[0].lower().replace(" ", "_")
+        # )
+        normalised_column = column[0]
+        in_api = ""
+        api_field = ""
+        if normalised_column in api_fields:
+            in_api = "in_api"
+            api_field = normalised_column
+
+        print(f"{i:<2}. {column[0]:<50},{column[1]:<30},{in_api}", flush=True)
+        output_row = output_template.copy()
+        output_row["dataset_name"] = dataset_name
+        output_row["timestamp"] = timestamp
+        output_row["upstream"] = api_field
+        output_row["field_name"] = column[0]
+        output_row["field_number"] = i
+        output_row["field_type"] = ""
+        output_row["terms"] = column[1]  # Use this for NXL tags
+        output_row["tags"] = ""
+        output_row["descriptions"] = ""
+
+        output_rows.append(output_row)
+
+    status = write_dictionary(schema_output_filepath, output_rows, append=False)
+    return status
+
+
+if __name__ == "__main__":
+    DATASET_NAME = "insecurity-insight-crsv"
+    RESOURCE_FILENAME = "2020-2023-conflict-related-sexual-violence-crsv-incident-data.xlsx"
+    API_RESPONSE_FILENAME = "sv.json"
+    STATUS = analyse_schema(DATASET_NAME, RESOURCE_FILENAME, API_RESPONSE_FILENAME)
+    print(STATUS, flush=True)

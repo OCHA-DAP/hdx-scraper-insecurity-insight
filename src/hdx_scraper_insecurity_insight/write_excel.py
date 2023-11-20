@@ -1,0 +1,90 @@
+#!/usr/bin/env python
+# encoding: utf-8
+
+"""
+This code generates an Excel file from the API response
+"""
+
+import datetime
+import json
+import os
+from typing import Dict
+
+import pandas
+from pandas.io.formats import excel
+
+from hdx_scraper_insecurity_insight.utilities import read_schema
+
+FILENAME_TEMPLATE = {
+    "insecurity-insight-crsv": "{start_year}-{end_year}{country_iso}-conflict-related-sexual-violence-crsv-incident-data.xlsx"
+}
+
+
+def create_spreadsheet(
+    dataset_name: str, api_response: Dict, country_filter: str = None, year_filter: str = None
+) -> str:
+    output_rows = []
+    print("*********************************************", flush=True)
+    print("* Insecurity Insight - Create spreadsheet   *", flush=True)
+    print(f"* Invoked at: {datetime.datetime.now().isoformat(): <23} *", flush=True)
+    print("*********************************************", flush=True)
+    print(f"Dataset name: {dataset_name}", flush=True)
+    print(f"Country filter: {country_filter}", flush=True)
+    print(f"Year filter: {year_filter}", flush=True)
+
+    # Fetch API to Spreadsheet lookup
+    hdx_row, row_template = read_schema(dataset_name)
+
+    output_rows.append(hdx_row)
+
+    for api_row in api_response:
+        if country_filter is not None and api_row["Country ISO"] != country_filter:
+            continue
+        if year_filter is not None and api_row["Date"][0:4] != year_filter:
+            continue
+        output_row = row_template.copy()
+        for key in row_template.keys():
+            output_row[key] = api_row[row_template[key]]
+        output_rows.append(output_row)
+
+    output_dataframe = pandas.DataFrame.from_dict(output_rows)
+
+    print(output_dataframe, flush=True)
+
+    # Generate filename
+    country_iso = ""
+    if country_filter is not None:
+        country_iso = f"-{country_filter}"
+
+    start_year = output_dataframe.tail(-1)["Date"].min()[0:4]
+    end_year = output_dataframe["Date"].max()[0:4]
+
+    filename = FILENAME_TEMPLATE[dataset_name].format(
+        start_year=start_year, end_year=end_year, country_iso=country_iso
+    )
+
+    if start_year == end_year:
+        filename = filename.replace(f"-{end_year}", "")
+
+    # We can make the output an Excel table:
+    # https://stackoverflow.com/questions/58326392/how-to-create-excel-table-with-pandas-to-excel
+    excel.ExcelFormatter.header_style = None
+    output_filepath = os.path.join(os.path.dirname(__file__), "spreadsheets", filename)
+    output_dataframe.to_excel(
+        output_filepath,
+        index=False,
+    )
+
+    print(f"\nWrote spreadsheet with filepath {output_filepath}", flush=True)
+
+
+if __name__ == "__main__":
+    DATASET_NAME = "insecurity-insight-crsv"
+    API_RESPONSE_FILENAME = "sv.json"
+    with open(
+        os.path.join(os.path.dirname(__file__), "api-samples", API_RESPONSE_FILENAME),
+        "r",
+        encoding="UTF-8",
+    ) as api_response_filehandle:
+        API_RESPONSE = json.load(api_response_filehandle)
+    create_spreadsheet(DATASET_NAME, API_RESPONSE, country_filter="ETH", year_filter="2023")

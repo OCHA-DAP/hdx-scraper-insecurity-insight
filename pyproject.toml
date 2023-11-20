@@ -12,6 +12,7 @@ authors = [
 dependencies = [
     "pandas",
     "hdx-python-api",
+    "pytest",
   "black==23.10.0",
   "flake8>=6.1.0",
   "pylint>=3.0.1"

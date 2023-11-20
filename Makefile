@@ -5,3 +5,5 @@ lint:
 	black . --check
 	flake8 --config=config/.flake8 src/
 	pylint --rcfile=config/.pylintrc src/ || true
+unit_tests:
+	pytest tests/
