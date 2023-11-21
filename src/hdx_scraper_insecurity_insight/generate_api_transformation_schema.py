@@ -57,7 +57,7 @@ EXPECTED_COUNTRY_LIST = [
 
 # Datamesh style schema file
 # dataset_name,timestamp,upstream,field_name,field_number,field_type,terms,tags,description
-def analyse_schema(dataset_name: str) -> str:
+def generate_schema(dataset_name: str) -> str:
     print("*********************************************", flush=True)
     print("* Insecurity Insight - Generate schema.csv  *", flush=True)
     print(f"* Invoked at: {datetime.datetime.now().isoformat(): <23} *", flush=True)
@@ -152,5 +152,5 @@ def analyse_schema(dataset_name: str) -> str:
 
 if __name__ == "__main__":
     DATASET_NAME = "insecurity-insight-crsv-overview"
-    STATUS = analyse_schema(DATASET_NAME)
+    STATUS = generate_schema(DATASET_NAME)
     print(STATUS, flush=True)

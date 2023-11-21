@@ -22,7 +22,7 @@ insecurity-insight-crsv,2023-11-20T07:28:49.831460,Number of Reported Victims,Nu
 insecurity-insight-crsv,2023-11-20T07:28:49.831460,Reported Deaths Following the Sexual Violence,Reported Deaths Following the Sexual Violence,20,,#num +crsv  + killed,,
 insecurity-insight-crsv,2023-11-20T07:28:49.831460,SIND Event ID,SIND Event ID,21,,,,
 insecurity-insight-crsv-overview,2023-11-21T11:01:45.253332,Country,Country,0,,#country,,
-insecurity-insight-crsv-overview,2023-11-21T11:01:45.253332,Year,Year,1,,#date +occurred,,
+insecurity-insight-crsv-overview,2023-11-21T11:01:45.253332,Year,Year,1,,#date +year +occurred,,
 insecurity-insight-crsv-overview,2023-11-21T11:01:45.253332,Country ISO,Country ISO,2,,#country_ISO,,
 insecurity-insight-crsv-overview,2023-11-21T11:01:45.253332,Number Of Events,Number Of Events,3,,#event +num,,
 insecurity-insight-crsv-overview,2023-11-21T11:01:45.253332,CRSV events,CRSV events,4,,,,
