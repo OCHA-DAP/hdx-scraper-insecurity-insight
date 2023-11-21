@@ -24,7 +24,7 @@ def create_spreadsheet(
     output_rows = []
     print("*********************************************", flush=True)
     print("* Insecurity Insight - Create spreadsheet   *", flush=True)
-    print(f"* Invoked at: {datetime.datetime.now().isoformat(): <23} *", flush=True)
+    print(f"* Invoked at: {datetime.datetime.now().isoformat(): <23}    *", flush=True)
     print("*********************************************", flush=True)
     print(f"Dataset name: {dataset_name}", flush=True)
     print(f"Country filter: {country_filter}", flush=True)
@@ -58,8 +58,12 @@ def create_spreadsheet(
     if country_filter is not None:
         country_iso = f"-{country_filter}"
 
-    start_year = output_dataframe.tail(-1)["Date"].min()[0:4]
-    end_year = output_dataframe["Date"].max()[0:4]
+    date_field = "Date"
+    if date_field not in row_template.keys():
+        date_field = "Year"
+
+    start_year = output_dataframe.tail(-1)[date_field].min()[0:4]
+    end_year = output_dataframe[date_field].max()[0:4]
 
     filename = attributes["filename_template"].format(
         start_year=start_year, end_year=end_year, country_iso=country_iso
@@ -82,6 +86,6 @@ def create_spreadsheet(
 
 
 if __name__ == "__main__":
-    DATASET_NAME = "insecurity-insight-crsv"
-    STATUS = create_spreadsheet(DATASET_NAME, country_filter="ETH", year_filter="2023")
+    DATASET_NAME = "insecurity-insight-crsv-overview"
+    STATUS = create_spreadsheet(DATASET_NAME)
     print(STATUS, flush=True)

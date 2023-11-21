@@ -63,23 +63,27 @@ def analyse_schema(dataset_name: str) -> str:
     print(f"* Invoked at: {datetime.datetime.now().isoformat(): <23} *", flush=True)
     print("*********************************************", flush=True)
     attributes = read_attributes(dataset_name)
-    resource_df = pd.read_excel(
-        os.path.join(
-            os.path.dirname(__file__), "spreadsheet-samples", attributes["resource_filename"]
-        )
-    )
-    print(resource_df, flush=True)
-    # Get column headers
-    column_names = resource_df.columns.tolist()
-
-    # Get HXL tags
-    hxl_tags = resource_df.loc[0, :].values.flatten().tolist()
-    hxl_tags = [x.replace("nan", "") for x in hxl_tags]
 
     # Get relevant cached API response
     api_response = fetch_json_from_samples(dataset_name)
-
     api_fields = list(api_response[0].keys())
+
+    if len(attributes["resource_filename"]) != 0:
+        resource_df = pd.read_excel(
+            os.path.join(
+                os.path.dirname(__file__), "spreadsheet-samples", attributes["resource_filename"]
+            )
+        )
+        print(resource_df, flush=True)
+        # Get column headers
+        column_names = resource_df.columns.tolist()
+        # Get HXL tags
+        hxl_tags = resource_df.loc[0, :].values.flatten().tolist()
+        hxl_tags = ["" if isinstance(x, float) else x for x in hxl_tags]
+    else:
+        print(f"No example spreadsheet provided for {dataset_name}", flush=True)
+        column_names = api_fields
+        hxl_tags = [""] * len(api_fields)
 
     # Collect the set of country ISO codes
     country_codes = {x["Country ISO"] for x in api_response}
@@ -147,6 +151,6 @@ def analyse_schema(dataset_name: str) -> str:
 
 
 if __name__ == "__main__":
-    DATASET_NAME = "insecurity-insight-crsv"
+    DATASET_NAME = "insecurity-insight-crsv-overview"
     STATUS = analyse_schema(DATASET_NAME)
     print(STATUS, flush=True)
