@@ -8,14 +8,15 @@ Ian Hopkinson 2023-11-18
 
 
 import datetime
-import json
 import os
 import pandas as pd
 
-from hdx_scraper_insecurity_insight.utilities import write_dictionary, read_schema, read_attributes
-
-
-DATA_FOLDER = "c:\\BigData\\insecurity-insight"
+from hdx_scraper_insecurity_insight.utilities import (
+    write_dictionary,
+    read_schema,
+    read_attributes,
+    fetch_json_from_samples,
+)
 
 FIELD_MAPPINGS = {
     "Aid Workers Killed": "aidworkers_killed",
@@ -62,21 +63,21 @@ def analyse_schema(dataset_name: str) -> str:
     print(f"* Invoked at: {datetime.datetime.now().isoformat(): <23} *", flush=True)
     print("*********************************************", flush=True)
     attributes = read_attributes(dataset_name)
-    resource_df = pd.read_excel(os.path.join(DATA_FOLDER, attributes["resource_filename"]))
+    resource_df = pd.read_excel(
+        os.path.join(
+            os.path.dirname(__file__), "spreadsheet-samples", attributes["resource_filename"]
+        )
+    )
     print(resource_df, flush=True)
     # Get column headers
     column_names = resource_df.columns.tolist()
 
     # Get HXL tags
     hxl_tags = resource_df.loc[0, :].values.flatten().tolist()
+    hxl_tags = [x.replace("nan", "") for x in hxl_tags]
 
     # Get relevant cached API response
-    with open(
-        os.path.join(os.path.dirname(__file__), "api-samples", attributes["api_response_filename"]),
-        "r",
-        encoding="UTF-8",
-    ) as api_response_filehandle:
-        api_response = json.load(api_response_filehandle)
+    api_response = fetch_json_from_samples(dataset_name)
 
     api_fields = list(api_response[0].keys())
 

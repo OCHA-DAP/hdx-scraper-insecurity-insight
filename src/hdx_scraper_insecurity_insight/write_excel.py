@@ -6,13 +6,16 @@ This code generates an Excel file from the API response
 """
 
 import datetime
-import json
 import os
 
 import pandas
 from pandas.io.formats import excel
 
-from hdx_scraper_insecurity_insight.utilities import read_schema, read_attributes
+from hdx_scraper_insecurity_insight.utilities import (
+    read_schema,
+    read_attributes,
+    fetch_json_from_samples,
+)
 
 
 def create_spreadsheet(
@@ -28,12 +31,8 @@ def create_spreadsheet(
     print(f"Year filter: {year_filter}", flush=True)
 
     attributes = read_attributes(dataset_name)
-    with open(
-        os.path.join(os.path.dirname(__file__), "api-samples", attributes["api_response_filename"]),
-        "r",
-        encoding="UTF-8",
-    ) as api_response_filehandle:
-        api_response = json.load(api_response_filehandle)
+
+    api_response = fetch_json_from_samples(dataset_name)
 
     # Fetch API to Spreadsheet lookup
     hdx_row, row_template = read_schema(dataset_name)
@@ -72,7 +71,7 @@ def create_spreadsheet(
     # We can make the output an Excel table:
     # https://stackoverflow.com/questions/58326392/how-to-create-excel-table-with-pandas-to-excel
     excel.ExcelFormatter.header_style = None
-    output_filepath = os.path.join(os.path.dirname(__file__), "spreadsheets", filename)
+    output_filepath = os.path.join(os.path.dirname(__file__), "output-spreadsheets", filename)
     output_dataframe.to_excel(
         output_filepath,
         index=False,

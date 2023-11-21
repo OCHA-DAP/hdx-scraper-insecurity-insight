@@ -2,18 +2,40 @@
 # encoding: utf-8
 
 """
-Miscellaneous utilities, borrowed from elsewhere
+Miscellaneous utilities, some borrowed from elsewhere
 Ian Hopkinson 2023-11.20
 """
 
 import csv
+import json
 import os
 
 from typing import List, Dict, Any
 
-# def fetch_json_from_api(dataset_name: str):
+from urllib3 import request
+from urllib3.util import Retry
 
-#     return response
+
+def fetch_json_from_api(dataset_name: str) -> List[Dict]:
+    attributes = read_attributes(dataset_name)
+
+    response = request(
+        "GET", attributes["api_url"], timeout=60, retries=Retry(90, backoff_factor=1.0)
+    )
+
+    json_response = response.json()
+    return json_response
+
+
+def fetch_json_from_samples(dataset_name: str) -> List[Dict]:
+    attributes = read_attributes(dataset_name)
+    with open(
+        os.path.join(os.path.dirname(__file__), "api-samples", attributes["api_response_filename"]),
+        "r",
+        encoding="UTF-8",
+    ) as api_response_filehandle:
+        json_response = json.load(api_response_filehandle)
+    return json_response
 
 
 def read_attributes(dataset_name: str) -> Dict:

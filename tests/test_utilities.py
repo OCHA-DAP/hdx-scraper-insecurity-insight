@@ -2,7 +2,12 @@
 # encoding: utf-8
 
 
-from hdx_scraper_insecurity_insight.utilities import read_schema, read_attributes
+from hdx_scraper_insecurity_insight.utilities import (
+    read_schema,
+    read_attributes,
+    fetch_json_from_samples,
+    fetch_json_from_api,
+)
 
 
 def test_read_schema():
@@ -23,3 +28,12 @@ def test_read_attributes():
         "api_response_filename",
         "filename_template",
     ]
+
+
+def test_fetching_json():
+    dataset_name = "insecurity-insight-crsv"
+
+    samples_response = fetch_json_from_samples(dataset_name)
+    api_response = fetch_json_from_api(dataset_name)
+
+    assert samples_response[0].keys() == api_response[0].keys()
