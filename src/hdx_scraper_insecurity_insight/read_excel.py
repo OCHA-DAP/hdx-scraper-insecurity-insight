@@ -12,7 +12,7 @@ import json
 import os
 import pandas as pd
 
-from hdx_scraper_insecurity_insight.utilities import write_dictionary
+from hdx_scraper_insecurity_insight.utilities import write_dictionary, read_schema, read_attributes
 
 
 DATA_FOLDER = "c:\\BigData\\insecurity-insight"
@@ -56,12 +56,13 @@ EXPECTED_COUNTRY_LIST = [
 
 # Datamesh style schema file
 # dataset_name,timestamp,upstream,field_name,field_number,field_type,terms,tags,description
-def analyse_schema(dataset_name: str, resource_filename: str, api_response_filename: str) -> str:
+def analyse_schema(dataset_name: str) -> str:
     print("*********************************************", flush=True)
     print("* Insecurity Insight - Generate schema.csv  *", flush=True)
     print(f"* Invoked at: {datetime.datetime.now().isoformat(): <23} *", flush=True)
     print("*********************************************", flush=True)
-    resource_df = pd.read_excel(os.path.join(DATA_FOLDER, resource_filename))
+    attributes = read_attributes(dataset_name)
+    resource_df = pd.read_excel(os.path.join(DATA_FOLDER, attributes["resource_filename"]))
     print(resource_df, flush=True)
     # Get column headers
     column_names = resource_df.columns.tolist()
@@ -71,7 +72,7 @@ def analyse_schema(dataset_name: str, resource_filename: str, api_response_filen
 
     # Get relevant cached API response
     with open(
-        os.path.join(os.path.dirname(__file__), "api-samples", api_response_filename),
+        os.path.join(os.path.dirname(__file__), "api-samples", attributes["api_response_filename"]),
         "r",
         encoding="UTF-8",
     ) as api_response_filehandle:
@@ -136,13 +137,15 @@ def analyse_schema(dataset_name: str, resource_filename: str, api_response_filen
 
         output_rows.append(output_row)
 
-    status = write_dictionary(schema_output_filepath, output_rows, append=False)
+    hdx_row, _ = read_schema(dataset_name)
+    if not hdx_row:
+        status = write_dictionary(schema_output_filepath, output_rows, append=True)
+    else:
+        status = f"Schema for {dataset_name} already in {schema_output_filepath}, no update made"
     return status
 
 
 if __name__ == "__main__":
     DATASET_NAME = "insecurity-insight-crsv"
-    RESOURCE_FILENAME = "2020-2023-conflict-related-sexual-violence-crsv-incident-data.xlsx"
-    API_RESPONSE_FILENAME = "sv.json"
-    STATUS = analyse_schema(DATASET_NAME, RESOURCE_FILENAME, API_RESPONSE_FILENAME)
+    STATUS = analyse_schema(DATASET_NAME)
     print(STATUS, flush=True)

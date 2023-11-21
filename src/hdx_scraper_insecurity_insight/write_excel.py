@@ -8,20 +8,15 @@ This code generates an Excel file from the API response
 import datetime
 import json
 import os
-from typing import Dict
 
 import pandas
 from pandas.io.formats import excel
 
-from hdx_scraper_insecurity_insight.utilities import read_schema
-
-FILENAME_TEMPLATE = {
-    "insecurity-insight-crsv": "{start_year}-{end_year}{country_iso}-conflict-related-sexual-violence-crsv-incident-data.xlsx"
-}
+from hdx_scraper_insecurity_insight.utilities import read_schema, read_attributes
 
 
 def create_spreadsheet(
-    dataset_name: str, api_response: Dict, country_filter: str = None, year_filter: str = None
+    dataset_name: str, country_filter: str = None, year_filter: str = None
 ) -> str:
     output_rows = []
     print("*********************************************", flush=True)
@@ -31,6 +26,14 @@ def create_spreadsheet(
     print(f"Dataset name: {dataset_name}", flush=True)
     print(f"Country filter: {country_filter}", flush=True)
     print(f"Year filter: {year_filter}", flush=True)
+
+    attributes = read_attributes(dataset_name)
+    with open(
+        os.path.join(os.path.dirname(__file__), "api-samples", attributes["api_response_filename"]),
+        "r",
+        encoding="UTF-8",
+    ) as api_response_filehandle:
+        api_response = json.load(api_response_filehandle)
 
     # Fetch API to Spreadsheet lookup
     hdx_row, row_template = read_schema(dataset_name)
@@ -59,7 +62,7 @@ def create_spreadsheet(
     start_year = output_dataframe.tail(-1)["Date"].min()[0:4]
     end_year = output_dataframe["Date"].max()[0:4]
 
-    filename = FILENAME_TEMPLATE[dataset_name].format(
+    filename = attributes["filename_template"].format(
         start_year=start_year, end_year=end_year, country_iso=country_iso
     )
 
@@ -75,16 +78,11 @@ def create_spreadsheet(
         index=False,
     )
 
-    print(f"\nWrote spreadsheet with filepath {output_filepath}", flush=True)
+    status = f"\nWrote spreadsheet with filepath {output_filepath}"
+    return status
 
 
 if __name__ == "__main__":
     DATASET_NAME = "insecurity-insight-crsv"
-    API_RESPONSE_FILENAME = "sv.json"
-    with open(
-        os.path.join(os.path.dirname(__file__), "api-samples", API_RESPONSE_FILENAME),
-        "r",
-        encoding="UTF-8",
-    ) as api_response_filehandle:
-        API_RESPONSE = json.load(api_response_filehandle)
-    create_spreadsheet(DATASET_NAME, API_RESPONSE, country_filter="ETH", year_filter="2023")
+    STATUS = create_spreadsheet(DATASET_NAME, country_filter="ETH", year_filter="2023")
+    print(STATUS, flush=True)

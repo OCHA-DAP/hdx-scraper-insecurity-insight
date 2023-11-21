@@ -11,6 +11,25 @@ import os
 
 from typing import List, Dict, Any
 
+# def fetch_json_from_api(dataset_name: str):
+
+#     return response
+
+
+def read_attributes(dataset_name: str) -> Dict:
+    with open(
+        os.path.join(os.path.dirname(__file__), "metadata", "attributes.csv"), "r", encoding="UTF-8"
+    ) as attributes_filehandle:
+        attribute_rows = csv.DictReader(attributes_filehandle)
+
+        attributes = {}
+        for row in attribute_rows:
+            if row["dataset_name"] != dataset_name:
+                continue
+            attributes[row["attribute"]] = row["value"]
+
+    return attributes
+
 
 def read_schema(dataset_name: str) -> Dict:
     with open(
