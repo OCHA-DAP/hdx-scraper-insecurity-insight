@@ -5,6 +5,7 @@
 This code is for exploring what data from Insecurity Insight is available in HDX
 Ian Hopkinson 2023-11-18
 """
+import os
 import logging
 
 from hdx.utilities.easy_logging import setup_logging
@@ -52,6 +53,11 @@ def main():
             # break
         n_resources += dataset["num_resources"]
         summary.append([dataset["title"], dataset["name"], latest_date, dataset["num_resources"]])
+        dataset.save_to_json(
+            os.path.join(
+                os.path.dirname(__file__), "legacy-dataset-json", f"{dataset['name']}.json"
+            )
+        )
 
     summary.sort(key=lambda x: x[2], reverse=True)
 
