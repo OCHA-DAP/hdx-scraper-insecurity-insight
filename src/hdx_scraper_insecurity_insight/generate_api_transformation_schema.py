@@ -68,7 +68,7 @@ def generate_schema(dataset_name: str) -> str:
     api_response = fetch_json_from_samples(dataset_name)
     api_fields = list(api_response[0].keys())
 
-    if len(attributes["resource_filename"]) != 0:
+    if len(attributes["legacy_resource_filename"]) != 0:
         resource_df = pd.read_excel(
             os.path.join(
                 os.path.dirname(__file__), "spreadsheet-samples", attributes["resource_filename"]

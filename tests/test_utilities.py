@@ -23,10 +23,12 @@ def test_read_attributes():
     attributes = read_attributes(dataset_name)
 
     assert list(attributes.keys()) == [
-        "resource_filename",
+        "legacy_resource_filename",
+        "description",
         "api_url",
         "api_response_filename",
         "filename_template",
+        "file_format",
     ]
 
 

@@ -19,6 +19,7 @@ Configuration.create(hdx_site="stage", user_agent="hdxds_insecurity_insight")
 
 def create_datasets_in_hdx(dataset_name):
     LOGGER.info(f"Creating/updating `{dataset_name}`")
+    dataset_attributes = read_attributes(dataset_name)
 
     # Check for existence of dataset
     existing_dataset = Dataset.read_from_hdx(dataset_name)
@@ -77,7 +78,7 @@ def create_datasets_in_hdx(dataset_name):
 
         resource = Resource(
             {
-                "name": resource_name,
+                "name": filename,
                 "description": attributes["description"],
                 "format": attributes["file_format"],
             }
@@ -97,6 +98,5 @@ def create_datasets_in_hdx(dataset_name):
 
 
 if __name__ == "__main__":
-    # This should really be insecurity-insight-crsv-dataset
-    DATASET_NAME = "conflict-related-sexual-violence-dataset"
+    DATASET_NAME = "insecurity-insight-crsv-dataset"
     create_datasets_in_hdx(DATASET_NAME)
