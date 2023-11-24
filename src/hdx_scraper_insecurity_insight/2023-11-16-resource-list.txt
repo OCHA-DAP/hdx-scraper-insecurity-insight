@@ -1,0 +1,293 @@
+
+State of Palestine (PSE): Attacks on Aid Operations, Explosive Weapons Incident Data, Health and Protection
+opt-violent-and-threatening-incidents-against-healthcare:2023-11-11(9)
+	07 October-11 November 2023 Israel and oPt Attacks on Health Care Incident Data.xlsx
+	2016-2023 OPT Attacks on Health Care Incident Data
+	2020-2023 PSE Aid Worker KIKA Incident Data
+	2020- 2022 OPT Explosive Weapons Monitor Data by Insecurity Insight
+	2020-2023 OPT Protection in Danger Incident Data
+	2022 SHCC Health Care OPT Data.xlsx
+	2021 SHCC OPT Health Data
+	2020 SHCC Health Care oPt Data.xlsx
+	2019 SHCC Healthcare OPT Data.xlsx
+
+Attacks on Health Care Monthly News Brief Data
+sind-safeguarding-healthcare-monthly-news-briefs-dataset:2023-11-05(3)
+	2000-2023 Attacked and Threatened Health Care at Risk Interactive Map.xlsx
+	2023 Attacks on Health Care Incident Data.xlsx
+	2016-2023 Attacks on Health Care Incident Data.xlsx
+
+Myanmar (MMR): Attacks on Aid Operations, Explosive Weapons Incident Data, Education and Health
+myanmar-attacks-on-aid-operations-education-health-and-protection:2023-10-28(7)
+	2016-2023 MMR Attacks on Health Care Incident Data.xlsx
+	2020-2023 MMR Aid Worker KIKA Incident Data
+	2020- 2022 MMR Explosive Weapons Monitor Data by Insecurity Insight
+	2020-2023 MMR Education in Danger Incident Data
+	2022 SHCC Health Care Myanmar Data.xlsx
+	2021 SHCC Myanmar Health Data
+	2020 SHCC Myanmar Health Care Data.xlsx
+
+Global Aid Worker KIKA (Killed, Injured, Kidnapped or Arrested) Data
+sind-aid-worker-kka-dataset:2023-10-17(2)
+	2023 Aid Worker KIKA Incident Data.xlsx
+	2020-2023 Aid Worker KIKA Incident Data.xlsx
+
+Syria (SYR): Attacks on Aid Operations, Education, Explosive Weapons Incident Data, Health and Protection.
+syria-violent-and-threatening-incidents-against-healthcare:2023-10-07(10)
+	2023 SYR Attacks on Health Care Incident Data.xlsx
+	2016-2023 SYR Attacks on Health Care Incident Data.xlsx
+	2020-2023 SYR Aid Worker KIKA Incident Data
+	2020- 2022 SYR Explosive Weapons Monitor Data by Insecurity Insight
+	2020-2023 SYR Education in Danger Incident Data
+	2020-2023 SYR Protection in Danger Incident Data
+	2022 SHCC Health Care SYR Data
+	2021 SHCC SYR Health Data
+	2020 SHCC Health Care SYR Data.xlsx
+	2019 SHCC Healthcare SYR Data
+
+Sudan (SDN): Attacks on Aid Operations, Conflict-related Sexual Violence (CRSV), Education, Explosive Weapons Incident Data, Health and Protection.
+sudan-violence-against-civilians-and-vital-civilian-facilities:2023-10-01(8)
+	2016-2023 SDN Attacks on Health Care Incident Data.xlsx
+	2020-2023 SDN Aid Worker KIKA Incident Data
+	2020-2023 SDN Conflict-Related Sexual Violence (CRSV) Incident Data.xlsx
+	2020-2023 SDN Education in Danger Incident Data
+	2020-2023 SDN Explosive Weapons Data.xlsx
+	2020-2023 SDN Protection in Danger Incident Data
+	2022 SHCC Health Care SSD Data.xlsx
+	2021 SHCC SDN Health Data.xlsx
+
+Conflict-Related Sexual Violence  (CRSV) Data
+conflict-related-sexual-violence:2023-09-30(1)
+	2020-2023 Conflict-related Sexual Violence CRSV Incident Data.xlsx
+
+Explosive Weapons Data by Insecurity Insight
+explosive-weapons-use-affecting-aid-access-education-and-healthcare-services:2023-09-28(1)
+	2020-2023 Explosive Weapons Monitor Data by Insecurity Insight.xlsx
+
+Afghanistan (AFG): Attacks on Aid Operations, Education, Explosive Weapons Incident Data, and Health
+afghanistan-violence-against-civilians-and-vital-civilian-facilities:2023-09-24(8)
+	2016-2023 AFG Attacks on Health Care Incident Data
+	2020-2022 AFG Aid Worker KIKA
+	2020- 2022 AFG Explosive Weapons Monitor Data by Insecurity Insight
+	2020-2023 AFG Education in Danger Incident Data
+	2022 SHCC Health Care AFG Data.xlsx
+	2021-shcc-AFG-health-data-1.xlsx
+	2020 SHCC Health Care AFG Data.xlsx
+	2019 SHCC Healthcare AFG Data.xlsx
+
+Ukraine (UKR): Attacks on Aid Operations, Conflict-related Sexual Violence (CRSV), Education, Explosive Weapons Incident Data and Health
+ukraine-data-on-attacks-on-aid-operations-education-health-and-protection:2023-09-24(7)
+	2016-2023 UKR Attacks on Health Care Incident Data
+	2020-2023 UKR Aid Worker KIKA Incident Data
+	2020-2023 UKR Conflict-Related Sexual Violence (CRSV) Incident Data
+	2020-2023 UKR Education in Danger Incident Data
+	2020- 2022 UKR Explosive Weapons Monitor Data by Insecurity Insight
+	2022 SHCC Health Care UKR Data.xlsx
+	UKR 2022 Destruction and Devastation 2022 Attacks on Health Care
+
+Education in Danger Monthly News Brief Data
+sind-education-in-danger-monthly-news-briefs-dataset:2023-09-21(5)
+	2023 Education in Danger Incident Data.xlsx
+	2020-2023 Education in Danger Incident Data.xlsx
+	2021-2023 Drone Attacks on Education Data.xlsx
+	2018-2023 West and Central Africa Arson Attacks Dataset.xlsx
+	1998-2023 DRC and UGA Education in Danger Incident Data.xlsx
+
+South Sudan (SSD): Attacks on Aid Operations, Conflict-related Sexual Violence (CRSV), Education, Health and Protection.
+south-sudan-attacks-on-civilians-and-vital-civilian-facilities:2023-09-12(8)
+	2016-2023 SSD Attacks on Health Care Incident Data
+	2020-2023 SSD Aid Worker KIKA Incident Data
+	2020-2023 SSD Conflict-Related Sexual Violence (CRSV) Incident Data
+	2020-2023 SSD Education in Danger Incident Data
+	2020-2023 SSD Protection in Danger Incident Data
+	2022 SHCC Health Care SSD Data
+	2021 SHCC SSD Health Data
+	2020 SHCC Health Care SSD Data.xlsx
+
+Somalia (SOM): Attacks on Aid Operations and Health
+somalia-violence-agaiinst-civilian-and-vital-civilian-facilitites:2023-09-09(4)
+	2016-2023 SOM Attacks on Health Care Incident Data
+	2020-2023 SOM Aid Worker KIKA Incident Data
+	2020 SHCC Health Care SOM Data
+	2019 SHCC Healthcare SOM Data
+
+Yemen (YEM): Attacks on Aid Operations, Education, Explosive Weapons Incident Data, Health and Protection.
+yemen-violence-aganist-civilian-and-vital-civilian-faciltities:2023-09-09(8)
+	2016-2023 YEM Attacks on Health Care Incident Data
+	2020-2023 YEM Aid Worker KIKA Incident Data
+	2020-2023 YEM Education in Danger Incident Data
+	2020- 2022 YEM Explosive Weapons Monitor Data by Insecurity Insight
+	2020-2023 YEM Protection in Danger Incident Data
+	2022 SHCC Health Care YEM Data.xlsx
+	2020 SHCC Health Care YEM Data.xlsx
+	2019 SHCC Healthcare YEM Data.xlsx
+
+Iraq (IRQ): Attacks on Aid Operations and Health Care
+iraq-violence-against-civilians-and-vital-civilian-facilities:2023-09-06(3)
+	2016-2023 IRQ Attacks on Health Care Incident Data
+	2020-2023 IRQ Aid Worker KIKA Incident Data
+	2019 SHCC Healthcare IRQ Data
+
+Mali (MLI): Attacks on Aid Operations and Health Care
+mali-violence-against-civilians-and-vital-civilian-facilities:2023-09-05(6)
+	2016-2023 MLI Attacks on Health Care Incident Data
+	2020-2023 MLI Aid Worker KIKA Incident Data
+	2022 SHCC Health Care MLI Data.xlsx
+	2021 SHCC MLI Health Data.xlsx
+	2020 SHCC Health Care MLI Data
+	2019 SHCC Healthcare MLI Data
+
+Central African Republic (CAF): Attacks on Aid Operations and Health
+car-violence-against-civilians-and-vital-civlian-facilities:2023-08-31(6)
+	2016-2023 CAF Attacks on Health Care Incident Data
+	2020-2023 CAF Aid Worker KIKA Incident Data
+	2022 SHCC Health Care CAF Data.xlsx
+	2021 SHCC CAF Health Data
+	2020 SHCC Health Care CAF Data.xlsx
+	2019 SHCC Healthcare CAF Data.xlsx
+
+Protection in Danger Monthly News Brief Data
+sind-protection-in-danger-monthly-news-briefs-dataset:2023-08-22(1)
+	2020-2023 Protection in Danger Incident Data.xlsx
+
+Pakistan (PAK): Attacks on Aid Operations and Health Care
+pakistan-violence-against-civilians-and-vital-civilian-facilities:2023-08-22(4)
+	2016-2023 Pakistan Attacks on Health Care Incident Data
+	2020-2023 PAK Aid Worker KIKA Incident Data
+	2022 SHCC Health Care Pakistan Data.xlsx
+	2019 SHCC Healthcare Pakistan Data.xlsx
+
+Mexico (MEX): Attacks on Aid Operations and Health
+mexico-violent-and-threatening-incidents-against-health-care:2023-08-22(3)
+	2016-2023 MEX Attacks on Health Care Incident Data
+	2020-2023 MEX Aid Worker KIKA Incident Data
+	2020 SHCC Health Care MEX Data
+
+Burkina Faso (BFA): Attacks on Aid Operations, Education and Health
+burkina-faso-violence-against-civilians-and-vital-civilian-facilities:2023-08-15(7)
+	2016-2023 BFA Attacks on Health Care Incident Data
+	2020-2023 BFA Aid Worker KIKA Incident Data
+	2020-2023 BFA Education in Danger Incident Data
+	2022 SHCC Health Care BFA Faso Data.xlsx
+	2021 SHCC BFA Health Data.xlsx
+	2020 SHCC Health Care BFA Data.xlsx
+	2019 SHCC Healthcare BFA Data.xlsx
+
+Democratic Republic of the Congo (COD): Attacks on Aid Operations, Conflict-related Sexual Violence (CRSV), Education, Health and Protection
+attacks-on-ebola-response:2023-08-14(10)
+	2016-2023 DRC Attacks on Health Care Incident Data
+	2020-2023 DRC Aid Worker KIKA Incident Data
+	2020-2023 DRC Conflict-Related Sexual Violence (CRSV) Incident Data
+	2020-2023 DRC Education in Danger Incident Data
+	2020-2023 DRC Protection in Danger Incident Data
+	2022 SHCC Health Care DRC Data.xlsx
+	2021 SHCC DRC Health Data
+	2020 SHCC Health Care DRC Data.xlsx
+	2019 SHCC Healthcare DRC Data.xlsx
+	10th DRC Ebola Response dataset v October 2020.xlsx
+
+Cameroon (CMR): Attacks on Aid Operations, Education and Health
+cameroon-attacks-on-civilians-and-vital-civilian-facilities:2023-08-12(6)
+	2016-2023 CMR Attacks on Health Care Incident Data
+	2020-2023 CMR Aid Worker KIKA Incident Data
+	2020-2023 CMR Education in Danger Incident Data
+	2022 SHCC Health Care CMR Data.xlsx
+	2020 SHCC Health Care CMR Data.xlsx
+	2019 SHCC Healthcare CMR Data.xlsx
+
+Nigeria (NGA): Attacks on Aid Operations, Education, Health and Protection and Conflict Related Sexual Violence (CRSV)
+nigeria-violence-agaiinst-civilians-and-vital-civilian-faciltties:2023-08-06(9)
+	2016-2023 NGA Attacks on Health Care Incident Data
+	2020-2023 NGA Aid Worker KIKA Incident Data
+	2020-2023 NGA Conflict-Related Sexual Violence (CRSV) Incident Data
+	2020-2023 NGA Education in Danger Incident Data
+	2020-2023 NGA Protection in Danger Incident Data
+	2022 SHCC Health Care NGA Data.xlsx
+	2021 SHCC NGA Health Data
+	2020 SHCC Health Care NGA Data
+	2019 SHCC Healthcare NGA Data
+
+Haiti (HTI): Attacks on Aid Operations and Health
+haiti-attacks-on-aid-operations-education-health-and-protection:2023-07-27(3)
+	2016-2023 HTI ttacks on Health Care Incident Data
+	2020-2023 HTI Aid Worker KIKA Incident Data
+	2021 SHCC HTI Health Data.xlsx
+
+Niger (NER): Attacks on Aid Operations and Health Care
+niger-violence-against-cvilians-and-vital-civilian-facilities:2023-07-18(2)
+	2016-2023 Niger Attacks on Health Care Incident Data
+	2020-2023 NER Aid Worker KIKA Incident Data
+
+Libya (LBY): Attacks on Aid Operations, Explosive Weapons Incident Data and Health
+libya-violence-against-civilians-and-vital-civilian-facilities:2023-07-17(5)
+	2016-2023 LBY Attacks on Health Care Incident Data
+	2020-2023 LBY Aid Worker KIKA Incident Data
+	2020- 2022 LBY Explosive Weapons Monitor Data by Insecurity Insight
+	2020 SHCC Health Care LBY Data.xlsx
+	2019 SHCC Healthcare LBY Data.xlsx
+
+Ethiopia (ETH):  Attacks on Aid Operations, Conflict-related Sexual Violence (CRSV), Education, Explosive Weapons Incident Data, Health and Protection
+ethiopia-attacks-on-aid-operations-education-health-and-protection:2023-06-29(7)
+	2016-2023 ETH Attacks on Health Care Incident Data
+	2020-2023 ETH Aid Worker KIKA Incident Data
+	2020-2023 ETH Conflict-Related Sexual Violence (CRSV) Incident Data
+	2020-2023 ETH Education in Danger Incident Data
+	2020- 2022 ETH Explosive Weapons Monitor Data by Insecurity Insight
+	2020-2023 ETH Protection in Danger Incident Data
+	2021 SHCC ETH Health Data.xlsx
+
+Multiple locations - Conflict, Hunger and Aid Security
+conflict-hunger-and-aid-security:2023-06-13(4)
+	FIVC-Niger.xlsx
+	FIVC-Sudan.xlsx
+	FIVC-Syria.xlsx
+	FIVC-Somalia
+
+Mozambique (MOZ):  Attacks on Aid Operations and Health
+mozambique-attacks-on-aid-operations-education-health-and-protection:2023-06-12(3)
+	2016-2023 MOZ Attacks on Health Care Incident Data
+	2020-2023 MOZ Aid Worker KIKA Incident Data
+	2020 SHCC Health Care MOZ Data
+
+Lebanon (LBN): Attacks on Aid Operations and Health
+aid-security-risk-in-lebanon:2023-04-26(3)
+	2016-2023 Lebanon Attacks on Health Care Incident Data
+	2020 Lebanon Incidents Affecting Aid Operations, Staff and Assets HDX.xlsx
+	Aid Security Risk in Lebanon 2015-2020.xlsx
+
+Attacks on Vaccination Campaigns
+attacks-on-vaccination-campaigns:2023-04-26(1)
+	2016-2023 Attacks on Vaccination Campaigns.xlsx
+
+Iran (IRN): Attacks on Health
+iran-violent-and-threatening-incidents-against-healthcare:2022-12-31(1)
+	2022 SHCC Health Care Iran Data.xlsx
+
+Attacks on Health Care in Countries in Conflict (SHCC) Data
+shcchealthcare-dataset:2021-12-31(11)
+	2022 SHCC Incident Data.xlsx
+	2021 SHCC Overview Data.xlsx
+	2021 SHCC Incident Data
+	2020 SHCC Incident Data.xlsx
+	2020 SHCC Overview Data.xlsx
+	Five-year review Violence Against or Obstruction of Health Care 2016-2020 Data.xlsx
+	2019 SHCC Incident Data.xlsx
+	2019 SHCC Overview Data.xlsx
+	2018 SHCC Overview Data.xlsx
+	2018 SHCC Attacks Data.xlsx
+	2017 SHCC Overview Data.xlsx
+
+Nagorno-Karabakh: Attacks on Health
+nagorno-karabakh-attacks-on-aid-operations-education-health-and-protection:2020-12-31(1)
+	2020 SHCC Health Care Nagorno-Karabakh Data.xlsx
+
+Pandemic-Related Attacks on Health Care Data
+pandemic-related-attacks-on-health-care:2020-12-31(2)
+	COVID-19 pandemic Attacks on Health Care in 2020.xlsx
+	10th DRC Ebola Response dataset v October 2020.xlsx
+
+Sexual Violence and Abuse  in the Aid Workplace
+sind-sexual-violence-and-abuse-against-aid-workers:2017-12-31(3)
+	SiND SexualViolence Dataset 2015.xlsx
+	SiND SexualViolence Dataset 2016.xlsx
+	SiND SexualViolence Dataset 2017.xlsx
