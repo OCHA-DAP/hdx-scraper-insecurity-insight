@@ -48,7 +48,13 @@ def read_attributes(dataset_name: str) -> Dict:
         for row in attribute_rows:
             if row["dataset_name"] != dataset_name:
                 continue
-            attributes[row["attribute"]] = row["value"]
+            if row["attribute"] == "resource":
+                if "resource" not in attributes:
+                    attributes["resource"] = [row["value"]]
+                else:
+                    attributes["resource"].append(row["value"])
+            else:
+                attributes[row["attribute"]] = row["value"]
 
     return attributes
 

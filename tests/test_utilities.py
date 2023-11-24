@@ -22,13 +22,26 @@ def test_read_attributes():
     dataset_name = "insecurity-insight-crsv"
     attributes = read_attributes(dataset_name)
 
-    assert list(attributes.keys()) == [
-        "legacy_resource_filename",
-        "description",
-        "api_url",
-        "api_response_filename",
-        "filename_template",
-        "file_format",
+    assert set(attributes.keys()) == set(
+        [
+            "legacy_resource_filename",
+            "entity_type",
+            "description",
+            "api_url",
+            "api_response_filename",
+            "filename_template",
+            "file_format",
+        ]
+    )
+
+
+def test_read_attributes_list():
+    dataset_name = "insecurity-insight-crsv-dataset"
+    attributes = read_attributes(dataset_name)
+
+    assert attributes["resource"] == [
+        "insecurity-insight-crsv",
+        "insecurity-insight-crsv-overview",
     ]
 
 
