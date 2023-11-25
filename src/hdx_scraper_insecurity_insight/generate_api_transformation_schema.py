@@ -54,6 +54,18 @@ EXPECTED_COUNTRY_LIST = [
     "LBN",
 ]
 
+SCHEMA_TEMPLATE = {
+    "dataset_name": None,
+    "timestamp": None,
+    "upstream": None,  # API field name
+    "field_name": None,  # Excel field name
+    "field_number": None,
+    "field_type": None,
+    "terms": None,  # Use this for HXL tags
+    "tags": None,
+    "descriptions": None,
+}
+
 
 # Datamesh style schema file
 # dataset_name,timestamp,upstream,field_name,field_number,field_type,terms,tags,description
@@ -99,17 +111,6 @@ def generate_schema(dataset_name: str) -> str:
     columns = zip(column_names, hxl_tags)
 
     # dataset_name,timestamp,upstream,field_name,field_number,field_type,terms,tags,description
-    output_template = {
-        "dataset_name": None,
-        "timestamp": None,
-        "upstream": None,  # API field name
-        "field_name": None,  # Excel field name
-        "field_number": None,
-        "field_type": None,
-        "terms": None,  # Use this for HXL tags
-        "tags": None,
-        "descriptions": None,
-    }
 
     output_rows = []
     schema_output_filepath = os.path.join(os.path.dirname(__file__), "metadata", "schema.csv")
@@ -121,15 +122,10 @@ def generate_schema(dataset_name: str) -> str:
         # normalised_column = FIELD_MAPPINGS.get(
         #     column[0], column[0].lower().replace(" ", "_")
         # )
-        normalised_column = column[0]
-        in_api = ""
-        api_field = ""
-        if normalised_column in api_fields:
-            in_api = "in_api"
-            api_field = normalised_column
+        in_api, api_field = is_column_in_api_field(api_fields, column)
 
         print(f"{i:<2}. {column[0]:<50},{column[1]:<30},{in_api}", flush=True)
-        output_row = output_template.copy()
+        output_row = SCHEMA_TEMPLATE.copy()
         output_row["dataset_name"] = dataset_name
         output_row["timestamp"] = timestamp
         output_row["upstream"] = api_field
@@ -148,6 +144,16 @@ def generate_schema(dataset_name: str) -> str:
     else:
         status = f"Schema for {dataset_name} already in {schema_output_filepath}, no update made"
     return status
+
+
+def is_column_in_api_field(api_fields, column):
+    normalised_column = column[0]
+    in_api = ""
+    api_field = ""
+    if normalised_column in api_fields:
+        in_api = "in_api"
+        api_field = normalised_column
+    return in_api, api_field
 
 
 if __name__ == "__main__":

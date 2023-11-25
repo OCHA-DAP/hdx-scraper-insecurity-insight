@@ -45,8 +45,8 @@ def create_spreadsheet(
         if year_filter is not None and api_row["Date"][0:4] != year_filter:
             continue
         output_row = row_template.copy()
-        for key in row_template.keys():
-            output_row[key] = api_row[row_template[key]]
+        for key, value in row_template.items():
+            output_row[key] = api_row[value]
         output_rows.append(output_row)
 
     output_dataframe = pandas.DataFrame.from_dict(output_rows)
@@ -54,23 +54,9 @@ def create_spreadsheet(
     print(output_dataframe, flush=True)
 
     # Generate filename
-    country_iso = ""
-    if country_filter is not None:
-        country_iso = f"-{country_filter}"
-
-    date_field = "Date"
-    if date_field not in row_template.keys():
-        date_field = "Year"
-
-    start_year = output_dataframe.tail(-1)[date_field].min()[0:4]
-    end_year = output_dataframe[date_field].max()[0:4]
-
-    filename = attributes["filename_template"].format(
-        start_year=start_year, end_year=end_year, country_iso=country_iso
+    filename = generate_spreadsheet_filename(
+        country_filter, attributes, row_template, output_dataframe
     )
-
-    if start_year == end_year:
-        filename = filename.replace(f"-{end_year}", "")
 
     # We can make the output an Excel table:
     # https://stackoverflow.com/questions/58326392/how-to-create-excel-table-with-pandas-to-excel
@@ -83,6 +69,28 @@ def create_spreadsheet(
 
     status = f"\nWrote spreadsheet with filepath {output_filepath}"
     return status
+
+
+def generate_spreadsheet_filename(country_filter, attributes, row_template, output_dataframe):
+    country_iso = ""
+    if country_filter is not None:
+        country_iso = f"-{country_filter}"
+
+    date_field = "Date"
+    if date_field not in row_template:
+        date_field = "Year"
+
+    # The tail command ensures the HDX tag line is skipped
+    start_year = output_dataframe.tail(-1)[date_field].min()[0:4]
+    end_year = output_dataframe[date_field].max()[0:4]
+
+    filename = attributes["filename_template"].format(
+        start_year=start_year, end_year=end_year, country_iso=country_iso
+    )
+
+    if start_year == end_year:
+        filename = filename.replace(f"-{end_year}", "")
+    return filename
 
 
 if __name__ == "__main__":
