@@ -1,4 +1,7 @@
 # --rcfile config/.pylintrc
+[DESIGN]
+max-locals=25
+
 [FORMAT]
 max-line-length=100
 
