@@ -6,13 +6,14 @@ import os
 import re
 
 from pathlib import Path
+from typing import List
 
 from hdx.utilities.easy_logging import setup_logging
 from hdx.api.configuration import Configuration
 from hdx.data.dataset import Dataset
 from hdx.data.resource import Resource
 
-from hdx_scraper_insecurity_insight.utilities import fetch_json_from_api, read_attributes
+from hdx_scraper_insecurity_insight.utilities import fetch_json, read_attributes
 
 setup_logging()
 LOGGER = logging.getLogger(__name__)
@@ -34,24 +35,18 @@ def create_datasets_in_hdx(dataset_name: str):
 
     resource_list = []
 
-    spreadsheet_directory = os.path.join(os.path.dirname(__file__), "output-spreadsheets")
     for resource_name in resource_names:
         attributes = read_attributes(resource_name)
-        filename = find_resource_filename(spreadsheet_directory, resource_name, attributes)
+        resource_filepath = find_resource_filepath(resource_name, attributes)
 
         resource = Resource(
             {
-                "name": filename,
+                "name": os.path.basename(resource_filepath),
                 "description": attributes["description"],
                 "format": attributes["file_format"],
             }
         )
-        resource.set_file_to_upload(
-            os.path.join(
-                spreadsheet_directory,
-                filename,
-            )
-        )
+        resource.set_file_to_upload(resource_filepath)
         resource_list.append(resource)
 
     dataset.add_update_resources(resource_list)
@@ -63,9 +58,13 @@ def create_or_fetch_base_dataset(dataset_name, dataset_attributes):
     dataset = Dataset.read_from_hdx(dataset_name)
     if dataset is not None:
         LOGGER.info(f"Dataset already exists in hdx_site: `{Configuration.read().hdx_site}`")
+        LOGGER.info("Updating")
     else:
         LOGGER.info(
             f"`{dataset_name}` does not exist in hdx_site: `{Configuration.read().hdx_site}`"
+        )
+        LOGGER.info(
+            f"Using {dataset_attributes['dataset_template']} as a template for a new dataset"
         )
         dataset_template_filepath = os.path.join(
             os.path.dirname(__file__),
@@ -77,7 +76,7 @@ def create_or_fetch_base_dataset(dataset_name, dataset_attributes):
     return dataset
 
 
-def find_resource_filename(spreadsheet_directory, resource_name, attributes):
+def find_resource_filepath(resource_name, attributes):
     # this regex will fail on spreadsheets with an country ISO code in the filename
     # And also single year spreadsheets
     spreadsheet_regex = (
@@ -86,7 +85,7 @@ def find_resource_filename(spreadsheet_directory, resource_name, attributes):
         .replace("{end_year}", "[0-9]{4}")
         .replace("{country_iso}", "")
     )
-
+    spreadsheet_directory = os.path.join(os.path.dirname(__file__), "output-spreadsheets")
     file_list = Path(spreadsheet_directory)
     files = []
     for file_ in file_list.iterdir():
@@ -103,14 +102,14 @@ def find_resource_filename(spreadsheet_directory, resource_name, attributes):
 
     filename = files[0]
     LOGGER.info(f"`{filename}` found for resource `{resource_name}`")
-    return filename
+    return os.path.join(spreadsheet_directory, filename)
 
 
-def get_date_and_country_ranges_from_resources(resource_names):
+def get_date_and_country_ranges_from_resources(resource_names: List[str], use_sample=False):
     dates = []
     countries = []
     for resource_dataset_name in resource_names:
-        resource_json = fetch_json_from_api(resource_dataset_name)
+        resource_json = fetch_json(resource_dataset_name, use_sample=use_sample)
         date_field = "Date"
         if date_field not in resource_json[0].keys():
             date_field = "Year"
@@ -125,7 +124,7 @@ def get_date_and_country_ranges_from_resources(resource_names):
     LOGGER.info(f"Dataset_date: {dataset_date}")
 
     # Possibly we want to run a counter here to work out the significant countries in the dataset
-    countries_group = [{"name": x} for x in countries]
+    countries_group = [{"name": x} for x in set(countries)]
     LOGGER.info(f"Data from {len(countries_group)} countries found")
     return dataset_date, countries_group
 

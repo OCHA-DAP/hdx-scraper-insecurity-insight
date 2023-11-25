@@ -16,6 +16,14 @@ from urllib3 import request
 from urllib3.util import Retry
 
 
+def fetch_json(dataset_name: str, use_sample: bool = False):
+    if use_sample:
+        json_response = fetch_json_from_samples(dataset_name)
+    else:
+        json_response = fetch_json_from_api(dataset_name)
+    return json_response
+
+
 def fetch_json_from_api(dataset_name: str) -> List[Dict]:
     attributes = read_attributes(dataset_name)
 
