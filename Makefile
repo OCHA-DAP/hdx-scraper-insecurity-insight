@@ -6,4 +6,4 @@ lint:
 	flake8 --config=config/.flake8 src/
 	pylint --rcfile=config/.pylintrc src/ || true
 unit_tests:
-	pytest tests/
+	pytest --cov=hdx_scraper_insecurity_insight --cov-config=config/.coveragerc tests/

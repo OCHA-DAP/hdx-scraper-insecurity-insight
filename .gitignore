@@ -5,3 +5,5 @@ venv_hdx_insecurity/
 src/hdx_scraper_insecurity_insight.egg-info/
 src/hdx_scraper_insecurity_insight/output-spreadsheets/
 src/hdx_scraper_insecurity_insight/legacy-dataset-json/
+
+.coverage

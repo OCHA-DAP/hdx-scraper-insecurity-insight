@@ -8,6 +8,8 @@
   "editor.formatOnSave": true,
   "prettier.enable": false,
   "python.testing.pytestArgs": [
+    "--cov=hdx_scraper_insecurity_insight",
+    "--cov-config=config/.coveragerc",
     "tests"
   ],
   "python.testing.unittestEnabled": false,
