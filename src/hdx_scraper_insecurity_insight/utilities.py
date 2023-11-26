@@ -10,7 +10,7 @@ import csv
 import json
 import os
 
-from typing import List, Dict, Any
+from typing import Any
 
 from urllib3 import request
 from urllib3.util import Retry
@@ -24,7 +24,7 @@ def fetch_json(dataset_name: str, use_sample: bool = False):
     return json_response
 
 
-def fetch_json_from_api(dataset_name: str) -> List[Dict]:
+def fetch_json_from_api(dataset_name: str) -> list[dict]:
     attributes = read_attributes(dataset_name)
 
     response = request(
@@ -35,7 +35,7 @@ def fetch_json_from_api(dataset_name: str) -> List[Dict]:
     return json_response
 
 
-def fetch_json_from_samples(dataset_name: str) -> List[Dict]:
+def fetch_json_from_samples(dataset_name: str) -> list[dict]:
     attributes = read_attributes(dataset_name)
     with open(
         os.path.join(os.path.dirname(__file__), "api-samples", attributes["api_response_filename"]),
@@ -46,7 +46,7 @@ def fetch_json_from_samples(dataset_name: str) -> List[Dict]:
     return json_response
 
 
-def read_attributes(dataset_name: str) -> Dict:
+def read_attributes(dataset_name: str) -> dict:
     with open(
         os.path.join(os.path.dirname(__file__), "metadata", "attributes.csv"), "r", encoding="UTF-8"
     ) as attributes_filehandle:
@@ -67,7 +67,7 @@ def read_attributes(dataset_name: str) -> Dict:
     return attributes
 
 
-def read_schema(dataset_name: str) -> Dict:
+def read_schema(dataset_name: str) -> dict:
     with open(
         os.path.join(os.path.dirname(__file__), "metadata", "schema.csv"), "r", encoding="UTF-8"
     ) as schema_filehandle:
@@ -85,7 +85,7 @@ def read_schema(dataset_name: str) -> Dict:
 
 
 def write_dictionary(
-    output_filepath: str, output_rows: List[Dict[str, Any]], append: bool = True
+    output_filepath: str, output_rows: list[dict[str, Any]], append: bool = True
 ) -> str:
     keys = list(output_rows[0].keys())
     newfile = not os.path.isfile(output_filepath)

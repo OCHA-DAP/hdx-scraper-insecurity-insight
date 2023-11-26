@@ -6,7 +6,6 @@ import os
 import re
 
 from pathlib import Path
-from typing import List
 
 from hdx.utilities.easy_logging import setup_logging
 from hdx.api.configuration import Configuration
@@ -105,7 +104,7 @@ def find_resource_filepath(resource_name, attributes):
     return os.path.join(spreadsheet_directory, filename)
 
 
-def get_date_and_country_ranges_from_resources(resource_names: List[str], use_sample=False):
+def get_date_and_country_ranges_from_resources(resource_names: list[str], use_sample=False):
     dates = []
     countries = []
     for resource_dataset_name in resource_names:

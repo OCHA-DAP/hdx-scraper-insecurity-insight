@@ -18,3 +18,6 @@ disable=raw-checker-failed,
         missing-class-docstring,
         missing-function-docstring,
         logging-fstring-interpolation
+
+[MASTER]
+load-plugins=pylint.extensions.typing
