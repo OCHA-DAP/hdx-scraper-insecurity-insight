@@ -10,7 +10,7 @@ from hdx_scraper_insecurity_insight.create_datasets import (
 
 
 def test_find_resource_filename():
-    resource_name = "insecurity-insight-crsv"
+    resource_name = "insecurity-insight-crsv-incidents"
     attributes = read_attributes(resource_name)
     filepath = find_resource_filepath(resource_name, attributes)
     filename = os.path.basename(filepath)
@@ -19,7 +19,7 @@ def test_find_resource_filename():
 
 
 def test_get_date_and_country_ranges_from_resources():
-    resource_names = ["insecurity-insight-crsv", "insecurity-insight-crsv-overview"]
+    resource_names = ["insecurity-insight-crsv-incidents", "insecurity-insight-crsv-overview"]
     dataset_date, countries_group = get_date_and_country_ranges_from_resources(
         resource_names, use_sample=True
     )

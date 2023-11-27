@@ -27,10 +27,10 @@ To onboard a new dataset the following attributes need to be added to `attribute
 
 | dataset name | timestamp | attribute | value | secondary_value |
 | ----- | ------ | ----- | ----- | ----- |
-| insecurity-insight-crsv | 2023-11-21T08:28:08.167022 | resource_filename | 2020-2023-conflict-related-sexual-violence-crsv-incident-data.xlsx | 
-| insecurity-insight-crsv | 2023-11-21T08:28:08.167022 | api_url | https://sind-api.herokuapp.com/hdx/v1/sv | 
-| insecurity-insight-crsv | 2023-11-21T08:28:08.167022 | api_response_filename | sv.json | 
-| insecurity-insight-crsv | 2023-11-21T08:28:08.167022 | filename_template | {start_year}-{end_year}{country_iso}-conflict-related-sexual-violence-crsv-incident-data.xlsx |
+| insecurity-insight-crsv-incidents | 2023-11-21T08:28:08.167022 | resource_filename | 2020-2023-conflict-related-sexual-violence-crsv-incident-data.xlsx | 
+| insecurity-insight-crsv-incidents | 2023-11-21T08:28:08.167022 | api_url | https://sind-api.herokuapp.com/hdx/v1/sv | 
+| insecurity-insight-crsv-incidents | 2023-11-21T08:28:08.167022 | api_response_filename | sv.json | 
+| insecurity-insight-crsv-incidents | 2023-11-21T08:28:08.167022 | filename_template | {start_year}-{end_year}{country_iso}-conflict-related-sexual-violence-crsv-incident-data.xlsx |
 
 The `generate_api_transformation_schema.py` is then run to generate entries in `schema.csv`, currently the `dataset_name` is set by manually editing the code.
 

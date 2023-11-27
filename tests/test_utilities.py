@@ -11,7 +11,7 @@ from hdx_scraper_insecurity_insight.utilities import (
 
 
 def test_read_schema():
-    dataset_name = "insecurity-insight-crsv"
+    dataset_name = "insecurity-insight-crsv-incidents"
     hdx_row, row_template = read_schema(dataset_name)
 
     assert hdx_row.keys() == row_template.keys()
@@ -19,7 +19,7 @@ def test_read_schema():
 
 
 def test_read_attributes():
-    dataset_name = "insecurity-insight-crsv"
+    dataset_name = "insecurity-insight-crsv-incidents"
     attributes = read_attributes(dataset_name)
 
     assert set(attributes.keys()) == set(
@@ -40,13 +40,13 @@ def test_read_attributes_list():
     attributes = read_attributes(dataset_name)
 
     assert attributes["resource"] == [
-        "insecurity-insight-crsv",
+        "insecurity-insight-crsv-incidents",
         "insecurity-insight-crsv-overview",
     ]
 
 
 def test_fetching_json():
-    dataset_name = "insecurity-insight-crsv"
+    dataset_name = "insecurity-insight-crsv-incidents"
 
     samples_response = fetch_json_from_samples(dataset_name)
     api_response = fetch_json_from_api(dataset_name)
