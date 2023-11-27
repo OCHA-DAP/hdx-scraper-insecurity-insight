@@ -15,6 +15,8 @@ from typing import Any
 from urllib3 import request
 from urllib3.util import Retry
 
+SCHEMA_FILEPATH = os.path.join(os.path.dirname(__file__), "metadata", "schema.csv")
+
 
 def fetch_json(dataset_name: str, use_sample: bool = False):
     if use_sample:
@@ -68,9 +70,7 @@ def read_attributes(dataset_name: str) -> dict:
 
 
 def read_schema(dataset_name: str) -> dict:
-    with open(
-        os.path.join(os.path.dirname(__file__), "metadata", "schema.csv"), "r", encoding="UTF-8"
-    ) as schema_filehandle:
+    with open(SCHEMA_FILEPATH, "r", encoding="UTF-8") as schema_filehandle:
         schema_rows = csv.DictReader(schema_filehandle)
 
         hdx_row = {}
@@ -82,6 +82,15 @@ def read_schema(dataset_name: str) -> dict:
             row_template[row["field_name"]] = row["upstream"]
 
     return hdx_row, row_template
+
+
+def write_schema(dataset_name: str, output_rows: list[dict]) -> str:
+    hdx_row, _ = read_schema(dataset_name)
+    if not hdx_row:
+        status = write_dictionary(SCHEMA_FILEPATH, output_rows, append=True)
+    else:
+        status = f"Schema for {dataset_name} already in {SCHEMA_FILEPATH}, no update made"
+    return status
 
 
 def write_dictionary(

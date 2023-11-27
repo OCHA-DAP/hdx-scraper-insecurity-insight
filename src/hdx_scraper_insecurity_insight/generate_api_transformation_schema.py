@@ -6,26 +6,42 @@ This code is for establishing field mappings and HXL codes for the existing data
 Ian Hopkinson 2023-11-18
 """
 
-
+import csv
 import datetime
 import os
 
 import pandas as pd
 
 from hdx_scraper_insecurity_insight.utilities import (
-    write_dictionary,
-    read_schema,
     read_attributes,
+    write_schema,
     fetch_json_from_samples,
 )
 
-FIELD_MAPPINGS = {
-    "Aid Workers Killed": "aidworkers_killed",
-    "Aid Workers Injured": "aidworkers_injured",
-    "Aid Workers Kidnapped": "aidworkers_kidnapped",
-    "Aid Workers Arrested": "aidworkers_arrested",
-    "SiND Event ID": "event_id",
-}
+FIELD_MAPPINGS = {}
+
+with open(
+    os.path.join(os.path.dirname(__file__), "metadata", "field_mappings.csv"),
+    "r",
+    encoding="UTF-8",
+) as FIELD_MAPPINGS_FILEHANDLE:
+    FIELD_MAPPING_ROWS = csv.DictReader(FIELD_MAPPINGS_FILEHANDLE)
+    for ROW in FIELD_MAPPING_ROWS:
+        if ROW["dataset_name"] not in FIELD_MAPPINGS:
+            FIELD_MAPPINGS[ROW["dataset_name"]] = {}
+        FIELD_MAPPINGS[ROW["dataset_name"]][ROW["field_name"]] = ROW["upstream"]
+# FIELD_MAPPINGS = {
+#     "Aid Workers Killed": "aidworkers_killed",
+#     "Aid Workers Injured": "aidworkers_injured",
+#     "Aid Workers Kidnapped": "aidworkers_kidnapped",
+#     "Aid Workers Arrested": "aidworkers_arrested",
+#     "SiND Event ID": "event_id",
+#     "Type of Education Facility": "Type of education facility",
+#     "Military Occupation of Education facility": "Military Occupation of Schools",
+#     "Arson Attack on Education Facility": "",
+#     "Forced Entry into Education Facility": "Forced Entry into Schools",
+#     "Damage/Destruction To Education Facility": "Damage/Destruction To School Event",
+# }
 
 EXPECTED_COUNTRY_LIST = [
     "OPT",
@@ -74,6 +90,7 @@ def generate_schema(dataset_name: str) -> str:
     print("* Insecurity Insight - Generate schema.csv  *", flush=True)
     print(f"* Invoked at: {datetime.datetime.now().isoformat(): <23} *", flush=True)
     print("*********************************************", flush=True)
+    print(f"Processing dataset: {dataset_name}\n", flush=True)
     attributes = read_attributes(dataset_name)
 
     # Get relevant cached API response
@@ -104,14 +121,14 @@ def generate_schema(dataset_name: str) -> str:
     # dataset_name,timestamp,upstream,field_name,field_number,field_type,terms,tags,description
 
     output_rows = []
-    schema_output_filepath = os.path.join(os.path.dirname(__file__), "metadata", "schema.csv")
 
     timestamp = datetime.datetime.now().isoformat()
 
+    print(f"{ '':<2}   {'Spreadsheet column':<50},{'HXL tag':<50}, {'api_field':<30}", flush=True)
     for i, column in enumerate(columns):
-        in_api, api_field = is_column_in_api_field(api_fields, column)
+        api_field = find_corresponding_api_field(dataset_name, api_fields, column)
 
-        print(f"{i:<2}. {column[0]:<50},{column[1]:<30},{in_api}", flush=True)
+        print(f"{i:<2}.  {column[0]:<50},{column[1]:<50}, {api_field:<30}", flush=True)
         output_row = SCHEMA_TEMPLATE.copy()
         output_row["dataset_name"] = dataset_name
         output_row["timestamp"] = timestamp
@@ -125,11 +142,7 @@ def generate_schema(dataset_name: str) -> str:
 
         output_rows.append(output_row)
 
-    hdx_row, _ = read_schema(dataset_name)
-    if not hdx_row:
-        status = write_dictionary(schema_output_filepath, output_rows, append=True)
-    else:
-        status = f"Schema for {dataset_name} already in {schema_output_filepath}, no update made"
+    status = write_schema(dataset_name, output_rows)
     return status
 
 
@@ -143,21 +156,20 @@ def print_country_codes_analysis(api_response: list[dict]):
     print(set(EXPECTED_COUNTRY_LIST).difference(country_codes))
 
 
-def is_column_in_api_field(api_fields: list, column: str) -> (str, str):
+def find_corresponding_api_field(dataset_name: str, api_fields: list, column: str) -> str:
     # KIKA requires this normalisation
     # normalised_column = FIELD_MAPPINGS.get(
     #     column[0], column[0].lower().replace(" ", "_")
     # )
-    normalised_column = column[0]
-    in_api = ""
+    normalised_column = FIELD_MAPPINGS[dataset_name].get(column[0], column[0])
     api_field = ""
     if normalised_column in api_fields:
-        in_api = "in_api"
         api_field = normalised_column
-    return in_api, api_field
+    return api_field
 
 
 if __name__ == "__main__":
-    DATASET_NAME = "insecurity-insight-crsv-overview"
+    # DATASET_NAME = "insecurity-insight-crsv"
+    DATASET_NAME = "insecurity-insight-education-incidents"
     STATUS = generate_schema(DATASET_NAME)
     print(STATUS, flush=True)

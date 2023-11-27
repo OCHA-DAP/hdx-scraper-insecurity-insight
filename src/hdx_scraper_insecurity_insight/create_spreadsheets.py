@@ -94,6 +94,7 @@ def generate_spreadsheet_filename(country_filter, attributes, row_template, outp
 
 
 if __name__ == "__main__":
-    DATASET_NAME = "insecurity-insight-crsv-overview"
+    # DATASET_NAME = "insecurity-insight-crsv-overview"
+    DATASET_NAME = "insecurity-insight-education-incidents"
     STATUS = create_spreadsheet(DATASET_NAME)
     print(STATUS, flush=True)
