@@ -36,11 +36,6 @@ with open(
 #     "Aid Workers Kidnapped": "aidworkers_kidnapped",
 #     "Aid Workers Arrested": "aidworkers_arrested",
 #     "SiND Event ID": "event_id",
-#     "Type of Education Facility": "Type of education facility",
-#     "Military Occupation of Education facility": "Military Occupation of Schools",
-#     "Arson Attack on Education Facility": "",
-#     "Forced Entry into Education Facility": "Forced Entry into Schools",
-#     "Damage/Destruction To Education Facility": "Damage/Destruction To School Event",
 # }
 
 EXPECTED_COUNTRY_LIST = [
@@ -172,7 +167,6 @@ def find_corresponding_api_field(dataset_name: str, api_fields: list, column: st
 
 
 if __name__ == "__main__":
-    # DATASET_NAME = "insecurity-insight-crsv-incidents"
-    DATASET_NAME = "insecurity-insight-education-overview"
+    DATASET_NAME = "insecurity-insight-explosive-incidents"
     STATUS = generate_schema(DATASET_NAME)
     print(STATUS, flush=True)
