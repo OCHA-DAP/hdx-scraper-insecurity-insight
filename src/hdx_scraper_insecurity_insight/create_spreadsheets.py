@@ -46,7 +46,7 @@ def create_spreadsheet(
             continue
         output_row = row_template.copy()
         for key, value in row_template.items():
-            output_row[key] = api_row[value]
+            output_row[key] = api_row.get(value, "")
         output_rows.append(output_row)
 
     output_dataframe = pandas.DataFrame.from_dict(output_rows)
@@ -95,6 +95,6 @@ def generate_spreadsheet_filename(country_filter, attributes, row_template, outp
 
 if __name__ == "__main__":
     # DATASET_NAME = "insecurity-insight-crsv-overview"
-    DATASET_NAME = "insecurity-insight-education-incidents"
+    DATASET_NAME = "insecurity-insight-education-overview"
     STATUS = create_spreadsheet(DATASET_NAME)
     print(STATUS, flush=True)

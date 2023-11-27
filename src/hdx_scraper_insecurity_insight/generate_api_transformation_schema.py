@@ -161,7 +161,10 @@ def find_corresponding_api_field(dataset_name: str, api_fields: list, column: st
     # normalised_column = FIELD_MAPPINGS.get(
     #     column[0], column[0].lower().replace(" ", "_")
     # )
-    normalised_column = FIELD_MAPPINGS[dataset_name].get(column[0], column[0])
+    if dataset_name in FIELD_MAPPINGS:
+        normalised_column = FIELD_MAPPINGS[dataset_name].get(column[0], column[0])
+    else:
+        normalised_column = column[0]
     api_field = ""
     if normalised_column in api_fields:
         api_field = normalised_column
@@ -170,6 +173,6 @@ def find_corresponding_api_field(dataset_name: str, api_fields: list, column: st
 
 if __name__ == "__main__":
     # DATASET_NAME = "insecurity-insight-crsv"
-    DATASET_NAME = "insecurity-insight-education-incidents"
+    DATASET_NAME = "insecurity-insight-education-overview"
     STATUS = generate_schema(DATASET_NAME)
     print(STATUS, flush=True)
