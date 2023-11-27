@@ -49,8 +49,8 @@ def create_datasets_in_hdx(dataset_name: str):
         resource_list.append(resource)
 
     dataset.add_update_resources(resource_list)
-    # print(dataset, flush=True)
-    # dataset.create_in_hdx()
+    print(dataset, flush=True)
+    dataset.create_in_hdx()
 
 
 def create_or_fetch_base_dataset(dataset_name, dataset_attributes):
@@ -129,5 +129,6 @@ def get_date_and_country_ranges_from_resources(resource_names: list[str], use_sa
 
 
 if __name__ == "__main__":
-    DATASET_NAME = "insecurity-insight-crsv-dataset"
+    # DATASET_NAME = "insecurity-insight-crsv-dataset"
+    DATASET_NAME = "insecurity-insight-education-dataset"
     create_datasets_in_hdx(DATASET_NAME)
