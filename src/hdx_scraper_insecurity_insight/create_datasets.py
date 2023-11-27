@@ -116,8 +116,8 @@ def get_date_and_country_ranges_from_resources(resource_names: list[str], use_sa
             dates.append(row[date_field])
             countries.append(row["Country ISO"].lower())
 
-    start_date = min(dates)
-    end_date = max(dates)
+    start_date = min(dates).replace("Z", "")
+    end_date = max(dates).replace("Z", "")
 
     dataset_date = f"[{start_date} TO {end_date}]"
     LOGGER.info(f"Dataset_date: {dataset_date}")
@@ -130,5 +130,5 @@ def get_date_and_country_ranges_from_resources(resource_names: list[str], use_sa
 
 if __name__ == "__main__":
     # DATASET_NAME = "insecurity-insight-crsv-dataset"
-    DATASET_NAME = "insecurity-insight-education-dataset"
+    DATASET_NAME = "insecurity-insight-explosive-dataset"
     create_datasets_in_hdx(DATASET_NAME)

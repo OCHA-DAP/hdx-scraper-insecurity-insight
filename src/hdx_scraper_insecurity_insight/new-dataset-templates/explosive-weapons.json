@@ -1,0 +1,36 @@
+{
+    "name": "insecurity-insight-explosive-dataset",
+    "title": "Explosive Weapons Data by Insecurity Insight",
+    "caveats": "Not representative or a comprehensive compilation of all incidents in which aid access, education and healthcare services were impacted by explosive weapons use since 2020. ",
+    "private": false,
+    "notes": "This dataset contains agency- and open source events in which aid access, education and healthcare services were impacted by explosive weapons.  Categorized by country. Insecurity Insight collaborates with the International Network on Explosive Weapons (INEW) in producing research and analysis on the harm and use of explosive weapons for the Explosive Weapons Monitor by documenting their effects on health care, education, and aid access. \r\n\r\nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org",
+    "dataset_source": "Insecurity Insight",
+    "dataset_date": "[2020-01-01T00:00:00 TO 2023-10-17T23:59:59]",
+    "data_update_frequency": "30",
+    "groups": [
+        {
+            "name": "afg"
+        },
+        {
+            "name": "world"
+        }
+    ],
+    "isopen": true,
+    "license_id": "cc-by",
+    "maintainer": "972627a5-4f23-4922-8892-371ece6531b6",
+    "methodology": "Other",
+    "methodology_other": "Systematically collected from open source, public reports as well as verified submissions from our partner agencies.",
+    "owner_org": "hdx",
+    "subnational": 1,
+    "tags": [
+        {
+            "name": "hxl"
+        },
+        {
+            "name": "conflict-violence"
+        },
+        {
+            "name": "complex emergency-conflict-security"
+        }
+    ]
+}
