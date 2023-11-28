@@ -167,6 +167,6 @@ def find_corresponding_api_field(dataset_name: str, api_fields: list, column: st
 
 
 if __name__ == "__main__":
-    DATASET_NAME = "insecurity-insight-explosive-overview"
+    DATASET_NAME = "insecurity-insight-healthcare-incidents"
     STATUS = generate_schema(DATASET_NAME)
     print(STATUS, flush=True)

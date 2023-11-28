@@ -49,7 +49,6 @@ def create_datasets_in_hdx(dataset_name: str):
         resource_list.append(resource)
 
     dataset.add_update_resources(resource_list)
-    print(dataset, flush=True)
     dataset.create_in_hdx()
 
 
@@ -78,23 +77,40 @@ def create_or_fetch_base_dataset(dataset_name, dataset_attributes):
 def find_resource_filepath(resource_name, attributes):
     # this regex will fail on spreadsheets with an country ISO code in the filename
     # And also single year spreadsheets
-    spreadsheet_regex = (
+    spreadsheet_directory = os.path.join(os.path.dirname(__file__), "output-spreadsheets")
+    file_list = Path(spreadsheet_directory)
+    files = []
+
+    # Finds year range files
+    spreadsheet_regex_range = (
         attributes["filename_template"]
         .replace("{start_year}", "[0-9]{4}")
         .replace("{end_year}", "[0-9]{4}")
         .replace("{country_iso}", "")
     )
-    spreadsheet_directory = os.path.join(os.path.dirname(__file__), "output-spreadsheets")
-    file_list = Path(spreadsheet_directory)
-    files = []
+
     for file_ in file_list.iterdir():
-        matching_files = re.search(spreadsheet_regex, str(file_))
+        matching_files = re.search(spreadsheet_regex_range, str(file_))
         if matching_files is not None:
             files.append(matching_files.group())
 
+    # Finds year range files
+    if len(files) == 0:
+        spreadsheet_regex_single_year = (
+            attributes["filename_template"]
+            .replace("{start_year}", "[0-9]{4}")
+            .replace("-{end_year}", "")
+            .replace("{country_iso}", "")
+        )
+        for file_ in file_list.iterdir():
+            matching_files = re.search(spreadsheet_regex_single_year, str(file_))
+            if matching_files is not None:
+                files.append(matching_files.group())
+
     if len(files) != 1:
         LOGGER.error(
-            f"{len(files)} spreadsheets matching `{spreadsheet_regex}`"
+            f"{len(files)} spreadsheets matching `{spreadsheet_regex_range}` or "
+            f"`{spreadsheet_regex_single_year}` "
             "found in `output-spreadsheets`, 1 was expected"
         )
         raise FileNotFoundError
@@ -114,7 +130,8 @@ def get_date_and_country_ranges_from_resources(resource_names: list[str], use_sa
             date_field = "Year"
         for row in resource_json:
             dates.append(row[date_field])
-            countries.append(row["Country ISO"].lower())
+            if row["Country ISO"] != "":
+                countries.append(row["Country ISO"].lower())
 
     start_date = min(dates).replace("Z", "")
     end_date = max(dates).replace("Z", "")
@@ -130,5 +147,5 @@ def get_date_and_country_ranges_from_resources(resource_names: list[str], use_sa
 
 if __name__ == "__main__":
     # DATASET_NAME = "insecurity-insight-crsv-dataset"
-    DATASET_NAME = "insecurity-insight-explosive-dataset"
+    DATASET_NAME = "insecurity-insight-healthcare-dataset"
     create_datasets_in_hdx(DATASET_NAME)
