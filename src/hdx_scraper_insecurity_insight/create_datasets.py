@@ -147,5 +147,5 @@ def get_date_and_country_ranges_from_resources(resource_names: list[str], use_sa
 
 if __name__ == "__main__":
     # DATASET_NAME = "insecurity-insight-crsv-dataset"
-    DATASET_NAME = "insecurity-insight-healthcare-dataset"
+    DATASET_NAME = "insecurity-insight-protection-dataset"
     create_datasets_in_hdx(DATASET_NAME)
