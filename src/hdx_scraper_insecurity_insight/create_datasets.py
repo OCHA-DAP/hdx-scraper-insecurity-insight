@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+import datetime
 import logging
 import os
 import re
+import sys
+import time
 
 from pathlib import Path
 
@@ -12,15 +15,29 @@ from hdx.api.configuration import Configuration
 from hdx.data.dataset import Dataset
 from hdx.data.resource import Resource
 
-from hdx_scraper_insecurity_insight.utilities import fetch_json, read_attributes
+from hdx_scraper_insecurity_insight.utilities import fetch_json, read_attributes, list_entities
 
 setup_logging()
 LOGGER = logging.getLogger(__name__)
 Configuration.create(hdx_site="stage", user_agent="hdxds_insecurity_insight")
 
 
+def marshall_datasets(dataset_name_pattern: str):
+    if dataset_name_pattern.lower() != "all":
+        create_datasets_in_hdx(dataset_name_pattern)
+
+    dataset_names = list_entities(type="dataset")
+
+    LOGGER.info(f"Attributes file contains {len(dataset_names)} dataset names")
+
+    for dataset_name in dataset_names:
+        create_datasets_in_hdx(dataset_name)
+
+
 def create_datasets_in_hdx(dataset_name: str):
     LOGGER.info(f"Creating/updating `{dataset_name}`")
+    t0 = time.time()
+    LOGGER.info(f"Processing started at {datetime.datetime.now().isoformat()}")
     dataset_attributes = read_attributes(dataset_name)
 
     dataset = create_or_fetch_base_dataset(dataset_name, dataset_attributes)
@@ -50,6 +67,8 @@ def create_datasets_in_hdx(dataset_name: str):
 
     dataset.add_update_resources(resource_list)
     dataset.create_in_hdx()
+    LOGGER.info(f"Processing finished at {datetime.datetime.now().isoformat()}")
+    LOGGER.info(f"Elapsed time: {time.time() - t0: 0.2f} seconds")
 
 
 def create_or_fetch_base_dataset(dataset_name, dataset_attributes):
@@ -146,6 +165,8 @@ def get_date_and_country_ranges_from_resources(resource_names: list[str], use_sa
 
 
 if __name__ == "__main__":
-    # DATASET_NAME = "insecurity-insight-crsv-dataset"
-    DATASET_NAME = "insecurity-insight-aidworkerKIKA-dataset"
-    create_datasets_in_hdx(DATASET_NAME)
+    DATASET_NAME = "all"
+    if len(sys.argv) == 2:
+        DATASET_NAME = sys.argv[1]
+
+    marshall_datasets(DATASET_NAME)

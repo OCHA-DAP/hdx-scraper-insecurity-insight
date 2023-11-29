@@ -16,6 +16,7 @@ from urllib3 import request
 from urllib3.util import Retry
 
 SCHEMA_FILEPATH = os.path.join(os.path.dirname(__file__), "metadata", "schema.csv")
+ATTRIBUTES_FILEPATH = os.path.join(os.path.dirname(__file__), "metadata", "attributes.csv")
 
 
 def fetch_json(dataset_name: str, use_sample: bool = False):
@@ -49,9 +50,7 @@ def fetch_json_from_samples(dataset_name: str) -> list[dict]:
 
 
 def read_attributes(dataset_name: str) -> dict:
-    with open(
-        os.path.join(os.path.dirname(__file__), "metadata", "attributes.csv"), "r", encoding="UTF-8"
-    ) as attributes_filehandle:
+    with open(ATTRIBUTES_FILEPATH, "r", encoding="UTF-8") as attributes_filehandle:
         attribute_rows = csv.DictReader(attributes_filehandle)
 
         attributes = {}
@@ -67,6 +66,17 @@ def read_attributes(dataset_name: str) -> dict:
                 attributes[row["attribute"]] = row["value"]
 
     return attributes
+
+
+def list_entities(type_: str = "dataset") -> list[str]:
+    entity_list = []
+    with open(ATTRIBUTES_FILEPATH, "r", encoding="UTF-8") as attributes_filehandle:
+        attribute_rows = csv.DictReader(attributes_filehandle)
+        for row in attribute_rows:
+            if row["attribute"] == "entity_type" and row["value"] == type_:
+                entity_list.append(row["dataset_name"])
+
+    return entity_list
 
 
 def read_schema(dataset_name: str) -> dict:

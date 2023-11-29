@@ -7,6 +7,7 @@ from hdx_scraper_insecurity_insight.utilities import (
     read_attributes,
     fetch_json_from_samples,
     fetch_json_from_api,
+    list_entities,
 )
 
 
@@ -52,3 +53,23 @@ def test_fetching_json():
     api_response = fetch_json_from_api(dataset_name)
 
     assert samples_response[0].keys() == api_response[0].keys()
+
+
+def test_entity_list_datasets():
+    dataset_list = list_entities()
+    print(dataset_list, flush=True)
+
+    assert dataset_list == [
+        "insecurity-insight-crsv-dataset",
+        "insecurity-insight-education-dataset",
+        "insecurity-insight-explosive-dataset",
+        "insecurity-insight-healthcare-dataset",
+        "insecurity-insight-protection-dataset",
+        "insecurity-insight-aidworkerKIKA-dataset",
+    ]
+
+
+def test_entity_list_resourcess():
+    resource_list = list_entities(type_="resource")
+
+    assert len(resource_list) == 9
