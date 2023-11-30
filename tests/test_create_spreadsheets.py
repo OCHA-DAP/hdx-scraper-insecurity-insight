@@ -6,6 +6,7 @@ from hdx_scraper_insecurity_insight.create_spreadsheets import (
     date_range_from_json,
     filter_json_rows,
     transform_input_rows,
+    create_spreadsheet,
 )
 
 from hdx_scraper_insecurity_insight.utilities import (
@@ -16,6 +17,13 @@ from hdx_scraper_insecurity_insight.utilities import (
 
 DATASET_NAME = "insecurity-insight-crsv-incidents"
 SAMPLE_RESPONSE = fetch_json_from_samples(DATASET_NAME)
+
+
+def test_create_spreadsheet():
+    # Really an integration test
+    status = create_spreadsheet(DATASET_NAME)
+
+    assert "2020-2023-conflict-related-sexual-violence-incident-data.xlsx" in status
 
 
 def test_date_range_from_json():
