@@ -8,15 +8,25 @@ Ian Hopkinson 2023-11-18
 
 import csv
 import datetime
+import logging
 import os
+import sys
 
 import pandas as pd
+
+from hdx.utilities.easy_logging import setup_logging
+from hdx.api.configuration import Configuration
 
 from hdx_scraper_insecurity_insight.utilities import (
     read_attributes,
     write_schema,
     fetch_json_from_samples,
+    list_entities,
 )
+
+setup_logging()
+LOGGER = logging.getLogger(__name__)
+Configuration.create(hdx_site="stage", user_agent="hdxds_insecurity_insight")
 
 FIELD_MAPPINGS = {}
 
@@ -80,12 +90,29 @@ SCHEMA_TEMPLATE = {
 }
 
 
-def generate_schema(dataset_name: str) -> str:
+def marshall_datasets(dataset_name_pattern: str):
     print("*********************************************", flush=True)
     print("* Insecurity Insight - Generate schema.csv  *", flush=True)
     print(f"* Invoked at: {datetime.datetime.now().isoformat(): <23} *", flush=True)
     print("*********************************************", flush=True)
-    print(f"Processing dataset: {dataset_name}\n", flush=True)
+    print(f"Processing dataset: {dataset_name_pattern}\n", flush=True)
+    status_list = []
+    if dataset_name_pattern.lower() != "all":
+        status = generate_schema(dataset_name_pattern)
+        status_list.append(status)
+    else:
+        dataset_names = list_entities(type_="resource")
+
+        LOGGER.info(f"Attributes file contains {len(dataset_names)} resource names")
+
+        for dataset_name in dataset_names:
+            status = generate_schema(dataset_name)
+            status_list.append(status)
+
+    return status_list
+
+
+def generate_schema(dataset_name: str) -> str:
     attributes = read_attributes(dataset_name)
 
     # Get relevant cached API response
@@ -137,7 +164,15 @@ def generate_schema(dataset_name: str) -> str:
 
         output_rows.append(output_row)
 
-    status = write_schema(dataset_name, output_rows)
+    file_status = write_schema(dataset_name, output_rows)
+    print(file_status, flush=True)
+    n_hxl_tags = len([x for x in hxl_tags if x != ""])
+    status = {
+        "dataset_name": dataset_name,
+        "n_api_fields": len(api_fields),
+        "n_spreadsheet_fields": len(column_names),
+        "n_hxl_tags": n_hxl_tags,
+    }
     return status
 
 
@@ -167,6 +202,17 @@ def find_corresponding_api_field(dataset_name: str, api_fields: list, column: st
 
 
 if __name__ == "__main__":
-    DATASET_NAME = "insecurity-insight-aidworkerKIKA-overview"
-    STATUS = generate_schema(DATASET_NAME)
-    print(STATUS, flush=True)
+    DATASET_NAME = "all"
+    if len(sys.argv) == 2:
+        DATASET_NAME = sys.argv[1]
+    STATUS_LIST = marshall_datasets(DATASET_NAME)
+    print(
+        f"{'dataset_name':<50},{'n_api_fields':<20},{'n_spreadsheet_fields':<30},{'n_hxl_tags':<20}"
+    )
+    for STATUS in STATUS_LIST:
+        print(
+            f"{STATUS['dataset_name']:<50},"
+            f"{STATUS['n_api_fields']:<20},"
+            f"{STATUS['n_spreadsheet_fields']:<30},"
+            f"{STATUS['n_hxl_tags']:<20}"
+        )
