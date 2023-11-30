@@ -25,13 +25,13 @@ Configuration.create(hdx_site="stage", user_agent="hdxds_insecurity_insight")
 def marshall_datasets(dataset_name_pattern: str):
     if dataset_name_pattern.lower() != "all":
         create_datasets_in_hdx(dataset_name_pattern)
+    else:
+        dataset_names = list_entities(type_="dataset")
 
-    dataset_names = list_entities(type="dataset")
+        LOGGER.info(f"Attributes file contains {len(dataset_names)} dataset names")
 
-    LOGGER.info(f"Attributes file contains {len(dataset_names)} dataset names")
-
-    for dataset_name in dataset_names:
-        create_datasets_in_hdx(dataset_name)
+        for dataset_name in dataset_names:
+            create_datasets_in_hdx(dataset_name)
 
 
 def create_datasets_in_hdx(dataset_name: str):
