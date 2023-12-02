@@ -5,7 +5,7 @@
 This code is for exploring what data from Insecurity Insight is available in HDX
 Ian Hopkinson 2023-11-18
 """
-import os
+# import os
 import logging
 
 from hdx.utilities.easy_logging import setup_logging
@@ -14,7 +14,7 @@ from hdx.data.dataset import Dataset
 from hdx.data.organization import Organization
 
 setup_logging()
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 Configuration.create(hdx_site="prod", user_agent="hdxds_insecurity_insight", hdx_read_only=True)
 
@@ -51,11 +51,11 @@ def create_insecurity_insight_resource_list():
         for resource in resources_dict[entry[1]]:
             print(f"\t{resource}", flush=True)
 
-    logger.info(f"Number of datasets: {n_datasets}")
-    logger.info(f"Number of resources: {n_resources}")
+    LOGGER.info(f"Number of datasets: {n_datasets}")
+    LOGGER.info(f"Number of resources: {n_resources}")
 
     return n_datasets, n_resources
 
 
 if __name__ == "__main__":
-    n_datasets, n_resources = create_insecurity_insight_resource_list()
+    N_DATASETS, N_RESOURCES = create_insecurity_insight_resource_list()
