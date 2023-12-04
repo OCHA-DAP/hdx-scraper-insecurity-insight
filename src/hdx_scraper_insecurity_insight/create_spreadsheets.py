@@ -129,13 +129,17 @@ def transform_input_rows(row_template: dict, filtered_rows: list[dict]) -> list[
 def filter_json_rows(country_filter: str, year_filter: str, api_response: list[dict]) -> list[dict]:
     filtered_rows = []
     date_field = "Date"
+    iso_country_field = "Country ISO"
+    if iso_country_field not in api_response[0].keys():
+        iso_country_field = "country_iso"
     if date_field not in api_response[0].keys():
         date_field = "Year"
+
     for api_row in api_response:
         if (
             country_filter is not None
             and len(country_filter) != 0
-            and api_row["Country ISO"] != country_filter
+            and api_row[iso_country_field] != country_filter
         ):
             continue
         if (
