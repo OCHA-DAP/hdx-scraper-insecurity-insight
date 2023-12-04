@@ -9,6 +9,7 @@ Ian Hopkinson 2023-11.20
 import csv
 import json
 import os
+import sys
 
 from typing import Any
 
@@ -137,3 +138,16 @@ def _make_write_dictionary_status(append: bool, filepath: str, newfile: bool) ->
     else:
         status = f"New file {filepath} is being created"
     return status
+
+
+def parse_commandline_arguments() -> (str, str):
+    dataset_name = "insecurity-insight-aidworkerKIKA-overview"
+    country_code = ""
+    if len(sys.argv) == 2:
+        dataset_name = sys.argv[1]
+        country_code = ""
+    elif len(sys.argv) == 3:
+        dataset_name = sys.argv[1]
+        country_code = sys.argv[2]
+
+    return dataset_name, country_code

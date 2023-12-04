@@ -6,33 +6,75 @@ This code generates an Excel file from the API response
 """
 
 import datetime
+import logging
 import os
+import time
 
 import pandas
 from pandas.io.formats import excel
+
+from hdx.utilities.easy_logging import setup_logging
 
 from hdx_scraper_insecurity_insight.utilities import (
     read_schema,
     read_attributes,
     fetch_json_from_samples,
+    list_entities,
+    parse_commandline_arguments,
 )
+
+setup_logging()
+LOGGER = logging.getLogger(__name__)
+
+OUTPUT_DIRECTORY = os.path.join(os.path.dirname(__file__), "output-spreadsheets")
+
+
+def marshall_spreadsheets(dataset_name_pattern: str, country_pattern: str) -> list[str]:
+    LOGGER.info("*********************************************")
+    LOGGER.info("* Insecurity Insight - Create spreadsheet   *")
+    LOGGER.info(f"* Invoked at: {datetime.datetime.now().isoformat(): <23}    *")
+    LOGGER.info("*********************************************")
+    LOGGER.info(f"Dataset name: {dataset_name_pattern}")
+    LOGGER.info(f"Country filter: {country_pattern}")
+    LOGGER.info(f"Output directory: {OUTPUT_DIRECTORY}")
+    status_list = []
+
+    t0 = time.time()
+    if dataset_name_pattern.lower() != "all":
+        status = create_spreadsheet(dataset_name_pattern)
+        status_list.append(status)
+    else:
+        dataset_names = list_entities(type_="resource")
+
+        LOGGER.info(f"Attributes file contains {len(dataset_names)} resource names")
+
+        for dataset_name in dataset_names:
+            status = create_spreadsheet(dataset_name, country_pattern)
+            status_list.append(status)
+
+    LOGGER.info("\n")
+    LOGGER.info("Processing complete")
+    LOGGER.info(f"Processing took {time.time() - t0:0.2f} seconds")
+    return status_list
 
 
 def create_spreadsheet(
-    dataset_name: str, country_filter: str = None, year_filter: str = None
+    dataset_name: str,
+    country_filter: str = None,
+    year_filter: str = None,
+    api_response: list[dict] = None,
 ) -> str:
+    LOGGER.info("\n")
+    LOGGER.info(f"Processing {dataset_name}")
     output_rows = []
-    print("*********************************************", flush=True)
-    print("* Insecurity Insight - Create spreadsheet   *", flush=True)
-    print(f"* Invoked at: {datetime.datetime.now().isoformat(): <23}    *", flush=True)
-    print("*********************************************", flush=True)
-    print(f"Dataset name: {dataset_name}", flush=True)
-    print(f"Country filter: {country_filter}", flush=True)
-    print(f"Year filter: {year_filter}", flush=True)
 
     attributes = read_attributes(dataset_name)
 
-    api_response = fetch_json_from_samples(dataset_name)
+    if api_response is None:
+        LOGGER.info("Using api_response sample, not live API")
+        api_response = fetch_json_from_samples(dataset_name)
+    else:
+        LOGGER.info("Using live API")
 
     # Fetch API to Spreadsheet lookup
     hdx_row, row_template = read_schema(dataset_name)
@@ -41,11 +83,19 @@ def create_spreadsheet(
 
     filtered_rows = filter_json_rows(country_filter, year_filter, api_response)
 
+    if len(filtered_rows) == 0:
+        status = (
+            f"API reponse for `{dataset_name}` with country_filter {country_filter} "
+            "contained no data"
+        )
+        LOGGER.info(status)
+        return status
+
     output_rows.extend(transform_input_rows(row_template, filtered_rows))
 
     output_dataframe = pandas.DataFrame.from_dict(output_rows)
 
-    print(output_dataframe, flush=True)
+    # print(output_dataframe, flush=True)
 
     # Generate filename
     filename = generate_spreadsheet_filename(country_filter, attributes, filtered_rows)
@@ -53,13 +103,15 @@ def create_spreadsheet(
     # We can make the output an Excel table:
     # https://stackoverflow.com/questions/58326392/how-to-create-excel-table-with-pandas-to-excel
     excel.ExcelFormatter.header_style = None
-    output_filepath = os.path.join(os.path.dirname(__file__), "output-spreadsheets", filename)
+
+    output_filepath = os.path.join(OUTPUT_DIRECTORY, filename)
     output_dataframe.to_excel(
         output_filepath,
         index=False,
     )
 
-    status = f"\nWrote spreadsheet with filepath {output_filepath}"
+    status = f"Output filename `{filename}`"
+    LOGGER.info(status)
     return status
 
 
@@ -126,6 +178,5 @@ def date_range_from_json(json_response: list[dict]) -> (str, str):
 
 
 if __name__ == "__main__":
-    DATASET_NAME = "insecurity-insight-aidworkerKIKA-overview"
-    STATUS = create_spreadsheet(DATASET_NAME)
-    print(STATUS, flush=True)
+    DATASET_NAME, COUNTRY_CODE = parse_commandline_arguments()
+    STATUS_LIST = marshall_spreadsheets(DATASET_NAME, COUNTRY_CODE)
