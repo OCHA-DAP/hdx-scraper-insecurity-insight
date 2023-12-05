@@ -15,16 +15,21 @@ from hdx.api.configuration import Configuration
 from hdx.data.dataset import Dataset
 from hdx.data.resource import Resource
 
-from hdx_scraper_insecurity_insight.utilities import fetch_json, read_attributes, list_entities
+from hdx_scraper_insecurity_insight.utilities import (
+    fetch_json,
+    read_attributes,
+    list_entities,
+    parse_commandline_arguments,
+)
 
 setup_logging()
 LOGGER = logging.getLogger(__name__)
 Configuration.create(hdx_site="stage", user_agent="hdxds_insecurity_insight")
 
 
-def marshall_datasets(dataset_name_pattern: str):
+def marshall_datasets(dataset_name_pattern: str, country_pattern: str):
     if dataset_name_pattern.lower() != "all":
-        create_datasets_in_hdx(dataset_name_pattern)
+        create_datasets_in_hdx(dataset_name_pattern, country_pattern)
     else:
         dataset_names = list_entities(type_="dataset")
 
@@ -34,7 +39,7 @@ def marshall_datasets(dataset_name_pattern: str):
             create_datasets_in_hdx(dataset_name)
 
 
-def create_datasets_in_hdx(dataset_name: str):
+def create_datasets_in_hdx(dataset_name: str, country_filter: str = ""):
     LOGGER.info(f"Creating/updating `{dataset_name}`")
     t0 = time.time()
     LOGGER.info(f"Processing started at {datetime.datetime.now().isoformat()}")
@@ -165,8 +170,5 @@ def get_date_and_country_ranges_from_resources(resource_names: list[str], use_sa
 
 
 if __name__ == "__main__":
-    DATASET_NAME = "all"
-    if len(sys.argv) == 2:
-        DATASET_NAME = sys.argv[1]
-
-    marshall_datasets(DATASET_NAME)
+    DATASET_NAME, COUNTRY_CODE = parse_commandline_arguments()
+    marshall_datasets(DATASET_NAME, COUNTRY_CODE)

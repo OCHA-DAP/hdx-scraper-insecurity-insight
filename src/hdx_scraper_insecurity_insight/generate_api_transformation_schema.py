@@ -106,6 +106,7 @@ def marshall_datasets(dataset_name_pattern: str):
         LOGGER.info(f"Attributes file contains {len(dataset_names)} resource names")
 
         for dataset_name in dataset_names:
+            LOGGER.info(f"Processing {dataset_names}")
             status = generate_schema(dataset_name)
             status_list.append(status)
 

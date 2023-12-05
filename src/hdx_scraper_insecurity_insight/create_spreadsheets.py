@@ -19,6 +19,7 @@ from hdx_scraper_insecurity_insight.utilities import (
     read_schema,
     read_attributes,
     fetch_json_from_samples,
+    filter_json_rows,
     list_entities,
     parse_commandline_arguments,
 )
@@ -124,33 +125,6 @@ def transform_input_rows(row_template: dict, filtered_rows: list[dict]) -> list[
         transformed_rows.append(transformed_row)
 
     return transformed_rows
-
-
-def filter_json_rows(country_filter: str, year_filter: str, api_response: list[dict]) -> list[dict]:
-    filtered_rows = []
-    date_field = "Date"
-    iso_country_field = "Country ISO"
-    if iso_country_field not in api_response[0].keys():
-        iso_country_field = "country_iso"
-    if date_field not in api_response[0].keys():
-        date_field = "Year"
-
-    for api_row in api_response:
-        if (
-            country_filter is not None
-            and len(country_filter) != 0
-            and api_row[iso_country_field] != country_filter
-        ):
-            continue
-        if (
-            year_filter is not None
-            and len(year_filter) != 0
-            and api_row[date_field][0:4] != year_filter
-        ):
-            continue
-        filtered_rows.append(api_row)
-
-    return filtered_rows
 
 
 def generate_spreadsheet_filename(

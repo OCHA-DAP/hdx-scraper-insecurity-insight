@@ -4,7 +4,6 @@
 from hdx_scraper_insecurity_insight.create_spreadsheets import (
     generate_spreadsheet_filename,
     date_range_from_json,
-    filter_json_rows,
     transform_input_rows,
     create_spreadsheet,
 )
@@ -13,6 +12,7 @@ from hdx_scraper_insecurity_insight.utilities import (
     fetch_json_from_samples,
     read_attributes,
     read_schema,
+    filter_json_rows,
 )
 
 DATASET_NAME = "insecurity-insight-crsv-incidents"
@@ -65,9 +65,3 @@ def test_transform_input_rows():
 
     assert "Admin 1" in output_rows[0].keys()
     assert "Admin 1" in filtered_rows[0].keys()
-
-
-def test_filter_json_rows():
-    filtered_response = filter_json_rows("NGA", "2021", SAMPLE_RESPONSE)
-
-    assert len(filtered_response) == 15
