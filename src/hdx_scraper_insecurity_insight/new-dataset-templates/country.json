@@ -1,6 +1,6 @@
 {
     "name": "insecurity-insight-country-dataset",
-    "title": "State of Palestine (PSE): Attacks on Aid Operations, Explosive Weapons Incident Data, Health and Protection",
+    "title": "country: Attacks on Aid Operations, Explosive Weapons Incident Data, Health and Protection",
     "private": false,
     "caveats": "The incidents reported are not a complete nor a representative list of all incidents and have not been independently verified.",
     "notes": "These datasets contain information on violent and threatening incidents affecting aid operations; aid access, and health care services impacted by explosive weapons; the provision of health care, and IDP and Refugee camps. Also included are datasets cited in the Safeguarding Health in Conflict Coalition (SHCC)'s annual reports.\r\n\r\nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org",
@@ -36,7 +36,7 @@
             "name": "hxl"
         },
         {
-            "name": "indicators",
+            "name": "indicators"
         }
     ]
 }

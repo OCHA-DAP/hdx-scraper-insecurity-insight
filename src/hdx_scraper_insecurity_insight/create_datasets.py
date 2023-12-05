@@ -20,6 +20,7 @@ from hdx_scraper_insecurity_insight.utilities import (
     read_attributes,
     list_entities,
     parse_commandline_arguments,
+    filter_json_rows,
 )
 
 setup_logging()
@@ -47,9 +48,16 @@ def create_datasets_in_hdx(dataset_name: str, country_filter: str = ""):
 
     dataset = create_or_fetch_base_dataset(dataset_name, dataset_attributes)
 
+    # Modify name and title if a country page
+    if country_filter is not None and country_filter != "":
+        dataset["name"] = dataset["name"].replace("country", country_filter.lower())
+        dataset["title"] = dataset["title"].replace("country", country_filter)
+
     resource_names = dataset_attributes["resource"]
-    # THis is a bit nasty since it reads the API for every resource in a dataset
-    dataset_date, countries_group = get_date_and_country_ranges_from_resources(resource_names)
+    # This is a bit nasty since it reads the API for every resource in a dataset
+    dataset_date, countries_group = get_date_and_country_ranges_from_resources(
+        resource_names, country_filter=country_filter
+    )
 
     dataset["dataset_date"] = dataset_date
     dataset["groups"] = countries_group
@@ -58,8 +66,12 @@ def create_datasets_in_hdx(dataset_name: str, country_filter: str = ""):
 
     for resource_name in resource_names:
         attributes = read_attributes(resource_name)
-        resource_filepath = find_resource_filepath(resource_name, attributes)
+        resource_filepath = find_resource_filepath(
+            resource_name, attributes, country_filter=country_filter
+        )
 
+        if resource_filepath is None:
+            continue
         resource = Resource(
             {
                 "name": os.path.basename(resource_filepath),
@@ -98,7 +110,7 @@ def create_or_fetch_base_dataset(dataset_name, dataset_attributes):
     return dataset
 
 
-def find_resource_filepath(resource_name, attributes):
+def find_resource_filepath(resource_name: list[str], attributes: [], country_filter: str = ""):
     # this regex will fail on spreadsheets with an country ISO code in the filename
     # And also single year spreadsheets
     spreadsheet_directory = os.path.join(os.path.dirname(__file__), "output-spreadsheets")
@@ -106,11 +118,14 @@ def find_resource_filepath(resource_name, attributes):
     files = []
 
     # Finds year range files
+    country_iso = ""
+    if (country_filter is not None) and (len(country_filter) != 0):
+        country_iso = f"-{country_filter}"
     spreadsheet_regex_range = (
         attributes["filename_template"]
         .replace("{start_year}", "[0-9]{4}")
         .replace("{end_year}", "[0-9]{4}")
-        .replace("{country_iso}", "")
+        .replace("{country_iso}", country_iso)
     )
 
     for file_ in file_list.iterdir():
@@ -124,35 +139,45 @@ def find_resource_filepath(resource_name, attributes):
             attributes["filename_template"]
             .replace("{start_year}", "[0-9]{4}")
             .replace("-{end_year}", "")
-            .replace("{country_iso}", "")
+            .replace("{country_iso}", country_filter)
         )
         for file_ in file_list.iterdir():
             matching_files = re.search(spreadsheet_regex_single_year, str(file_))
             if matching_files is not None:
                 files.append(matching_files.group())
 
+    filepath = None
     if len(files) != 1:
-        LOGGER.error(
+        LOGGER.info(
             f"{len(files)} spreadsheets matching `{spreadsheet_regex_range}` or "
             f"`{spreadsheet_regex_single_year}` "
             "found in `output-spreadsheets`, 1 was expected"
         )
-        raise FileNotFoundError
+        # raise FileNotFoundError
+    else:
+        filename = files[0]
+        LOGGER.info(f"`{filename}` found for resource `{resource_name}`")
+        filepath = os.path.join(spreadsheet_directory, filename)
+    return filepath
 
-    filename = files[0]
-    LOGGER.info(f"`{filename}` found for resource `{resource_name}`")
-    return os.path.join(spreadsheet_directory, filename)
 
-
-def get_date_and_country_ranges_from_resources(resource_names: list[str], use_sample=False):
+def get_date_and_country_ranges_from_resources(
+    resource_names: list[str], country_filter: str = "", use_sample=False
+):
     dates = []
     countries = []
+    LOGGER.info(f"Scanning {len(resource_names)} resources for date and country ranges")
     for resource_dataset_name in resource_names:
+        LOGGER.info(f"Processing {resource_dataset_name}")
         resource_json = fetch_json(resource_dataset_name, use_sample=use_sample)
+        filtered_json = filter_json_rows(country_filter, "", resource_json)
+        if len(filtered_json) == 0:
+            LOGGER.info("No date in filtered API response, continuing")
+            continue
         date_field = "Date"
-        if date_field not in resource_json[0].keys():
+        if date_field not in filtered_json[0].keys():
             date_field = "Year"
-        for row in resource_json:
+        for row in filtered_json:
             dates.append(row[date_field])
             if row["Country ISO"] != "":
                 countries.append(row["Country ISO"].lower())
