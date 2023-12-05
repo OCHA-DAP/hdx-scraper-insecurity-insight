@@ -5,7 +5,6 @@ import datetime
 import logging
 import os
 import re
-import sys
 import time
 
 from pathlib import Path
@@ -14,7 +13,7 @@ from hdx.utilities.easy_logging import setup_logging
 from hdx.api.configuration import Configuration
 from hdx.data.dataset import Dataset
 from hdx.data.resource import Resource
-
+from hdx.location.country import Country
 from hdx_scraper_insecurity_insight.utilities import (
     fetch_json,
     read_attributes,
@@ -41,18 +40,24 @@ def marshall_datasets(dataset_name_pattern: str, country_pattern: str):
 
 
 def create_datasets_in_hdx(dataset_name: str, country_filter: str = ""):
-    LOGGER.info(f"Creating/updating `{dataset_name}`")
+    LOGGER.info("*********************************************")
+    LOGGER.info("* Insecurity Insight - Create dataset   *")
+    LOGGER.info(f"* Invoked at: {datetime.datetime.now().isoformat(): <23}    *")
+    LOGGER.info("*********************************************")
+    LOGGER.info(f"Dataset name: {dataset_name}")
+    LOGGER.info(f"Country filter: {country_filter}")
     t0 = time.time()
-    LOGGER.info(f"Processing started at {datetime.datetime.now().isoformat()}")
     dataset_attributes = read_attributes(dataset_name)
 
     dataset = create_or_fetch_base_dataset(dataset_name, dataset_attributes)
 
     # Modify name and title if a country page
     if country_filter is not None and country_filter != "":
+        country_name = Country.get_country_name_from_iso3(country_filter)
         dataset["name"] = dataset["name"].replace("country", country_filter.lower())
-        dataset["title"] = dataset["title"].replace("country", country_filter)
+        dataset["title"] = dataset["title"].replace("country", f"{country_name}({country_filter})")
 
+    LOGGER.info(f"Dataset title: {dataset['title']}")
     resource_names = dataset_attributes["resource"]
     # This is a bit nasty since it reads the API for every resource in a dataset
     dataset_date, countries_group = get_date_and_country_ranges_from_resources(
