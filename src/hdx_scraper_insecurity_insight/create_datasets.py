@@ -20,6 +20,7 @@ from hdx_scraper_insecurity_insight.utilities import (
     list_entities,
     parse_commandline_arguments,
     filter_json_rows,
+    pick_date_and_iso_country_fields,
 )
 
 setup_logging()
@@ -176,16 +177,12 @@ def get_date_and_country_ranges_from_resources(
         LOGGER.info(f"Processing {resource_dataset_name}")
         resource_json = fetch_json(resource_dataset_name, use_sample=use_sample)
         filtered_json = filter_json_rows(country_filter, "", resource_json)
-        if len(filtered_json) == 0:
-            LOGGER.info("No date in filtered API response, continuing")
-            continue
-        date_field = "Date"
-        if date_field not in filtered_json[0].keys():
-            date_field = "Year"
+        date_field, iso_country_field = pick_date_and_iso_country_fields(filtered_json[0])
+
         for row in filtered_json:
             dates.append(row[date_field])
-            if row["Country ISO"] != "":
-                countries.append(row["Country ISO"].lower())
+            if row[iso_country_field] != "":
+                countries.append(row[iso_country_field].lower())
 
     start_date = min(dates).replace("Z", "")
     end_date = max(dates).replace("Z", "")

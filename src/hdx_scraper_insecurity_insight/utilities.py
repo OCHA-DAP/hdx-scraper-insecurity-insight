@@ -52,12 +52,8 @@ def fetch_json_from_samples(dataset_name: str) -> list[dict]:
 
 def filter_json_rows(country_filter: str, year_filter: str, api_response: list[dict]) -> list[dict]:
     filtered_rows = []
-    date_field = "Date"
-    iso_country_field = "Country ISO"
-    if iso_country_field not in api_response[0].keys():
-        iso_country_field = "country_iso"
-    if date_field not in api_response[0].keys():
-        date_field = "Year"
+
+    date_field, iso_country_field = pick_date_and_iso_country_fields(api_response[0])
 
     for api_row in api_response:
         if (
@@ -178,3 +174,17 @@ def parse_commandline_arguments() -> (str, str):
         country_code = sys.argv[2]
 
     return dataset_name, country_code
+
+
+def pick_date_and_iso_country_fields(row_dictionary):
+    iso_country_field = "Country ISO"
+    if iso_country_field not in row_dictionary.keys():
+        iso_country_field = "country_iso"
+
+    date_field = "Date"
+    for date_field_option in ["Date", "Year", "date"]:
+        if date_field_option in row_dictionary:
+            date_field = date_field_option
+            break
+
+    return date_field, iso_country_field

@@ -22,6 +22,7 @@ from hdx_scraper_insecurity_insight.utilities import (
     filter_json_rows,
     list_entities,
     parse_commandline_arguments,
+    pick_date_and_iso_country_fields,
 )
 
 setup_logging()
@@ -145,9 +146,7 @@ def generate_spreadsheet_filename(
 
 
 def date_range_from_json(json_response: list[dict]) -> (str, str):
-    date_field = "Date"
-    if date_field not in json_response[0]:
-        date_field = "Year"
+    date_field, _ = pick_date_and_iso_country_fields(json_response[0])
 
     # The tail command ensures the HDX tag line is skipped
     start_year = min([x[date_field] for x in json_response])[0:4]
