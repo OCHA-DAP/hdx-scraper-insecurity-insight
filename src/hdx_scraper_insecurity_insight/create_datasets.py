@@ -25,7 +25,11 @@ from hdx_scraper_insecurity_insight.utilities import (
 
 setup_logging()
 LOGGER = logging.getLogger(__name__)
-Configuration.create(hdx_site="stage", user_agent="hdxds_insecurity_insight")
+# Configuration.create(
+#     hdx_site="stage", user_agent="hdxds_insecurity_insight", hdx_key=os.getenv("HDX_KEY")
+# )
+
+Configuration.read()
 
 
 def marshall_datasets(dataset_name_pattern: str, country_pattern: str):

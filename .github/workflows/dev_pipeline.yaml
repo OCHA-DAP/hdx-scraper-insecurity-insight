@@ -28,5 +28,8 @@ jobs:
       - name: Running unit tests
         env:
             HDX_KEY: ${{ secrets.HDX_KEY }}
+            HDX_SITE: ${{ secrets.HDX_SITE }}
+            USER_AGENT: ${{ secrets.USER_AGENT }}
+            PREPREFIX: ${{ secrets.PREPREFIX }}
         run: |
           make unit_tests
