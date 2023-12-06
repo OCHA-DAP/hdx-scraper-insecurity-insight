@@ -3,7 +3,6 @@
 
 import datetime
 import logging
-import sys
 
 from hdx.utilities.easy_logging import setup_logging
 
