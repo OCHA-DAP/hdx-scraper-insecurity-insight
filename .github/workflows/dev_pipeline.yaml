@@ -26,5 +26,7 @@ jobs:
         run: |
           make lint
       - name: Running unit tests
+        env:
+            HDX_KEY: ${{ secrets.HDX_KEY }}
         run: |
           make unit_tests
