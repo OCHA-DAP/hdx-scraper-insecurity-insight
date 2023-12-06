@@ -29,7 +29,7 @@ LOGGER = logging.getLogger(__name__)
 #     hdx_site="stage", user_agent="hdxds_insecurity_insight", hdx_key=os.getenv("HDX_KEY")
 # )
 
-Configuration.read()
+Configuration.create()
 
 
 def marshall_datasets(dataset_name_pattern: str, country_pattern: str):
