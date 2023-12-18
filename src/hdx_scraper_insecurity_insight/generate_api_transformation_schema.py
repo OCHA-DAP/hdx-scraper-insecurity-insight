@@ -21,6 +21,7 @@ from hdx_scraper_insecurity_insight.utilities import (
     read_attributes,
     write_schema,
     fetch_json_from_samples,
+    fetch_json_from_api,
     list_entities,
 )
 
@@ -147,11 +148,16 @@ def generate_schema(dataset_name: str) -> str:
 
     timestamp = datetime.datetime.now().isoformat()
 
+    print(f"\nEntries for the '{dataset_name}' endpoint", flush=True)
     print(f"{ '':<2}   {'Spreadsheet column':<50},{'HXL tag':<50}, {'api_field':<30}", flush=True)
     for i, column in enumerate(columns):
+        if column[0].endswith(".1"):
+            print(f"Column {column} is a duplicate", flush=True)
+        # if i not in [50, 58]:
+        #     continue
         api_field = find_corresponding_api_field(dataset_name, api_fields, column)
 
-        print(f"{i:<2}.  {column[0]:<50},{column[1]:<50}, {api_field:<30}", flush=True)
+        print(f"{i:<2}.  {column[0]:<50.50},{column[1]:<50.50}, {api_field:<30.30}", flush=True)
         output_row = SCHEMA_TEMPLATE.copy()
         output_row["dataset_name"] = dataset_name
         output_row["timestamp"] = timestamp
@@ -200,6 +206,55 @@ def find_corresponding_api_field(dataset_name: str, api_fields: list, column: st
     if normalised_column in api_fields:
         api_field = normalised_column
     return api_field
+
+
+def check_api_has_not_changed() -> (bool, list[str]):
+    LOGGER.info("***************************************")
+    LOGGER.info("* Insecurity Insight - Pipeline run   *")
+    LOGGER.info(f"* Invoked at: {datetime.datetime.now().isoformat(): <23}*")
+    LOGGER.info("*********************************************")
+
+    dataset_names = list_entities(type_="resource")
+
+    LOGGER.info(f"Found {len(dataset_names)} endpoints")
+
+    api_changed = False
+    changed_list = []
+    for dataset_name in dataset_names:
+        attributes = read_attributes(dataset_name)
+        LOGGER.info("\n")
+        LOGGER.info(f"Processing {dataset_name}")
+        LOGGER.info(f"API endpoint: {attributes['api_url']}")
+        LOGGER.info(f"API sample: {attributes['api_response_filename']}")
+
+        samples_response = fetch_json_from_samples(dataset_name)
+        api_response = fetch_json_from_api(dataset_name)
+
+        sample_keys = samples_response[0].keys()
+        api_keys = api_response[0].keys()
+        LOGGER.info(f"Number of API records: {len(api_response)}")
+        LOGGER.info(f"Number of sample keys: {len(samples_response)}")
+        if sample_keys == api_keys:
+            LOGGER.info(f"API response matches sample for {dataset_name}")
+        else:
+            changed_list.append(dataset_name)
+            LOGGER.info(f"**MISMATCH between API and sample for {dataset_name}")
+            LOGGER.info(f"Number of API endpoint record keys: {len(api_keys)}")
+            LOGGER.info(f"Number of sample record keys: {len(sample_keys)}")
+            LOGGER.info(f"API keys: {api_keys}")
+            LOGGER.info(f"Sample keys: {sample_keys}")
+            show_response_overlap(api_keys, sample_keys)
+            api_changed = True
+
+    return api_changed, changed_list
+
+
+def show_response_overlap(api_keys: list[dict], sample_keys: list[dict]):
+    LOGGER.info("Keys in API data but not in sample")
+    LOGGER.info(set(api_keys).difference(set(sample_keys)))
+
+    LOGGER.info("Keys in sample but not in API data")
+    LOGGER.info(set(sample_keys).difference(api_keys))
 
 
 if __name__ == "__main__":

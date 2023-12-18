@@ -1,8 +1,7 @@
 dataset_name,timestamp,upstream,field_name
-insecurity-insight-education-incidents,2023-11-27T06:50:05.008110,Type of education facility,Type of Education Facility
-insecurity-insight-education-incidents,2023-11-27T06:50:05.008110,Military Occupation of Schools,Military Occupation of Education facility
-insecurity-insight-education-incidents,2023-11-27T06:50:05.008110,Forced Entry into Schools,Forced Entry into Education Facility
-insecurity-insight-education-incidents,2023-11-27T06:50:05.008110,Damage/Destruction To School Event,Damage/Destruction To Education Facility
-insecurity-insight-explosive-incidents,2023-11-27T10:34:13.309498,Aid sector,Sector Affected
-insecurity-insight-explosive-incidents,2023-11-27T10:34:13.309498,Aid provider category,Provider
-insecurity-insight-explosive-incidents,2023-11-27T10:34:13.309498,Explosive weapons as we want them,Explosive Weapon Type
+insecurity-insight-healthcare-incidents,2023-12-18T09:09:03.041399,"Health Transportation Stolen/Hijacked","Health Transportation Stolen/Highjacked"
+insecurity-insight-healthcare-incidents,2023-12-18T09:09:03.041399,"Health Workers Killed","Health Workers Killed.1"
+insecurity-insight-healthcare-incidents,2023-12-18T09:09:03.041399,"Health Workers Injured","Health Workers Injured.1"
+insecurity-insight-healthcare-incidents,2023-12-18T09:09:03.041399,"Health Workers Kidnapped","Health Workers Kidnapped.1"
+insecurity-insight-healthcare-incidents,2023-12-18T09:09:03.041399,"Health Workers Arrested","Health Workers Arrested.1"
+insecurity-insight-healthcare-incidents,2023-12-18T09:09:03.041399,"National Health Worker Working for Unspecified Health Provider ","National Health Worker Working for Unspecified Health Provider "

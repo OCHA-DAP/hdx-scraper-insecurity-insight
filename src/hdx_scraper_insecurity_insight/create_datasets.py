@@ -124,8 +124,6 @@ def create_or_fetch_base_dataset(dataset_name, dataset_attributes):
 
 
 def find_resource_filepath(resource_name: list[str], attributes: [], country_filter: str = ""):
-    # this regex will fail on spreadsheets with an country ISO code in the filename
-    # And also single year spreadsheets
     spreadsheet_directory = os.path.join(os.path.dirname(__file__), "output-spreadsheets")
     file_list = Path(spreadsheet_directory)
     files = []
@@ -146,7 +144,7 @@ def find_resource_filepath(resource_name: list[str], attributes: [], country_fil
         if matching_files is not None:
             files.append(matching_files.group())
 
-    # Finds year range files
+    # Finds single year range files
     if len(files) == 0:
         spreadsheet_regex_single_year = (
             attributes["filename_template"]
