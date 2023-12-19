@@ -10,7 +10,7 @@ import time
 from pathlib import Path
 
 from hdx.utilities.easy_logging import setup_logging
-from hdx.api.configuration import Configuration
+from hdx.api.configuration import Configuration, ConfigurationError
 from hdx.data.dataset import Dataset
 from hdx.data.resource import Resource
 from hdx.location.country import Country
@@ -21,6 +21,7 @@ from hdx_scraper_insecurity_insight.utilities import (
     parse_commandline_arguments,
     filter_json_rows,
     pick_date_and_iso_country_fields,
+    print_banner_to_log,
 )
 
 setup_logging()
@@ -29,10 +30,13 @@ LOGGER = logging.getLogger(__name__)
 #     hdx_site="stage", user_agent="hdxds_insecurity_insight", hdx_key=os.getenv("HDX_KEY")
 # )
 
-Configuration.create(
-    user_agent_config_yaml=os.path.join(os.path.expanduser("~"), ".useragents.yaml"),
-    user_agent_lookup="hdx-scraper-insecurity-insight",
-)
+try:
+    Configuration.create(
+        user_agent_config_yaml=os.path.join(os.path.expanduser("~"), ".useragents.yaml"),
+        user_agent_lookup="hdx-scraper-insecurity-insight",
+    )
+except ConfigurationError:
+    LOGGER.info("Configuration already exists when trying to create in `create_datasets.py`")
 
 
 def marshall_datasets(dataset_name_pattern: str, country_pattern: str):
@@ -48,16 +52,13 @@ def marshall_datasets(dataset_name_pattern: str, country_pattern: str):
 
 
 def create_datasets_in_hdx(dataset_name: str, country_filter: str = ""):
-    LOGGER.info("*********************************************")
-    LOGGER.info("* Insecurity Insight - Create dataset   *")
-    LOGGER.info(f"* Invoked at: {datetime.datetime.now().isoformat(): <23}    *")
-    LOGGER.info("*********************************************")
+    print_banner_to_log(LOGGER, "Create dataset")
     LOGGER.info(f"Dataset name: {dataset_name}")
     LOGGER.info(f"Country filter: {country_filter}")
     t0 = time.time()
     dataset_attributes = read_attributes(dataset_name)
 
-    dataset = create_or_fetch_base_dataset(dataset_name, dataset_attributes)
+    dataset = create_or_fetch_base_dataset(dataset_name)
 
     # Modify name and title if a country page
     if country_filter is not None and country_filter != "":
@@ -101,17 +102,16 @@ def create_datasets_in_hdx(dataset_name: str, country_filter: str = ""):
     LOGGER.info(f"Elapsed time: {time.time() - t0: 0.2f} seconds")
 
 
-def create_or_fetch_base_dataset(dataset_name, dataset_attributes):
+def create_or_fetch_base_dataset(dataset_name: str) -> dict:
+    dataset_attributes = read_attributes(dataset_name)
     dataset = Dataset.read_from_hdx(dataset_name)
     if dataset is not None:
-        LOGGER.info(f"Dataset already exists in hdx_site: `{Configuration.read().hdx_site}`")
-        LOGGER.info("Updating")
+        LOGGER.info(f"Fetching `{dataset_name}` from hdx_site: `{Configuration.read().hdx_site}`")
     else:
         LOGGER.info(
-            f"`{dataset_name}` does not exist in hdx_site: `{Configuration.read().hdx_site}`"
-        )
-        LOGGER.info(
-            f"Using {dataset_attributes['dataset_template']} as a template for a new dataset"
+            f"Using `{dataset_attributes['dataset_template']}` "
+            f"as a template for a new {dataset_name} "
+            f"(not in hdx_site: `{Configuration.read().hdx_site}`)"
         )
         dataset_template_filepath = os.path.join(
             os.path.dirname(__file__),

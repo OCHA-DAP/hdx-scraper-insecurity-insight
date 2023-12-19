@@ -15,7 +15,7 @@ import sys
 import pandas as pd
 
 from hdx.utilities.easy_logging import setup_logging
-from hdx.api.configuration import Configuration
+from hdx.api.configuration import Configuration, ConfigurationError
 
 from hdx_scraper_insecurity_insight.utilities import (
     read_attributes,
@@ -23,11 +23,18 @@ from hdx_scraper_insecurity_insight.utilities import (
     fetch_json_from_samples,
     fetch_json_from_api,
     list_entities,
+    print_banner_to_log,
 )
 
 setup_logging()
 LOGGER = logging.getLogger(__name__)
-Configuration.create(hdx_site="stage", user_agent="hdxds_insecurity_insight")
+try:
+    Configuration.create(
+        user_agent_config_yaml=os.path.join(os.path.expanduser("~"), ".useragents.yaml"),
+        user_agent_lookup="hdx-scraper-insecurity-insight",
+    )
+except ConfigurationError:
+    LOGGER.info("Configuration already exists when trying to create in `create_datasets.py`")
 
 FIELD_MAPPINGS = {}
 
@@ -208,11 +215,8 @@ def find_corresponding_api_field(dataset_name: str, api_fields: list, column: st
     return api_field
 
 
-def check_api_has_not_changed() -> (bool, list[str]):
-    LOGGER.info("***************************************")
-    LOGGER.info("* Insecurity Insight - Pipeline run   *")
-    LOGGER.info(f"* Invoked at: {datetime.datetime.now().isoformat(): <23}*")
-    LOGGER.info("*********************************************")
+def compare_api_to_samples(api_cache: list[str]) -> (bool, list[str]):
+    print_banner_to_log(LOGGER, "Compare API")
 
     dataset_names = list_entities(type_="resource")
 
@@ -222,27 +226,27 @@ def check_api_has_not_changed() -> (bool, list[str]):
     changed_list = []
     for dataset_name in dataset_names:
         attributes = read_attributes(dataset_name)
-        LOGGER.info("\n")
-        LOGGER.info(f"Processing {dataset_name}")
-        LOGGER.info(f"API endpoint: {attributes['api_url']}")
-        LOGGER.info(f"API sample: {attributes['api_response_filename']}")
 
         samples_response = fetch_json_from_samples(dataset_name)
-        api_response = fetch_json_from_api(dataset_name)
+        api_response = api_cache[dataset_name]
 
         sample_keys = samples_response[0].keys()
         api_keys = api_response[0].keys()
-        LOGGER.info(f"Number of API records: {len(api_response)}")
-        LOGGER.info(f"Number of sample keys: {len(samples_response)}")
+
         if sample_keys == api_keys:
             LOGGER.info(f"API response matches sample for {dataset_name}")
         else:
             changed_list.append(dataset_name)
             LOGGER.info(f"**MISMATCH between API and sample for {dataset_name}")
+            LOGGER.info(f"API endpoint: {attributes['api_url']}")
+            LOGGER.info(f"API sample: {attributes['api_response_filename']}")
+            LOGGER.info(f"Number of API records: {len(api_response)}")
+            LOGGER.info(f"Number of sample records: {len(samples_response)}")
             LOGGER.info(f"Number of API endpoint record keys: {len(api_keys)}")
             LOGGER.info(f"Number of sample record keys: {len(sample_keys)}")
             LOGGER.info(f"API keys: {api_keys}")
             LOGGER.info(f"Sample keys: {sample_keys}")
+
             show_response_overlap(api_keys, sample_keys)
             api_changed = True
 

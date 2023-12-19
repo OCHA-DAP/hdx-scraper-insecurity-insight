@@ -7,7 +7,9 @@ Ian Hopkinson 2023-11.20
 """
 
 import csv
+import datetime
 import json
+import logging
 import os
 import sys
 
@@ -188,3 +190,13 @@ def pick_date_and_iso_country_fields(row_dictionary):
             break
 
     return date_field, iso_country_field
+
+
+def print_banner_to_log(logger: logging.Logger, name: str):
+    title = f"Insecurity Insight - {name}"
+    timestamp = f"Invoked at: {datetime.datetime.now().isoformat()}"
+    width = max(len(title), len(timestamp))
+    logger.info((width + 4) * "*")
+    logger.info(f"* {title:<{width}} *")
+    logger.info(f"* {timestamp} *")
+    logger.info((width + 4) * "*")
