@@ -17,7 +17,10 @@ from hdx_scraper_insecurity_insight.utilities import (
     fetch_json_from_samples,
 )
 
-from hdx_scraper_insecurity_insight.create_datasets import create_or_fetch_base_dataset
+from hdx_scraper_insecurity_insight.create_datasets import (
+    create_or_fetch_base_dataset,
+    get_date_range_from_api_response,
+)
 
 setup_logging()
 LOGGER = logging.getLogger(__name__)
@@ -56,15 +59,43 @@ def check_api_has_not_changed():
     assert not has_changed, "!!One or more of the Insecurity Insight endpoints has changed format"
 
 
-def decide_which_resources_have_fresh_data():
+def decide_which_resources_have_fresh_data() -> list[str]:
     dataset_list = list_entities(type_="dataset")
 
     dataset_recency = {}
 
     for dataset in dataset_list:
         dataset_update_date = update_date_from_string(DATASET_CACHE[dataset]["dataset_date"])
-        LOGGER.info(f"{dataset} last updated {dataset_update_date}")
         dataset_recency[dataset] = dataset_update_date
+
+    resource_list = list_entities(type_="resource")
+
+    resource_recency = {}
+    for resource in resource_list:
+        if not resource.endswith("-incidents"):
+            continue
+        _, end_date = get_date_range_from_api_response(API_CACHE[resource])
+        end_date = update_date_from_string(end_date)
+        resource_recency[resource] = end_date
+
+    items_to_update = []
+    LOGGER.info(f"{'item':<15} {'API Date':<10} {'Dataset Date':<8}")
+    for item in ["crsv", "education", "explosive", "healthcare", "protection", "aidworkerKIKA"]:
+        resource_key = f"insecurity-insight-{item}-incidents"
+        dataset_key = f"insecurity-insight-{item}-dataset"
+        update_str = ""
+        if resource_recency[resource_key] > dataset_recency[dataset_key]:
+            update_str = "*"
+            items_to_update.append(item)
+
+        LOGGER.info(
+            f"{item:<15} "
+            f"{resource_recency[resource_key]} "
+            f"{dataset_recency[dataset_key]}"
+            f"{update_str}"
+        )
+
+    return items_to_update
 
 
 def update_date_from_string(date_str: str) -> list[str]:

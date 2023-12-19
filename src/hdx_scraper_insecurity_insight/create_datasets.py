@@ -201,6 +201,20 @@ def get_date_and_country_ranges_from_resources(
     return dataset_date, countries_group
 
 
+def get_date_range_from_api_response(api_response: list[dict]) -> (str, str):
+    dates = []
+
+    date_field, _ = pick_date_and_iso_country_fields(api_response[0])
+
+    for row in api_response:
+        dates.append(row[date_field])
+
+    start_date = min(dates).replace("Z", "")
+    end_date = max(dates).replace("Z", "")
+
+    return start_date, end_date
+
+
 if __name__ == "__main__":
     DATASET_NAME, COUNTRY_CODE = parse_commandline_arguments()
     marshall_datasets(DATASET_NAME, COUNTRY_CODE)
