@@ -51,7 +51,13 @@ def marshall_datasets(dataset_name_pattern: str, country_pattern: str):
             create_datasets_in_hdx(dataset_name)
 
 
-def create_datasets_in_hdx(dataset_name: str, country_filter: str = ""):
+def create_datasets_in_hdx(
+    dataset_name: str,
+    country_filter: str = "",
+    dry_run: bool = False,
+    dataset_date: str = None,
+    countries_group: list[str] = None,
+):
     print_banner_to_log(LOGGER, "Create dataset")
     LOGGER.info(f"Dataset name: {dataset_name}")
     LOGGER.info(f"Country filter: {country_filter}")
@@ -69,9 +75,10 @@ def create_datasets_in_hdx(dataset_name: str, country_filter: str = ""):
     LOGGER.info(f"Dataset title: {dataset['title']}")
     resource_names = dataset_attributes["resource"]
     # This is a bit nasty since it reads the API for every resource in a dataset
-    dataset_date, countries_group = get_date_and_country_ranges_from_resources(
-        resource_names, country_filter=country_filter
-    )
+    if dataset_date is None or countries_group is None:
+        dataset_date, countries_group = get_date_and_country_ranges_from_resources(
+            resource_names, country_filter=country_filter
+        )
 
     dataset["dataset_date"] = dataset_date
     dataset["groups"] = countries_group
@@ -97,7 +104,11 @@ def create_datasets_in_hdx(dataset_name: str, country_filter: str = ""):
         resource_list.append(resource)
 
     dataset.add_update_resources(resource_list)
-    dataset.create_in_hdx()
+    if not dry_run:
+        LOGGER.info("Dry_run flag not set so no data written to HDX")
+        dataset.create_in_hdx()
+    else:
+        LOGGER.info("Dry_run flag set so no data written to HDX")
     LOGGER.info(f"Processing finished at {datetime.datetime.now().isoformat()}")
     LOGGER.info(f"Elapsed time: {time.time() - t0: 0.2f} seconds")
 
@@ -145,6 +156,7 @@ def find_resource_filepath(resource_name: list[str], attributes: [], country_fil
             files.append(matching_files.group())
 
     # Finds single year range files
+    spreadsheet_regex_single_year = ""
     if len(files) == 0:
         spreadsheet_regex_single_year = (
             attributes["filename_template"]
@@ -213,6 +225,21 @@ def get_date_range_from_api_response(api_response: list[dict]) -> (str, str):
     end_date = max(dates).replace("Z", "")
 
     return start_date, end_date
+
+
+def get_countries_group_from_api_response(api_response: list[dict]) -> list[dict]:
+    countries = []
+
+    _, iso_country_field = pick_date_and_iso_country_fields(api_response[0])
+
+    for row in api_response:
+        if row[iso_country_field] != "":
+            countries.append(row[iso_country_field].lower())
+
+    # Possibly we want to run a counter here to work out the significant countries in the dataset
+    countries_group = [{"name": x} for x in set(countries)]
+    LOGGER.info(f"Data from {len(countries_group)} countries found")
+    return countries_group
 
 
 if __name__ == "__main__":

@@ -21,6 +21,8 @@ from hdx_scraper_insecurity_insight.utilities import (
 from hdx_scraper_insecurity_insight.create_datasets import (
     create_or_fetch_base_dataset,
     get_date_range_from_api_response,
+    get_countries_group_from_api_response,
+    create_datasets_in_hdx,
 )
 
 from hdx_scraper_insecurity_insight.create_spreadsheets import create_spreadsheet
@@ -70,14 +72,15 @@ def check_api_has_not_changed():
 
 def decide_which_resources_have_fresh_data() -> list[str]:
     print_banner_to_log(LOGGER, "Identify updates")
+
+    # Dates from dataset records
     dataset_list = list_entities(type_="dataset")
-
     dataset_recency = {}
-
     for dataset in dataset_list:
         dataset_update_date = update_date_from_string(DATASET_CACHE[dataset]["dataset_date"])
         dataset_recency[dataset] = dataset_update_date
 
+    # Dates from resources
     resource_list = list_entities(type_="resource")
 
     resource_recency = {}
@@ -88,6 +91,7 @@ def decide_which_resources_have_fresh_data() -> list[str]:
         end_date = update_date_from_string(end_date)
         resource_recency[resource] = end_date
 
+    # Compare
     items_to_update = []
     LOGGER.info(f"{'item':<15} {'API Date':<10} {'Dataset Date':<8}")
     for item in ["crsv", "education", "explosive", "healthcare", "protection", "aidworkerKIKA"]:
@@ -96,7 +100,9 @@ def decide_which_resources_have_fresh_data() -> list[str]:
         update_str = ""
         if resource_recency[resource_key] > dataset_recency[dataset_key]:
             update_str = "*"
-            items_to_update.append(item)
+            items_to_update.append(
+                (item, resource_recency[resource_key], dataset_recency[dataset_key])
+            )
 
         LOGGER.info(
             f"{item:<15} "
@@ -128,7 +134,7 @@ def refresh_spreadsheets_with_fresh_data(items_to_update: list[str]):
 
     for item in items_to_update:
         for resource in resources:
-            if item in resource:
+            if item[0] in resource:
                 LOGGER.info("**Really we should be generating many country files**")
                 create_spreadsheet(resource, api_response=API_CACHE[resource])
 
@@ -138,6 +144,22 @@ def update_datasets_whose_resources_have_changed(items_to_update: list[str]):
     if len(items_to_update) == 0:
         LOGGER.info("No datasets need to be updated")
         return
+
+    datasets = list_entities(type_="dataset")
+    for item in items_to_update:
+        for dataset_name in datasets:
+            if item[0] in dataset_name:
+                LOGGER.info("**Not handling country datasets**")
+                countries_group = get_countries_group_from_api_response(
+                    API_CACHE[f"insecurity-insight-{item[0]}-incidents"]
+                )
+                dataset_date = f"[{item[1]} TO {item[2]}]"
+                create_datasets_in_hdx(
+                    dataset_name,
+                    dataset_date=dataset_date,
+                    countries_group=countries_group,
+                    dry_run=True,
+                )
 
 
 if __name__ == "__main__":
