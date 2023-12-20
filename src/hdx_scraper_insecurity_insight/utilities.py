@@ -198,5 +198,5 @@ def print_banner_to_log(logger: logging.Logger, name: str):
     width = max(len(title), len(timestamp))
     logger.info((width + 4) * "*")
     logger.info(f"* {title:<{width}} *")
-    logger.info(f"* {timestamp} *")
+    logger.info(f"* {timestamp:<{width}} *")
     logger.info((width + 4) * "*")

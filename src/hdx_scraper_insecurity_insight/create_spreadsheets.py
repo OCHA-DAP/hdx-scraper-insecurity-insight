@@ -66,7 +66,6 @@ def create_spreadsheet(
     year_filter: str = None,
     api_response: list[dict] = None,
 ) -> str:
-    LOGGER.info("\n")
     LOGGER.info(f"Processing {dataset_name}")
     output_rows = []
 
@@ -76,7 +75,7 @@ def create_spreadsheet(
         LOGGER.info("Using api_response sample, not live API")
         api_response = fetch_json_from_samples(dataset_name)
     else:
-        LOGGER.info("Using live API")
+        LOGGER.info("Using supplied API response")
 
     # Fetch API to Spreadsheet lookup
     hdx_row, row_template = read_schema(dataset_name)

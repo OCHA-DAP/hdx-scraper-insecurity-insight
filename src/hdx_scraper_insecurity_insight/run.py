@@ -15,12 +15,15 @@ from hdx_scraper_insecurity_insight.utilities import (
     read_attributes,
     fetch_json_from_api,
     fetch_json_from_samples,
+    print_banner_to_log,
 )
 
 from hdx_scraper_insecurity_insight.create_datasets import (
     create_or_fetch_base_dataset,
     get_date_range_from_api_response,
 )
+
+from hdx_scraper_insecurity_insight.create_spreadsheets import create_spreadsheet
 
 setup_logging()
 LOGGER = logging.getLogger(__name__)
@@ -29,8 +32,9 @@ API_CACHE = {}
 DATASET_CACHE = {}
 
 
-def fetch_and_cache_datasets():
-    global API_CACHE, DATASET_CACHE
+def fetch_and_cache_api_responses():
+    global API_CACHE
+    print_banner_to_log(LOGGER, "Populate API cache")
 
     resource_list = list_entities(type_="resource")
     for resource in resource_list:
@@ -38,14 +42,19 @@ def fetch_and_cache_datasets():
         API_CACHE[resource] = fetch_json_from_samples(resource)
 
     LOGGER.info(f"Loaded {len(API_CACHE)} API responses to cache")
+    assert len(API_CACHE) == 11, "Did not find data from expected 11 endpoints"
 
+
+def fetch_and_cache_datasets():
+    global DATASET_CACHE
+    print_banner_to_log(LOGGER, "Populate dataset cache")
     dataset_list = list_entities(type_="dataset")
     for dataset in dataset_list:
         DATASET_CACHE[dataset] = create_or_fetch_base_dataset(dataset)
 
+    # Load country datasets
     LOGGER.info(f"Loaded {len(DATASET_CACHE)} datasets to cache")
 
-    assert len(API_CACHE) == 11, "Did not find data from expected 11 endpoints"
     assert len(DATASET_CACHE) == 7, "Did not find expected 7 datasets"
 
 
@@ -60,6 +69,7 @@ def check_api_has_not_changed():
 
 
 def decide_which_resources_have_fresh_data() -> list[str]:
+    print_banner_to_log(LOGGER, "Identify updates")
     dataset_list = list_entities(type_="dataset")
 
     dataset_recency = {}
@@ -108,15 +118,32 @@ def update_date_from_string(date_str: str) -> list[str]:
     return update_date
 
 
-def refresh_spreadsheets_with_fresh_data():
-    pass
+def refresh_spreadsheets_with_fresh_data(items_to_update: list[str]):
+    print_banner_to_log(LOGGER, "Refresh spreadsheets")
+    if len(items_to_update) == 0:
+        LOGGER.info("No spreadsheets need to be updated")
+        return
+
+    resources = list_entities(type_="resource")
+
+    for item in items_to_update:
+        for resource in resources:
+            if item in resource:
+                LOGGER.info("**Really we should be generating many country files**")
+                create_spreadsheet(resource, api_response=API_CACHE[resource])
 
 
-def update_datasets_whose_resources_have_changed():
-    pass
+def update_datasets_whose_resources_have_changed(items_to_update: list[str]):
+    print_banner_to_log(LOGGER, "Update datasets")
+    if len(items_to_update) == 0:
+        LOGGER.info("No datasets need to be updated")
+        return
 
 
 if __name__ == "__main__":
+    fetch_and_cache_api_responses()
     fetch_and_cache_datasets()
     check_api_has_not_changed()
-    decide_which_resources_have_fresh_data()
+    ITEMS_TO_UPDATE = decide_which_resources_have_fresh_data()
+    refresh_spreadsheets_with_fresh_data(ITEMS_TO_UPDATE)
+    update_datasets_whose_resources_have_changed(ITEMS_TO_UPDATE)
