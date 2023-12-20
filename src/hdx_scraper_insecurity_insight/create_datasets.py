@@ -61,6 +61,8 @@ def create_datasets_in_hdx(
     print_banner_to_log(LOGGER, "Create dataset")
     LOGGER.info(f"Dataset name: {dataset_name}")
     LOGGER.info(f"Country filter: {country_filter}")
+    LOGGER.info(f"Dataset date provided: {dataset_date}")
+    LOGGER.info(f"Length of countries group provided: {len(countries_group)}")
     t0 = time.time()
     dataset_attributes = read_attributes(dataset_name)
 
@@ -221,8 +223,8 @@ def get_date_range_from_api_response(api_response: list[dict]) -> (str, str):
     for row in api_response:
         dates.append(row[date_field])
 
-    start_date = min(dates).replace("Z", "")
-    end_date = max(dates).replace("Z", "")
+    start_date = min(dates).replace("Z", "")[0:10]
+    end_date = max(dates).replace("Z", "")[0:10]
 
     return start_date, end_date
 

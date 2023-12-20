@@ -84,12 +84,14 @@ def decide_which_resources_have_fresh_data() -> list[str]:
     resource_list = list_entities(type_="resource")
 
     resource_recency = {}
+    resource_start_date = {}
     for resource in resource_list:
         if not resource.endswith("-incidents"):
             continue
-        _, end_date = get_date_range_from_api_response(API_CACHE[resource])
+        start_date, end_date = get_date_range_from_api_response(API_CACHE[resource])
         end_date = update_date_from_string(end_date)
         resource_recency[resource] = end_date
+        resource_start_date[resource] = start_date
 
     # Compare
     items_to_update = []
@@ -101,7 +103,7 @@ def decide_which_resources_have_fresh_data() -> list[str]:
         if resource_recency[resource_key] > dataset_recency[dataset_key]:
             update_str = "*"
             items_to_update.append(
-                (item, resource_recency[resource_key], dataset_recency[dataset_key])
+                (item, resource_start_date[resource_key], resource_recency[resource_key])
             )
 
         LOGGER.info(
