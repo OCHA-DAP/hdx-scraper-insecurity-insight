@@ -21,7 +21,7 @@ from hdx_scraper_insecurity_insight.utilities import (
     read_attributes,
     write_schema,
     fetch_json_from_samples,
-    fetch_json_from_api,
+    # fetch_json_from_api,
     list_entities,
     print_banner_to_log,
 )

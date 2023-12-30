@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-import json
+# import json
 import logging
-import os
+
+# import os
 import re
 import time
 
@@ -15,9 +16,9 @@ from hdx_scraper_insecurity_insight.generate_api_transformation_schema import (
 
 from hdx_scraper_insecurity_insight.utilities import (
     list_entities,
-    read_attributes,
+    #    read_attributes,
     fetch_json_from_api,
-    fetch_json_from_samples,
+    #    fetch_json_from_samples,
     print_banner_to_log,
 )
 
