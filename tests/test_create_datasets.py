@@ -24,5 +24,5 @@ def test_get_date_and_country_ranges_from_resources():
         resource_names, use_sample=True
     )
 
-    assert dataset_date == "[2016 TO 2023-12-09]"
-    assert len(countries_group) == 77
+    assert dataset_date == "[2020 TO 2023-12-09]"
+    assert len(countries_group) == 76

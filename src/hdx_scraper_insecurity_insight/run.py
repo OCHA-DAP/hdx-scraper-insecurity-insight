@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+import json
 import logging
+import os
 import re
+import time
 
 from hdx.utilities.easy_logging import setup_logging
 
@@ -40,8 +43,25 @@ def fetch_and_cache_api_responses():
 
     resource_list = list_entities(type_="resource")
     for resource in resource_list:
-        LOGGER.info(f"Fetching data for {resource} from **samples** not API")
-        API_CACHE[resource] = fetch_json_from_samples(resource)
+        t0 = time.time()
+        LOGGER.info(f"Fetching data for {resource} from API")
+        API_CACHE[resource] = fetch_json_from_api(resource)
+
+        # If we want to capture JSON responses to file, do it here
+        # attributes = read_attributes(resource)
+        # with open(
+        #     os.path.join(
+        #         os.path.dirname(__file__),
+        #         "api-samples",
+        #         attributes["api_response_filename"].replace(".json", "-tmp.json"),
+        #     ),
+        #     "w",
+        #     encoding="UTF-8",
+        # ) as json_file_handle:
+        #     json.dump(API_CACHE[resource], json_file_handle)
+        logging.info(
+            f"... took {time.time()-t0:0.0f} seconds for {len(API_CACHE[resource])} records"
+        )
 
     LOGGER.info(f"Loaded {len(API_CACHE)} API responses to cache")
     assert len(API_CACHE) == 11, "Did not find data from expected 11 endpoints"
@@ -65,7 +85,7 @@ def check_api_has_not_changed():
     has_changed, changed_list = compare_api_to_samples(API_CACHE)
     LOGGER.info("\nChanged API endpoints:")
     for dataset_name in changed_list:
-        LOGGER.info(dataset_name, flush=True)
+        LOGGER.info(dataset_name)
 
     assert not has_changed, "!!One or more of the Insecurity Insight endpoints has changed format"
 
