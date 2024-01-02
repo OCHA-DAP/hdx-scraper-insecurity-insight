@@ -114,7 +114,7 @@ def marshall_datasets(dataset_name_pattern: str):
         LOGGER.info(f"Attributes file contains {len(dataset_names)} resource names")
 
         for dataset_name in dataset_names:
-            LOGGER.info(f"Processing {dataset_names}")
+            LOGGER.info(f"Processing {dataset_name}")
             status = generate_schema(dataset_name)
             status_list.append(status)
 
@@ -156,7 +156,7 @@ def generate_schema(dataset_name: str) -> str:
     timestamp = datetime.datetime.now().isoformat()
 
     print(f"\nEntries for the '{dataset_name}' endpoint", flush=True)
-    print(f"{ '':<2}   {'Spreadsheet column':<50},{'HXL tag':<50}, {'api_field':<30}", flush=True)
+    print(f"{ '':<2}   {'Spreadsheet column':<50},{'HXL tag':<50}, {'api_field':<50}", flush=True)
     for i, column in enumerate(columns):
         if column[0].endswith(".1"):
             print(f"Column {column} is a duplicate", flush=True)
@@ -164,7 +164,7 @@ def generate_schema(dataset_name: str) -> str:
         #     continue
         api_field = find_corresponding_api_field(dataset_name, api_fields, column)
 
-        print(f"{i:<2}.  {column[0]:<50.50},{column[1]:<50.50}, {api_field:<30.30}", flush=True)
+        print(f"{i:<2}.  {column[0]:<50.50},{column[1]:<50.50}, {api_field:<50.50}", flush=True)
         output_row = SCHEMA_TEMPLATE.copy()
         output_row["dataset_name"] = dataset_name
         output_row["timestamp"] = timestamp

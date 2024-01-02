@@ -9,6 +9,7 @@ from hdx_scraper_insecurity_insight.utilities import (
     fetch_json_from_api,
     list_entities,
     filter_json_rows,
+    parse_commandline_arguments,
 )
 
 
@@ -83,3 +84,21 @@ def test_entity_list_resourcess():
     resource_list = list_entities(type_="resource")
 
     assert len(resource_list) == 11
+
+
+def test_commandline_argument_handling_two_arg(monkeypatch):
+    monkeypatch.setattr("sys.argv", ["application.name", "test-dataset-name", "afg"])
+
+    dataset_name, country_iso = parse_commandline_arguments()
+
+    assert dataset_name == "test-dataset-name"
+    assert country_iso == "afg"
+
+
+def test_commandline_argument_handling_one_arg(monkeypatch):
+    monkeypatch.setattr("sys.argv", ["application.name", "test-dataset-name"])
+
+    dataset_name, country_iso = parse_commandline_arguments()
+
+    assert dataset_name == "test-dataset-name"
+    assert country_iso == ""

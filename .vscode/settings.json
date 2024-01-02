@@ -10,6 +10,7 @@
   "python.testing.pytestArgs": [
     "--cov=hdx_scraper_insecurity_insight",
     "--cov-config=config/.coveragerc",
+    "--cov-report=xml:cov.xml",
     "tests"
   ],
   "python.testing.unittestEnabled": false,
