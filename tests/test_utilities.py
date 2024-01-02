@@ -1,16 +1,21 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+import logging
 
 from hdx_scraper_insecurity_insight.utilities import (
     read_schema,
     read_attributes,
+    fetch_json,
     fetch_json_from_samples,
     fetch_json_from_api,
     list_entities,
     filter_json_rows,
     parse_commandline_arguments,
+    print_banner_to_log,
 )
+
+LOGGER = logging.getLogger(__name__)
 
 
 def test_read_schema():
@@ -55,6 +60,24 @@ def test_fetching_json():
     api_response = fetch_json_from_api(dataset_name)
 
     assert samples_response[0].keys() == api_response[0].keys()
+
+
+def test_fetch_json_generic():
+    dataset_name = "insecurity-insight-crsv-overview"
+    sample_response = fetch_json(dataset_name, use_sample=True)
+
+    assert list(sample_response[0].keys()) == [
+        "Country",
+        "Year",
+        "Country ISO",
+        "Recorded CRSV Events",
+        "Military or non state actor CRSV events",
+        "Security Personnel Perpetrator Events",
+        "Events Affecting Minors",
+        "Events Affecting Aid Workers",
+        "Events Affecting Health Workers",
+        "Events Affecting Educators",
+    ]
 
 
 def test_filter_json_rows():
@@ -102,3 +125,13 @@ def test_commandline_argument_handling_one_arg(monkeypatch):
 
     assert dataset_name == "test-dataset-name"
     assert country_iso == ""
+
+
+def test_print_banner_to_log(caplog):
+    caplog.set_level(logging.INFO)
+    print_banner_to_log(LOGGER, "test-banner")
+
+    log_rows = caplog.text.split("\n")
+    assert len(log_rows) == 5
+    assert len(log_rows[0]) == len(log_rows[1])
+    assert "test-banner" in caplog.text
