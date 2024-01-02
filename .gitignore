@@ -9,3 +9,5 @@ src/hdx_scraper_insecurity_insight/legacy-dataset-json/
 .coverage
 
 cov.xml
+
+tests/fixtures/test.csv

@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+import csv
 import logging
+import os
 
 from hdx_scraper_insecurity_insight.utilities import (
     read_schema,
@@ -13,6 +15,7 @@ from hdx_scraper_insecurity_insight.utilities import (
     filter_json_rows,
     parse_commandline_arguments,
     print_banner_to_log,
+    write_dictionary,
 )
 
 LOGGER = logging.getLogger(__name__)
@@ -135,3 +138,25 @@ def test_print_banner_to_log(caplog):
     assert len(log_rows) == 5
     assert len(log_rows[0]) == len(log_rows[1])
     assert "test-banner" in caplog.text
+
+
+def test_write_dictionary_to_local_file():
+    temp_file_path = os.path.join(os.path.dirname(__file__), "fixtures", "test.csv")
+    if os.path.isfile(temp_file_path):
+        os.remove(temp_file_path)
+
+    dict_list = [
+        {"a": 1, "b": 2, "c": 3},
+        {"a": 4, "b": 5, "c": 6},
+        {"a": 7, "b": 8, "c": 9},
+    ]
+
+    status = write_dictionary(temp_file_path, dict_list)
+
+    with open(temp_file_path, "r", encoding="utf-8") as file_handle:
+        rows_read = list(csv.DictReader(file_handle))
+
+    assert len(rows_read) == 3
+    assert rows_read[0] == {"a": "1", "b": "2", "c": "3"}
+    assert "New file" in status
+    assert "is being created" in status
