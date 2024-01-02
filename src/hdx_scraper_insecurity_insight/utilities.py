@@ -178,7 +178,7 @@ def parse_commandline_arguments() -> (str, str):
     return dataset_name, country_code
 
 
-def pick_date_and_iso_country_fields(row_dictionary):
+def pick_date_and_iso_country_fields(row_dictionary: dict) -> (str, str):
     iso_country_field = "Country ISO"
     if iso_country_field not in row_dictionary.keys():
         iso_country_field = "country_iso"
@@ -200,3 +200,33 @@ def print_banner_to_log(logger: logging.Logger, name: str):
     logger.info(f"* {title:<{width}} *")
     logger.info(f"* {timestamp:<{width}} *")
     logger.info((width + 4) * "*")
+
+
+def read_field_mappings() -> dict:
+    field_mappings = {}
+    with open(
+        os.path.join(os.path.dirname(__file__), "metadata", "field_mappings.csv"),
+        "r",
+        encoding="UTF-8",
+    ) as field_mappings_filehandle:
+        field_mapping_rows = csv.DictReader(field_mappings_filehandle)
+        for row in field_mapping_rows:
+            if row["dataset_name"] not in field_mappings:
+                field_mappings[row["dataset_name"]] = {}
+            field_mappings[row["dataset_name"]][row["field_name"]] = row["upstream"]
+
+    return field_mappings
+
+
+def read_countries() -> dict:
+    countries = {}
+    with open(
+        os.path.join(os.path.dirname(__file__), "metadata", "countries.csv"),
+        "r",
+        encoding="UTF-8",
+    ) as countries_filehandle:
+        countries_rows = csv.DictReader(countries_filehandle)
+        for row in countries_rows:
+            countries[row["country_iso3"]] = row["legacy_dataset_name"]
+
+    return countries

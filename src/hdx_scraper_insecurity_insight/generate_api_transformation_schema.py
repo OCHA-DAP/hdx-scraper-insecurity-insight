@@ -6,7 +6,6 @@ This code is for establishing field mappings and HXL codes for the existing data
 Ian Hopkinson 2023-11-18
 """
 
-import csv
 import datetime
 import logging
 import os
@@ -24,6 +23,8 @@ from hdx_scraper_insecurity_insight.utilities import (
     # fetch_json_from_api,
     list_entities,
     print_banner_to_log,
+    read_field_mappings,
+    read_countries,
 )
 
 setup_logging()
@@ -36,53 +37,9 @@ try:
 except ConfigurationError:
     LOGGER.info("Configuration already exists when trying to create in `create_datasets.py`")
 
-FIELD_MAPPINGS = {}
+FIELD_MAPPINGS = read_field_mappings()
 
-with open(
-    os.path.join(os.path.dirname(__file__), "metadata", "field_mappings.csv"),
-    "r",
-    encoding="UTF-8",
-) as FIELD_MAPPINGS_FILEHANDLE:
-    FIELD_MAPPING_ROWS = csv.DictReader(FIELD_MAPPINGS_FILEHANDLE)
-    for ROW in FIELD_MAPPING_ROWS:
-        if ROW["dataset_name"] not in FIELD_MAPPINGS:
-            FIELD_MAPPINGS[ROW["dataset_name"]] = {}
-        FIELD_MAPPINGS[ROW["dataset_name"]][ROW["field_name"]] = ROW["upstream"]
-# FIELD_MAPPINGS = {
-#     "Aid Workers Killed": "aidworkers_killed",
-#     "Aid Workers Injured": "aidworkers_injured",
-#     "Aid Workers Kidnapped": "aidworkers_kidnapped",
-#     "Aid Workers Arrested": "aidworkers_arrested",
-#     "SiND Event ID": "event_id",
-# }
-
-EXPECTED_COUNTRY_LIST = [
-    "OPT",
-    "MMR",
-    "SDN",
-    "SYR",
-    "AFG",
-    "BFA",
-    "CMR",
-    "UKR",
-    "SSD",
-    "COD",
-    "ETH",
-    "NGA",
-    "YEM",
-    "MLI",
-    "NER",
-    "IRQ",
-    "LBY",
-    "MOZ",
-    "HTI",
-    "SOM",
-    "CAF",
-    "MEX",
-    "PAK",
-    "IRN",
-    "LBN",
-]
+EXPECTED_COUNTRY_LIST = list(read_countries().keys())
 
 # Datamesh style schema file
 SCHEMA_TEMPLATE = {

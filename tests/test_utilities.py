@@ -6,15 +6,17 @@ import logging
 import os
 
 from hdx_scraper_insecurity_insight.utilities import (
-    read_schema,
-    read_attributes,
     fetch_json,
-    fetch_json_from_samples,
     fetch_json_from_api,
-    list_entities,
+    fetch_json_from_samples,
     filter_json_rows,
+    list_entities,
     parse_commandline_arguments,
     print_banner_to_log,
+    read_attributes,
+    read_countries,
+    read_field_mappings,
+    read_schema,
     write_dictionary,
     write_schema,
 )
@@ -168,3 +170,15 @@ def test_write_schema():
     file_status = write_schema(dataset_name, [])
 
     assert "Schema for insecurity-insight-crsv-incidents already in" in file_status
+
+
+def test_read_field_mappings():
+    field_mappings = read_field_mappings()
+
+    assert len(field_mappings) == 1
+
+
+def test_read_countries():
+    countries = read_countries()
+
+    assert len(countries) == 25
