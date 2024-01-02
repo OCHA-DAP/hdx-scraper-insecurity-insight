@@ -16,6 +16,7 @@ from hdx_scraper_insecurity_insight.utilities import (
     parse_commandline_arguments,
     print_banner_to_log,
     write_dictionary,
+    write_schema,
 )
 
 LOGGER = logging.getLogger(__name__)
@@ -160,3 +161,10 @@ def test_write_dictionary_to_local_file():
     assert rows_read[0] == {"a": "1", "b": "2", "c": "3"}
     assert "New file" in status
     assert "is being created" in status
+
+
+def test_write_schema():
+    dataset_name = "insecurity-insight-crsv-incidents"
+    file_status = write_schema(dataset_name, [])
+
+    assert "Schema for insecurity-insight-crsv-incidents already in" in file_status
