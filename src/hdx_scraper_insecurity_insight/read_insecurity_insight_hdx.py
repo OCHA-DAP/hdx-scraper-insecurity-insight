@@ -5,18 +5,24 @@
 This code is for exploring what data from Insecurity Insight is available in HDX
 Ian Hopkinson 2023-11-18
 """
-# import os
+import os
 import logging
 
 from hdx.utilities.easy_logging import setup_logging
-from hdx.api.configuration import Configuration
+from hdx.api.configuration import Configuration, ConfigurationError
 from hdx.data.dataset import Dataset
 from hdx.data.organization import Organization
 
 setup_logging()
 LOGGER = logging.getLogger(__name__)
 
-Configuration.create(hdx_site="prod", user_agent="hdxds_insecurity_insight", hdx_read_only=True)
+try:
+    Configuration.create(
+        user_agent_config_yaml=os.path.join(os.path.expanduser("~"), ".useragents.yaml"),
+        user_agent_lookup="hdx-scraper-insecurity-insight",
+    )
+except ConfigurationError:
+    LOGGER.info("Configuration already exists when trying to create in `create_datasets.py`")
 
 
 def create_insecurity_insight_resource_list():
