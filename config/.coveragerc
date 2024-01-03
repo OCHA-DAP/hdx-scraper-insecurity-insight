@@ -15,3 +15,4 @@ exclude_also =
     if __name__ == .__main__.:
     if TYPE_CHECKING:
     @(abc\.)?abstractmethod
+    LOGGER.
