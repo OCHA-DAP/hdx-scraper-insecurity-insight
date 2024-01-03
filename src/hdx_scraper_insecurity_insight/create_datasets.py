@@ -73,15 +73,9 @@ def create_datasets_in_hdx(
     dataset_attributes = read_attributes(dataset_name)
 
     if dataset_cache is None:
-        dataset, _ = create_or_fetch_base_dataset(dataset_name)
+        dataset, _ = create_or_fetch_base_dataset(dataset_name, country_filter=country_filter)
     else:
         dataset = dataset_cache[dataset_name]
-
-    # Modify name and title if a country page
-    if country_filter is not None and country_filter != "":
-        country_name = Country.get_country_name_from_iso3(country_filter)
-        dataset["name"] = dataset["name"].replace("country", country_filter.lower())
-        dataset["title"] = dataset["title"].replace("country", f"{country_name}({country_filter})")
 
     LOGGER.info(f"Dataset title: {dataset['title']}")
     resource_names = dataset_attributes["resource"]
@@ -126,9 +120,15 @@ def create_datasets_in_hdx(
     return dataset
 
 
-def create_or_fetch_base_dataset(dataset_name: str, force_create: bool = False) -> (dict, bool):
+def create_or_fetch_base_dataset(
+    dataset_name: str, country_filter: str = "", force_create: bool = False
+) -> (dict, bool):
     is_new = True
     dataset_attributes = read_attributes(dataset_name)
+    if country_filter is not None and country_filter != 0:
+        dataset_name = dataset_name.replace("country", country_filter.lower())
+        print(dataset_name, flush=True)
+
     dataset = Dataset.read_from_hdx(dataset_name)
     if dataset is not None and not force_create:
         is_new = False
@@ -146,6 +146,13 @@ def create_or_fetch_base_dataset(dataset_name: str, force_create: bool = False) 
         )
 
         dataset = Dataset.load_from_json(dataset_template_filepath)
+        if country_filter is not None and country_filter != 0:
+            country_name = Country.get_country_name_from_iso3(country_filter)
+            dataset["name"] = dataset_name
+            dataset["title"] = dataset["title"].replace(
+                "country", f"{country_name}({country_filter})"
+            )
+
     return dataset, is_new
 
 
