@@ -23,6 +23,7 @@ from hdx_scraper_insecurity_insight.utilities import (
     filter_json_rows,
     pick_date_and_iso_country_fields,
     print_banner_to_log,
+    read_countries,
 )
 
 setup_logging()
@@ -38,6 +39,9 @@ try:
     )
 except ConfigurationError:
     LOGGER.info("Configuration already exists when trying to create in `create_datasets.py`")
+
+
+COUNTRIES = read_countries()
 
 
 def marshall_datasets(dataset_name_pattern: str, country_pattern: str):
@@ -250,6 +254,8 @@ def get_legacy_dataset_name(dataset_name: str, country_filter: str = "") -> Opti
     if country_filter is None or country_filter == "":
         attributes = read_attributes(dataset_name)
         legacy_dataset_name = attributes.get("legacy_name", None)
+    else:
+        legacy_dataset_name = COUNTRIES.get(country_filter.upper(), None)
 
     return legacy_dataset_name
 

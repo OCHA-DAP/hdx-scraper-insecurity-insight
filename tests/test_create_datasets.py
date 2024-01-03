@@ -59,3 +59,18 @@ def test_get_legacy_dataset_name_non_country():
     legacy_dataset_name = get_legacy_dataset_name(dataset_name)
 
     assert legacy_dataset_name == "conflict-related-sexual-violence"
+
+
+def test_get_legacy_dataset_name_country():
+    dataset_name = "insecurity-insight-country-dataset"
+    country_filter = "COD"
+    legacy_dataset_name = get_legacy_dataset_name(dataset_name, country_filter=country_filter)
+
+    assert legacy_dataset_name == "attacks-on-ebola-response"
+
+
+def test_get_legacy_dataset_name_country_returns_none():
+    dataset_name = "obviously-fake-name"
+    legacy_dataset_name = get_legacy_dataset_name(dataset_name)
+
+    assert legacy_dataset_name is None
