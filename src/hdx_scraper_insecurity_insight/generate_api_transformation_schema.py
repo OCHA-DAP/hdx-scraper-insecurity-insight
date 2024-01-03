@@ -168,10 +168,11 @@ def find_corresponding_api_field(dataset_name: str, api_fields: list, column: st
     return api_field
 
 
-def compare_api_to_samples(api_cache: list[str]) -> (bool, list[str]):
+def compare_api_to_samples(api_cache: dict[str], dataset_names: list = None) -> (bool, list[str]):
     print_banner_to_log(LOGGER, "Compare API")
 
-    dataset_names = list_entities(type_="resource")
+    if dataset_names is None:
+        dataset_names = list_entities(type_="resource")
 
     LOGGER.info(f"Found {len(dataset_names)} endpoints")
 
@@ -184,7 +185,10 @@ def compare_api_to_samples(api_cache: list[str]) -> (bool, list[str]):
         api_response = api_cache[dataset_name]
 
         sample_keys = samples_response[0].keys()
-        api_keys = api_response[0].keys()
+        if len(api_response) != 0:
+            api_keys = api_response[0].keys()
+        else:
+            api_keys = []
 
         if sample_keys == api_keys:
             LOGGER.info(f"API response matches sample for {dataset_name}")
