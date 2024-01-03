@@ -73,7 +73,7 @@ def fetch_and_cache_datasets():
     print_banner_to_log(LOGGER, "Populate dataset cache")
     dataset_list = list_entities(type_="dataset")
     for dataset in dataset_list:
-        DATASET_CACHE[dataset] = create_or_fetch_base_dataset(dataset)
+        DATASET_CACHE[dataset], is_new = create_or_fetch_base_dataset(dataset)
 
     # Load country datasets
     LOGGER.info(f"Loaded {len(DATASET_CACHE)} datasets to cache")

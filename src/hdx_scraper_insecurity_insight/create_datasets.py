@@ -71,7 +71,7 @@ def create_datasets_in_hdx(
     t0 = time.time()
     dataset_attributes = read_attributes(dataset_name)
 
-    dataset = create_or_fetch_base_dataset(dataset_name)
+    dataset, is_new = create_or_fetch_base_dataset(dataset_name)
 
     # Modify name and title if a country page
     if country_filter is not None and country_filter != "":
@@ -120,10 +120,12 @@ def create_datasets_in_hdx(
     LOGGER.info(f"Elapsed time: {time.time() - t0: 0.2f} seconds")
 
 
-def create_or_fetch_base_dataset(dataset_name: str) -> dict:
+def create_or_fetch_base_dataset(dataset_name: str, force_create: bool = False) -> (dict, bool):
+    is_new = True
     dataset_attributes = read_attributes(dataset_name)
     dataset = Dataset.read_from_hdx(dataset_name)
-    if dataset is not None:
+    if dataset is not None and not force_create:
+        is_new = False
         LOGGER.info(f"Fetching `{dataset_name}` from hdx_site: `{Configuration.read().hdx_site}`")
     else:
         LOGGER.info(
@@ -138,7 +140,7 @@ def create_or_fetch_base_dataset(dataset_name: str) -> dict:
         )
 
         dataset = Dataset.load_from_json(dataset_template_filepath)
-    return dataset
+    return dataset, is_new
 
 
 def find_resource_filepath(

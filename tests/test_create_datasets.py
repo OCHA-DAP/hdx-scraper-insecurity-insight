@@ -9,7 +9,26 @@ from hdx_scraper_insecurity_insight.create_datasets import (
     get_date_range_from_api_response,
     get_countries_group_from_api_response,
     get_legacy_dataset_name,
+    create_or_fetch_base_dataset,
 )
+
+
+def test_create_or_fetch_base_dataset_fetch():
+    dataset_name = "insecurity-insight-healthcare-dataset"
+    dataset, is_new = create_or_fetch_base_dataset(dataset_name)
+
+    assert not is_new
+    assert dataset["name"] == "insecurity-insight-healthcare-dataset"
+    assert len(dataset.keys()) == 52
+
+
+def test_create_or_fetch_base_dataset_create():
+    dataset_name = "insecurity-insight-healthcare-dataset"
+    dataset, is_new = create_or_fetch_base_dataset(dataset_name, force_create=True)
+
+    assert is_new
+    assert dataset["name"] == "insecurity-insight-healthcare-dataset"
+    assert len(dataset.keys()) == 17
 
 
 def test_find_resource_filename():
