@@ -71,7 +71,7 @@ def create_datasets_in_hdx(
     t0 = time.time()
     dataset_attributes = read_attributes(dataset_name)
 
-    dataset, is_new = create_or_fetch_base_dataset(dataset_name)
+    dataset, _ = create_or_fetch_base_dataset(dataset_name)
 
     # Modify name and title if a country page
     if country_filter is not None and country_filter != "":
@@ -118,6 +118,8 @@ def create_datasets_in_hdx(
         LOGGER.info("Dry_run flag set so no data written to HDX")
     LOGGER.info(f"Processing finished at {datetime.datetime.now().isoformat()}")
     LOGGER.info(f"Elapsed time: {time.time() - t0: 0.2f} seconds")
+
+    return dataset
 
 
 def create_or_fetch_base_dataset(dataset_name: str, force_create: bool = False) -> (dict, bool):

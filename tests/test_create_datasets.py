@@ -12,6 +12,7 @@ from hdx_scraper_insecurity_insight.create_datasets import (
     get_countries_group_from_api_response,
     get_legacy_dataset_name,
     create_or_fetch_base_dataset,
+    create_datasets_in_hdx,
 )
 
 
@@ -112,3 +113,54 @@ def test_get_legacy_dataset_name_country_returns_none():
     legacy_dataset_name = get_legacy_dataset_name(dataset_name)
 
     assert legacy_dataset_name is None
+
+
+def test_create_datasets_in_hdx():
+    dataset_name = "insecurity-insight-crsv-dataset"
+    dataset_date = "[2020-01-01T00:00:00 TO 2023-09-30T23:59:59]"
+    countries_group = [
+        {
+            "description": "",
+            "display_name": "Afghanistan",
+            "id": "afg",
+            "image_display_url": "",
+            "name": "afg",
+            "title": "Afghanistan",
+        }
+    ]
+    dataset = create_datasets_in_hdx(
+        dataset_name,
+        dataset_date=dataset_date,
+        countries_group=countries_group,
+        dry_run=True,
+    )
+
+    assert dataset["name"] == "insecurity-insight-crsv-dataset"
+
+
+def test_create_datasets_in_hdx_country():
+    dataset_name = "insecurity-insight-country-dataset"
+    dataset_date = "[2020-01-01T00:00:00 TO 2023-09-30T23:59:59]"
+    countries_group = [
+        {
+            "description": "",
+            "display_name": "Afghanistan",
+            "id": "afg",
+            "image_display_url": "",
+            "name": "afg",
+            "title": "Afghanistan",
+        }
+    ]
+    dataset = create_datasets_in_hdx(
+        dataset_name,
+        country_filter="AFG",
+        dataset_date=dataset_date,
+        countries_group=countries_group,
+        dry_run=True,
+    )
+
+    assert dataset["name"] == "insecurity-insight-afg-dataset"
+    assert (
+        dataset["title"]
+        == "Afghanistan(AFG): Attacks on Aid Operations, Explosive Weapons Incident Data, Health and Protection"
+    )
