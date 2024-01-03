@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-# import json
+import json
 import logging
-
-# import os
+import os
 import re
 import time
 
@@ -16,7 +15,7 @@ from hdx_scraper_insecurity_insight.generate_api_transformation_schema import (
 
 from hdx_scraper_insecurity_insight.utilities import (
     list_entities,
-    #    read_attributes,
+    read_attributes,
     fetch_json_from_api,
     #    fetch_json_from_samples,
     print_banner_to_log,
@@ -34,71 +33,70 @@ from hdx_scraper_insecurity_insight.create_spreadsheets import create_spreadshee
 setup_logging()
 LOGGER = logging.getLogger(__name__)
 
-API_CACHE = {}
-DATASET_CACHE = {}
 
-
-def fetch_and_cache_api_responses():
-    global API_CACHE
+def fetch_and_cache_api_responses(save_response: bool = False) -> dict:
+    api_cache = {}
     print_banner_to_log(LOGGER, "Populate API cache")
 
     resource_list = list_entities(type_="resource")
     for resource in resource_list:
         t0 = time.time()
         LOGGER.info(f"Fetching data for {resource} from API")
-        API_CACHE[resource] = fetch_json_from_api(resource)
+        api_cache[resource] = fetch_json_from_api(resource)
 
-        # If we want to capture JSON responses to file, do it here
-        # attributes = read_attributes(resource)
-        # with open(
-        #     os.path.join(
-        #         os.path.dirname(__file__),
-        #         "api-samples",
-        #         attributes["api_response_filename"].replace(".json", "-tmp.json"),
-        #     ),
-        #     "w",
-        #     encoding="UTF-8",
-        # ) as json_file_handle:
-        #     json.dump(API_CACHE[resource], json_file_handle)
-        logging.info(
-            f"... took {time.time()-t0:0.0f} seconds for {len(API_CACHE[resource])} records"
+        if save_response:
+            attributes = read_attributes(resource)
+            with open(
+                os.path.join(
+                    os.path.dirname(__file__),
+                    "api-samples",
+                    attributes["api_response_filename"].replace(".json", "-tmp.json"),
+                ),
+                "w",
+                encoding="UTF-8",
+            ) as json_file_handle:
+                json.dump(api_cache[resource], json_file_handle)
+        LOGGER.info(
+            f"... took {time.time()-t0:0.0f} seconds for {len(api_cache[resource])} records"
         )
 
-    LOGGER.info(f"Loaded {len(API_CACHE)} API responses to cache")
-    assert len(API_CACHE) == 11, "Did not find data from expected 11 endpoints"
+    LOGGER.info(f"Loaded {len(api_cache)} API responses to cache")
+    assert len(api_cache) == 11, "Did not find data from expected 11 endpoints"
+    return api_cache
 
 
 def fetch_and_cache_datasets():
-    global DATASET_CACHE
+    dataset_cache = {}
     print_banner_to_log(LOGGER, "Populate dataset cache")
     dataset_list = list_entities(type_="dataset")
     for dataset in dataset_list:
-        DATASET_CACHE[dataset], is_new = create_or_fetch_base_dataset(dataset)
+        dataset_cache[dataset], _ = create_or_fetch_base_dataset(dataset)
 
     # Load country datasets
-    LOGGER.info(f"Loaded {len(DATASET_CACHE)} datasets to cache")
+    LOGGER.info(f"Loaded {len(dataset_cache)} datasets to cache")
 
-    assert len(DATASET_CACHE) == 7, "Did not find expected 7 datasets"
+    assert len(dataset_cache) == 7, "Did not find expected 7 datasets"
+    return dataset_cache
 
 
-def check_api_has_not_changed():
-    # Check API has not changed
-    has_changed, changed_list = compare_api_to_samples(API_CACHE)
+def check_api_has_not_changed(api_cache: dict) -> (bool, list):
+    has_changed, changed_list = compare_api_to_samples(api_cache)
     LOGGER.info("\nChanged API endpoints:")
     for dataset_name in changed_list:
         LOGGER.info(dataset_name)
 
     assert not has_changed, "!!One or more of the Insecurity Insight endpoints has changed format"
+    return has_changed, changed_list
 
 
-def decide_which_resources_have_fresh_data() -> list[str]:
+def decide_which_resources_have_fresh_data(dataset_cache: dict, api_cache: dict) -> list[str]:
     print_banner_to_log(LOGGER, "Identify updates")
 
     # Dates from dataset records
     dataset_list = list_entities(type_="dataset")
     dataset_recency = {}
     for dataset in dataset_list:
-        dataset_update_date = update_date_from_string(DATASET_CACHE[dataset]["dataset_date"])
+        dataset_update_date = update_date_from_string(dataset_cache[dataset]["dataset_date"])
         dataset_recency[dataset] = dataset_update_date
 
     # Dates from resources
@@ -109,7 +107,7 @@ def decide_which_resources_have_fresh_data() -> list[str]:
     for resource in resource_list:
         if not resource.endswith("-incidents"):
             continue
-        start_date, end_date = get_date_range_from_api_response(API_CACHE[resource])
+        start_date, end_date = get_date_range_from_api_response(api_cache[resource])
         end_date = update_date_from_string(end_date)
         resource_recency[resource] = end_date
         resource_start_date[resource] = start_date
@@ -147,7 +145,7 @@ def update_date_from_string(date_str: str) -> list[str]:
     return update_date
 
 
-def refresh_spreadsheets_with_fresh_data(items_to_update: list[str]):
+def refresh_spreadsheets_with_fresh_data(items_to_update: list[str], api_cache: dict):
     print_banner_to_log(LOGGER, "Refresh spreadsheets")
     if len(items_to_update) == 0:
         LOGGER.info("No spreadsheets need to be updated")
@@ -159,10 +157,12 @@ def refresh_spreadsheets_with_fresh_data(items_to_update: list[str]):
         for resource in resources:
             if item[0] in resource:
                 LOGGER.info("**Really we should be generating many country files**")
-                create_spreadsheet(resource, api_response=API_CACHE[resource])
+                create_spreadsheet(resource, api_response=api_cache[resource])
 
 
-def update_datasets_whose_resources_have_changed(items_to_update: list[str]):
+def update_datasets_whose_resources_have_changed(
+    items_to_update: list[str], api_cache: dict, dataset_cache: dict
+):
     print_banner_to_log(LOGGER, "Update datasets")
     if len(items_to_update) == 0:
         LOGGER.info("No datasets need to be updated")
@@ -174,11 +174,12 @@ def update_datasets_whose_resources_have_changed(items_to_update: list[str]):
             if item[0] in dataset_name:
                 LOGGER.info("**Not handling country datasets**")
                 countries_group = get_countries_group_from_api_response(
-                    API_CACHE[f"insecurity-insight-{item[0]}-incidents"]
+                    api_cache[f"insecurity-insight-{item[0]}-incidents"]
                 )
                 dataset_date = f"[{item[1]} TO {item[2]}]"
                 create_datasets_in_hdx(
                     dataset_name,
+                    dataset_cache=dataset_cache,
                     dataset_date=dataset_date,
                     countries_group=countries_group,
                     dry_run=True,
@@ -186,9 +187,9 @@ def update_datasets_whose_resources_have_changed(items_to_update: list[str]):
 
 
 if __name__ == "__main__":
-    fetch_and_cache_api_responses()
-    fetch_and_cache_datasets()
-    check_api_has_not_changed()
-    ITEMS_TO_UPDATE = decide_which_resources_have_fresh_data()
-    refresh_spreadsheets_with_fresh_data(ITEMS_TO_UPDATE)
-    update_datasets_whose_resources_have_changed(ITEMS_TO_UPDATE)
+    API_CACHE = fetch_and_cache_api_responses()
+    DATASET_CACHE = fetch_and_cache_datasets()
+    check_api_has_not_changed(API_CACHE)
+    ITEMS_TO_UPDATE = decide_which_resources_have_fresh_data(DATASET_CACHE, API_CACHE)
+    refresh_spreadsheets_with_fresh_data(ITEMS_TO_UPDATE, API_CACHE)
+    update_datasets_whose_resources_have_changed(ITEMS_TO_UPDATE, API_CACHE, DATASET_CACHE)

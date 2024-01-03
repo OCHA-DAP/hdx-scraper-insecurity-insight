@@ -58,6 +58,7 @@ def marshall_datasets(dataset_name_pattern: str, country_pattern: str):
 
 def create_datasets_in_hdx(
     dataset_name: str,
+    dataset_cache: dict = None,
     country_filter: str = "",
     dry_run: bool = False,
     dataset_date: str = None,
@@ -71,7 +72,10 @@ def create_datasets_in_hdx(
     t0 = time.time()
     dataset_attributes = read_attributes(dataset_name)
 
-    dataset, _ = create_or_fetch_base_dataset(dataset_name)
+    if dataset_cache is None:
+        dataset, _ = create_or_fetch_base_dataset(dataset_name)
+    else:
+        dataset = dataset_cache[dataset_name]
 
     # Modify name and title if a country page
     if country_filter is not None and country_filter != "":
