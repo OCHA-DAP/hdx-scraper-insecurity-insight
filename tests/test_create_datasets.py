@@ -2,6 +2,8 @@
 # encoding: utf-8
 
 import os
+from unittest import mock
+
 from hdx_scraper_insecurity_insight.utilities import read_attributes, fetch_json_from_samples
 from hdx_scraper_insecurity_insight.create_datasets import (
     find_resource_filepath,
@@ -13,13 +15,15 @@ from hdx_scraper_insecurity_insight.create_datasets import (
 )
 
 
-def test_create_or_fetch_base_dataset_fetch():
+@mock.patch("hdx.data.dataset.Dataset.read_from_hdx")
+def test_create_or_fetch_base_dataset_fetch(mock_hdx):
+    mock_hdx.return_value = {"name": "insecurity-insight-healthcare-dataset"}
     dataset_name = "insecurity-insight-healthcare-dataset"
     dataset, is_new = create_or_fetch_base_dataset(dataset_name)
 
     assert not is_new
     assert dataset["name"] == "insecurity-insight-healthcare-dataset"
-    assert len(dataset.keys()) == 52
+    assert len(dataset.keys()) == 1
 
 
 def test_create_or_fetch_base_dataset_create():
