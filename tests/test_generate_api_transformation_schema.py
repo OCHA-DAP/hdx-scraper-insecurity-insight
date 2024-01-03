@@ -14,3 +14,15 @@ def test_generate_schema():
         "n_spreadsheet_fields": 22,
         "n_hxl_tags": 18,
     }
+
+
+def test_generate_schema_where_no_example_spreadsheet():
+    dataset_name = "insecurity-insight-crsv-overview"
+    summary = generate_schema(dataset_name)
+
+    assert summary == {
+        "dataset_name": "insecurity-insight-crsv-overview",
+        "n_api_fields": 10,
+        "n_spreadsheet_fields": 10,
+        "n_hxl_tags": 0,
+    }

@@ -6,7 +6,7 @@ import logging
 import os
 import re
 import time
-from typing import Optional
+from typing import Union
 
 from pathlib import Path
 
@@ -141,8 +141,14 @@ def create_or_fetch_base_dataset(dataset_name: str) -> dict:
     return dataset
 
 
-def find_resource_filepath(resource_name: list[str], attributes: [], country_filter: str = ""):
-    spreadsheet_directory = os.path.join(os.path.dirname(__file__), "output-spreadsheets")
+def find_resource_filepath(
+    resource_name: list[str],
+    attributes: [],
+    country_filter: str = "",
+    spreadsheet_directory: str = None,
+):
+    if spreadsheet_directory is None:
+        spreadsheet_directory = os.path.join(os.path.dirname(__file__), "output-spreadsheets")
     file_list = Path(spreadsheet_directory)
     files = []
 
@@ -169,7 +175,7 @@ def find_resource_filepath(resource_name: list[str], attributes: [], country_fil
             attributes["filename_template"]
             .replace("{start_year}", "[0-9]{4}")
             .replace("-{end_year}", "")
-            .replace("{country_iso}", country_filter)
+            .replace("{country_iso}", country_iso)
         )
         for file_ in file_list.iterdir():
             matching_files = re.search(spreadsheet_regex_single_year, str(file_))
@@ -249,7 +255,7 @@ def get_countries_group_from_api_response(api_response: list[dict]) -> list[dict
     return countries_group
 
 
-def get_legacy_dataset_name(dataset_name: str, country_filter: str = "") -> Optional[str]:
+def get_legacy_dataset_name(dataset_name: str, country_filter: str = "") -> Union[str, None]:
     legacy_dataset_name = None
     if country_filter is None or country_filter == "":
         attributes = read_attributes(dataset_name)

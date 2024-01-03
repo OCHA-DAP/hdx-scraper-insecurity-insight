@@ -13,12 +13,27 @@ from hdx_scraper_insecurity_insight.create_datasets import (
 
 
 def test_find_resource_filename():
+    spreadsheet_directory = os.path.join(os.path.dirname(__file__), "fixtures")
     resource_name = "insecurity-insight-crsv-incidents"
     attributes = read_attributes(resource_name)
-    filepath = find_resource_filepath(resource_name, attributes)
+    filepath = find_resource_filepath(
+        resource_name, attributes, spreadsheet_directory=spreadsheet_directory
+    )
     filename = os.path.basename(filepath)
 
     assert filename == "2020-2023-conflict-related-sexual-violence-incident-data.xlsx"
+
+
+def test_find_resource_filename_single_year():
+    spreadsheet_directory = os.path.join(os.path.dirname(__file__), "fixtures")
+    resource_name = "insecurity-insight-healthcare-incidents"
+    attributes = read_attributes(resource_name)
+    filepath = find_resource_filepath(
+        resource_name, attributes, country_filter="MMR", spreadsheet_directory=spreadsheet_directory
+    )
+    filename = os.path.basename(filepath)
+
+    assert filename == "2023-MMR-healthcare-incident-data.xlsx"
 
 
 def test_get_date_and_country_ranges_from_resources():
