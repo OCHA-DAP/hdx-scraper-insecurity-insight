@@ -148,13 +148,18 @@ def generate_schema(dataset_name: str) -> str:
 
 
 # Collect the set of country ISO codes - this is repeated in the create_datasets code
-def print_country_codes_analysis(api_response: list[dict]):
+def print_country_codes_analysis(api_response: list[dict]) -> (set, set):
     country_codes = {x["Country ISO"] for x in api_response}
-    print("\nCountries in API data but not currently on HDX", flush=True)
-    print(country_codes.difference(set(EXPECTED_COUNTRY_LIST)))
 
+    api_countries_not_in_hdx = country_codes.difference(set(EXPECTED_COUNTRY_LIST))
+    print("\nCountries in API data but not currently on HDX", flush=True)
+    print(api_countries_not_in_hdx, flush=True)
+
+    hdx_countries_not_in_api = set(EXPECTED_COUNTRY_LIST).difference(country_codes)
     print("\nCountries on HDX but not in API data", flush=True)
-    print(set(EXPECTED_COUNTRY_LIST).difference(country_codes))
+    print(hdx_countries_not_in_api, flush=True)
+
+    return api_countries_not_in_hdx, hdx_countries_not_in_api
 
 
 def find_corresponding_api_field(dataset_name: str, api_fields: list, column: str) -> str:

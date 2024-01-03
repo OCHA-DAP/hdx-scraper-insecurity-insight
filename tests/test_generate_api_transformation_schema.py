@@ -4,6 +4,7 @@
 from hdx_scraper_insecurity_insight.generate_api_transformation_schema import (
     generate_schema,
     compare_api_to_samples,
+    print_country_codes_analysis,
 )
 from hdx_scraper_insecurity_insight.utilities import fetch_json_from_samples
 
@@ -52,3 +53,18 @@ def test_compare_api_to_samples_changed():
 
     assert api_changed
     assert len(change_list) == 1
+
+
+def test_print_country_codes_analysis():
+    dataset_name = "insecurity-insight-crsv-overview"
+    api_response = fetch_json_from_samples(dataset_name)
+    api_countries_not_in_hdx, hdx_countries_not_in_api = print_country_codes_analysis(api_response)
+
+    print(api_countries_not_in_hdx, flush=True)
+
+    print(hdx_countries_not_in_api, flush=True)
+
+    assert (
+        len(api_countries_not_in_hdx) == 52
+    )  # Many countries appear in the API but do not have an HDX page
+    assert len(hdx_countries_not_in_api) == 1  # IRQ appears in HDX but not API
