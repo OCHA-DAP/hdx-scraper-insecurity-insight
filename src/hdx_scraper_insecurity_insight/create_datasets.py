@@ -6,6 +6,7 @@ import logging
 import os
 import re
 import time
+from typing import Optional
 
 from pathlib import Path
 
@@ -242,6 +243,15 @@ def get_countries_group_from_api_response(api_response: list[dict]) -> list[dict
     countries_group = [{"name": x} for x in set(countries)]
     LOGGER.info(f"Data from {len(countries_group)} countries found")
     return countries_group
+
+
+def get_legacy_dataset_name(dataset_name: str, country_filter: str = "") -> Optional[str]:
+    legacy_dataset_name = None
+    if country_filter is None or country_filter == "":
+        attributes = read_attributes(dataset_name)
+        legacy_dataset_name = attributes.get("legacy_name", None)
+
+    return legacy_dataset_name
 
 
 if __name__ == "__main__":

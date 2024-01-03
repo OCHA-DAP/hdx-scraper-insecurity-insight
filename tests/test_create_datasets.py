@@ -8,6 +8,7 @@ from hdx_scraper_insecurity_insight.create_datasets import (
     get_date_and_country_ranges_from_resources,
     get_date_range_from_api_response,
     get_countries_group_from_api_response,
+    get_legacy_dataset_name,
 )
 
 
@@ -51,3 +52,10 @@ def test_get_countries_group_from_api_response():
         assert list(country.keys()) == ["name"]
         assert country["name"] == country["name"].lower()
         assert len(country["name"]) == 3
+
+
+def test_get_legacy_dataset_name_non_country():
+    dataset_name = "insecurity-insight-crsv-dataset"
+    legacy_dataset_name = get_legacy_dataset_name(dataset_name)
+
+    assert legacy_dataset_name == "conflict-related-sexual-violence"
