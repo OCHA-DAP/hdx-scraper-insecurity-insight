@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+import os
 from hdx_scraper_insecurity_insight.create_spreadsheets import (
     generate_spreadsheet_filename,
     date_range_from_json,
@@ -20,10 +21,20 @@ SAMPLE_RESPONSE = fetch_json_from_samples(DATASET_NAME)
 
 
 def test_create_spreadsheet():
-    # Really an integration test
-    status = create_spreadsheet(DATASET_NAME)
+    expected_filename = "2020-2023-conflict-related-sexual-violence-incident-data.xlsx"
+    temp_directory = os.path.join(os.path.dirname(__file__), "temp")
 
-    assert "2020-2023-conflict-related-sexual-violence-incident-data.xlsx" in status
+    expected_file_path = os.path.join(temp_directory, expected_filename)
+    if os.path.exists(expected_file_path):
+        os.remove(expected_file_path)
+    status = create_spreadsheet(
+        DATASET_NAME, output_directory=temp_directory, api_response=SAMPLE_RESPONSE
+    )
+
+    assert expected_filename in status
+    assert os.path.exists(expected_file_path)
+    if os.path.exists(expected_file_path):
+        os.remove(expected_file_path)
 
 
 def test_date_range_from_json():

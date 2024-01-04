@@ -65,8 +65,11 @@ def create_spreadsheet(
     country_filter: str = None,
     year_filter: str = None,
     api_response: list[dict] = None,
+    output_directory: str = None,
 ) -> str:
     LOGGER.info(f"Processing {dataset_name}")
+    if output_directory is None:
+        output_directory = OUTPUT_DIRECTORY
     output_rows = []
 
     attributes = read_attributes(dataset_name)
@@ -105,7 +108,7 @@ def create_spreadsheet(
     # https://stackoverflow.com/questions/58326392/how-to-create-excel-table-with-pandas-to-excel
     excel.ExcelFormatter.header_style = None
 
-    output_filepath = os.path.join(OUTPUT_DIRECTORY, filename)
+    output_filepath = os.path.join(output_directory, filename)
     output_dataframe.to_excel(
         output_filepath,
         index=False,
