@@ -63,7 +63,7 @@ def create_datasets_in_hdx(
     dry_run: bool = False,
     dataset_date: str = None,
     countries_group: list[str] = None,
-):
+) -> Dataset:
     print_banner_to_log(LOGGER, "Create dataset")
     LOGGER.info(f"Dataset name: {dataset_name}")
     LOGGER.info(f"Country filter: {country_filter}")
@@ -125,9 +125,8 @@ def create_or_fetch_base_dataset(
 ) -> (dict, bool):
     is_new = True
     dataset_attributes = read_attributes(dataset_name)
-    if country_filter is not None and country_filter != 0:
+    if country_filter is not None and country_filter != "":
         dataset_name = dataset_name.replace("country", country_filter.lower())
-        print(dataset_name, flush=True)
 
     dataset = Dataset.read_from_hdx(dataset_name)
     if dataset is not None and not force_create:
@@ -146,7 +145,7 @@ def create_or_fetch_base_dataset(
         )
 
         dataset = Dataset.load_from_json(dataset_template_filepath)
-        if country_filter is not None and country_filter != 0:
+        if country_filter is not None and country_filter != "":
             country_name = Country.get_country_name_from_iso3(country_filter)
             dataset["name"] = dataset_name
             dataset["title"] = dataset["title"].replace(

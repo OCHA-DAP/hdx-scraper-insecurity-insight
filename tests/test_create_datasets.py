@@ -170,8 +170,10 @@ def test_create_datasets_in_hdx_country():
         dry_run=True,
     )
 
+    print(dataset.resources, flush=True)
+
     assert dataset["name"] == "insecurity-insight-afg-dataset"
-    assert (
-        dataset["title"]
-        == "Afghanistan(AFG): Attacks on Aid Operations, Explosive Weapons Incident Data, Health and Protection"
+    assert dataset["title"] == (
+        "Afghanistan(AFG): Attacks on Aid Operations, Explosive Weapons Incident Data, "
+        "Health and Protection"
     )

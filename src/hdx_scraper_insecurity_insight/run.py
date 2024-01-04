@@ -19,6 +19,7 @@ from hdx_scraper_insecurity_insight.utilities import (
     fetch_json_from_api,
     #    fetch_json_from_samples,
     print_banner_to_log,
+    read_countries,
 )
 
 from hdx_scraper_insecurity_insight.create_datasets import (
@@ -32,6 +33,7 @@ from hdx_scraper_insecurity_insight.create_spreadsheets import create_spreadshee
 
 setup_logging()
 LOGGER = logging.getLogger(__name__)
+COUNTRY_DATASET_BASENAME = "insecurity-insight-country-dataset"
 
 
 def fetch_and_cache_api_responses(save_response: bool = False) -> dict:
@@ -69,13 +71,28 @@ def fetch_and_cache_datasets():
     dataset_cache = {}
     print_banner_to_log(LOGGER, "Populate dataset cache")
     dataset_list = list_entities(type_="dataset")
+    # load topic datasets
+    n_topic_datasets = 0
     for dataset in dataset_list:
+        if dataset == COUNTRY_DATASET_BASENAME:
+            continue
         dataset_cache[dataset], _ = create_or_fetch_base_dataset(dataset)
+        n_topic_datasets += 1
 
     # Load country datasets
+    countries = read_countries()
+    n_countries = 0
+    for country in countries.keys():
+        dataset_name = COUNTRY_DATASET_BASENAME.replace("country", country.lower())
+        dataset_cache[dataset_name], _ = create_or_fetch_base_dataset(
+            COUNTRY_DATASET_BASENAME, country_filter=country
+        )
+        n_countries += 1
+
     LOGGER.info(f"Loaded {len(dataset_cache)} datasets to cache")
 
-    assert len(dataset_cache) == 7, "Did not find expected 7 datasets"
+    assert n_topic_datasets == 6, f"Found {n_topic_datasets} not 7 topic datasets"
+    assert n_countries == 25, f"Found {n_countries} not 25 expected country datasets"
     return dataset_cache
 
 
@@ -96,6 +113,8 @@ def decide_which_resources_have_fresh_data(dataset_cache: dict, api_cache: dict)
     dataset_list = list_entities(type_="dataset")
     dataset_recency = {}
     for dataset in dataset_list:
+        if dataset == COUNTRY_DATASET_BASENAME:
+            continue
         dataset_update_date = update_date_from_string(dataset_cache[dataset]["dataset_date"])
         dataset_recency[dataset] = dataset_update_date
 
@@ -153,11 +172,24 @@ def refresh_spreadsheets_with_fresh_data(items_to_update: list[str], api_cache: 
 
     resources = list_entities(type_="resource")
 
+    LOGGER.info(f"Refreshing {len(items_to_update)} topic spreadsheets")
     for item in items_to_update:
         for resource in resources:
             if item[0] in resource:
-                LOGGER.info("**Really we should be generating many country files**")
-                create_spreadsheet(resource, api_response=api_cache[resource])
+                status = create_spreadsheet(resource, api_response=api_cache[resource])
+                LOGGER.info(status)
+
+    LOGGER.info("Refreshing all country spreadsheets")
+    countries = read_countries()
+    country_attributes = read_attributes(COUNTRY_DATASET_BASENAME)
+    resource_names = country_attributes["resource"]
+    for country in countries:
+        for resource in resource_names:
+            status = create_spreadsheet(
+                resource, country_filter=country, api_response=api_cache[resource]
+            )
+            LOGGER.info(status)
+        break  # just do one spreadsheet for testing
 
 
 def update_datasets_whose_resources_have_changed(
