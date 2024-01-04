@@ -196,7 +196,7 @@ def compare_api_to_samples(api_cache: dict[str], dataset_names: list = None) -> 
             api_keys = []
 
         if sample_keys == api_keys:
-            LOGGER.info(f"API response matches sample for {dataset_name}")
+            LOGGER.info(f"{dataset_name} matches")
         else:
             changed_list.append(dataset_name)
             LOGGER.info(f"**MISMATCH between API and sample for {dataset_name}")

@@ -75,10 +75,11 @@ def create_spreadsheet(
     attributes = read_attributes(dataset_name)
 
     if api_response is None:
-        LOGGER.info("Using api_response sample, not live API")
+        # LOGGER.info("Using api_response sample, not live API")
         api_response = fetch_json_from_samples(dataset_name)
     else:
-        LOGGER.info("Using supplied API response")
+        pass
+        # LOGGER.info("Using supplied API response")
 
     # Fetch API to Spreadsheet lookup
     hdx_row, row_template = read_schema(dataset_name)
@@ -115,7 +116,6 @@ def create_spreadsheet(
     )
 
     status = f"Output filename `{filename}`"
-    LOGGER.info(status)
     return status
 
 

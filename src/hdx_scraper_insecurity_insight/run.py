@@ -172,7 +172,7 @@ def refresh_spreadsheets_with_fresh_data(items_to_update: list[str], api_cache: 
 
     resources = list_entities(type_="resource")
 
-    LOGGER.info(f"Refreshing {len(items_to_update)} topic spreadsheets")
+    LOGGER.info(f"Refreshing topic spreadsheets for {','.join([x[0] for x in items_to_update])}")
     for item in items_to_update:
         for resource in resources:
             if item[0] in resource:
@@ -180,16 +180,19 @@ def refresh_spreadsheets_with_fresh_data(items_to_update: list[str], api_cache: 
                 LOGGER.info(status)
 
     LOGGER.info("Refreshing all country spreadsheets")
+    # LOGGER.info("**ONLY DOING ONE COUNTRY FOR TEST**")
     countries = read_countries()
     country_attributes = read_attributes(COUNTRY_DATASET_BASENAME)
     resource_names = country_attributes["resource"]
     for country in countries:
+        LOGGER.info(f"Processing for {country}")
         for resource in resource_names:
             status = create_spreadsheet(
                 resource, country_filter=country, api_response=api_cache[resource]
             )
             LOGGER.info(status)
-        break  # just do one spreadsheet for testing
+
+        # break  # just do one spreadsheet for testing
 
 
 def update_datasets_whose_resources_have_changed(
@@ -204,7 +207,6 @@ def update_datasets_whose_resources_have_changed(
     for item in items_to_update:
         for dataset_name in datasets:
             if item[0] in dataset_name:
-                LOGGER.info("**Not handling country datasets**")
                 countries_group = get_countries_group_from_api_response(
                     api_cache[f"insecurity-insight-{item[0]}-incidents"]
                 )
@@ -217,11 +219,36 @@ def update_datasets_whose_resources_have_changed(
                     dry_run=True,
                 )
 
+    # If any data has updated we update all of the country datasets
+    # LOGGER.info("**ONLY DOING ONE COUNTRY FOR TEST**")
+    countries = read_countries()
+    start_date = min([x[1] for x in items_to_update])
+    end_date = max([x[2] for x in items_to_update])
+    dataset_date = f"[{start_date} TO {end_date}]"
+    for country in countries:
+        countries_group = {"name": country.lower()}
+
+        create_datasets_in_hdx(
+            COUNTRY_DATASET_BASENAME,
+            country_filter=country,
+            dataset_cache=dataset_cache,
+            dataset_date=dataset_date,
+            countries_group=countries_group,
+            dry_run=True,
+        )
+        # break
+
 
 if __name__ == "__main__":
+    T0 = time.time()
+    print_banner_to_log(LOGGER, "Grand Run")
     API_CACHE = fetch_and_cache_api_responses()
     DATASET_CACHE = fetch_and_cache_datasets()
-    check_api_has_not_changed(API_CACHE)
+    HAS_CHANGED, CHANGED_LIST = check_api_has_not_changed(API_CACHE)
     ITEMS_TO_UPDATE = decide_which_resources_have_fresh_data(DATASET_CACHE, API_CACHE)
     refresh_spreadsheets_with_fresh_data(ITEMS_TO_UPDATE, API_CACHE)
     update_datasets_whose_resources_have_changed(ITEMS_TO_UPDATE, API_CACHE, DATASET_CACHE)
+
+    LOGGER.info(f"{len(ITEMS_TO_UPDATE)} items updated in API")
+
+    LOGGER.info(f"Total run time: {time.time()-T0:0.0f} seconds")

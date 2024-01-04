@@ -6,7 +6,6 @@ import logging
 import os
 import re
 import time
-from typing import Union
 
 from pathlib import Path
 
@@ -75,6 +74,8 @@ def create_datasets_in_hdx(
     if dataset_cache is None:
         dataset, _ = create_or_fetch_base_dataset(dataset_name, country_filter=country_filter)
     else:
+        if country_filter is not None and country_filter != "":
+            dataset_name = dataset_name.replace("country", country_filter.lower())
         dataset = dataset_cache[dataset_name]
 
     LOGGER.info(f"Dataset title: {dataset['title']}")
@@ -133,11 +134,7 @@ def create_or_fetch_base_dataset(
         is_new = False
         LOGGER.info(f"Fetching `{dataset_name}` from hdx_site: `{Configuration.read().hdx_site}`")
     else:
-        LOGGER.info(
-            f"Using `{dataset_attributes['dataset_template']}` "
-            f"as a template for a new {dataset_name} "
-            f"(not in hdx_site: `{Configuration.read().hdx_site}`)"
-        )
+        LOGGER.info(f"Creating `{dataset_name}` from `{dataset_attributes['dataset_template']}`")
         dataset_template_filepath = os.path.join(
             os.path.dirname(__file__),
             "new-dataset-templates",
@@ -269,7 +266,7 @@ def get_countries_group_from_api_response(api_response: list[dict]) -> list[dict
     return countries_group
 
 
-def get_legacy_dataset_name(dataset_name: str, country_filter: str = "") -> Union[str, None]:
+def get_legacy_dataset_name(dataset_name: str, country_filter: str = "") -> str | None:
     legacy_dataset_name = None
     if country_filter is None or country_filter == "":
         attributes = read_attributes(dataset_name)
