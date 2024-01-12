@@ -34,6 +34,7 @@ from hdx_scraper_insecurity_insight.create_spreadsheets import create_spreadshee
 setup_logging()
 LOGGER = logging.getLogger(__name__)
 COUNTRY_DATASET_BASENAME = "insecurity-insight-country-dataset"
+API_DELAY = 30
 
 
 def fetch_and_cache_api_responses(save_response: bool = False) -> dict:
@@ -61,6 +62,8 @@ def fetch_and_cache_api_responses(save_response: bool = False) -> dict:
         LOGGER.info(
             f"... took {time.time()-t0:0.0f} seconds for {len(api_cache[resource])} records"
         )
+        LOGGER.info(f"Delaying next call for {API_DELAY} seconds")
+        time.sleep(API_DELAY)
 
     LOGGER.info(f"Loaded {len(api_cache)} API responses to cache")
     assert len(api_cache) == 11, "Did not find data from expected 11 endpoints"
