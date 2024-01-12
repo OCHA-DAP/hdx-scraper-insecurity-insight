@@ -91,6 +91,8 @@ def create_datasets_in_hdx(
 
     resource_list = []
 
+    n_missing_resources = 0
+    LOGGER.info("Resources:")
     for resource_name in resource_names:
         attributes = read_attributes(resource_name)
         resource_filepath = find_resource_filepath(
@@ -98,6 +100,7 @@ def create_datasets_in_hdx(
         )
 
         if resource_filepath is None:
+            n_missing_resources += 1
             continue
         resource = Resource(
             {
@@ -115,6 +118,7 @@ def create_datasets_in_hdx(
         dataset.create_in_hdx()
     else:
         LOGGER.info("Dry_run flag set so no data written to HDX")
+    LOGGER.info(f"{n_missing_resources} of {len(resource_names)} resources missing")
     LOGGER.info(f"Processing finished at {datetime.datetime.now().isoformat()}")
     LOGGER.info(f"Elapsed time: {time.time() - t0: 0.2f} seconds")
 
@@ -203,7 +207,7 @@ def find_resource_filepath(
         # raise FileNotFoundError
     else:
         filename = files[0]
-        LOGGER.info(f"`{filename}` found for resource `{resource_name}`")
+        LOGGER.info(f"`{filename}`")
         filepath = os.path.join(spreadsheet_directory, filename)
     return filepath
 
