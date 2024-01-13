@@ -60,7 +60,7 @@ def create_datasets_in_hdx(
     dataset_cache: dict = None,
     country_filter: str = "",
     dry_run: bool = False,
-    use_legacy: bool = True,
+    use_legacy: bool = False,
     dataset_date: str = None,
     countries_group: list[str] = None,
 ) -> Dataset:
@@ -80,7 +80,7 @@ def create_datasets_in_hdx(
         if country_filter is not None and country_filter != "":
             dataset_name = dataset_name.replace("country", country_filter.lower())
         dataset = dataset_cache[dataset_name]
-
+    LOGGER.info(f"Dataset name (used): {dataset['name']}")
     LOGGER.info(f"Dataset title: {dataset['title']}")
     resource_names = dataset_attributes["resource"]
     # This is a bit nasty since it reads the API for every resource in a dataset
@@ -125,7 +125,7 @@ def create_datasets_in_hdx(
     LOGGER.info(f"Processing finished at {datetime.datetime.now().isoformat()}")
     LOGGER.info(f"Elapsed time: {time.time() - t0: 0.2f} seconds")
 
-    return dataset
+    return dataset, n_missing_resources
 
 
 def create_or_fetch_base_dataset(

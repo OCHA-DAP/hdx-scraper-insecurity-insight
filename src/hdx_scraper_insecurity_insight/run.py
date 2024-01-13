@@ -16,8 +16,7 @@ from hdx_scraper_insecurity_insight.generate_api_transformation_schema import (
 from hdx_scraper_insecurity_insight.utilities import (
     list_entities,
     read_attributes,
-    fetch_json_from_api,
-    #    fetch_json_from_samples,
+    fetch_json,
     print_banner_to_log,
     read_countries,
 )
@@ -37,15 +36,18 @@ COUNTRY_DATASET_BASENAME = "insecurity-insight-country-dataset"
 API_DELAY = 30
 
 
-def fetch_and_cache_api_responses(save_response: bool = False) -> dict:
+def fetch_and_cache_api_responses(save_response: bool = False, use_sample: bool = False) -> dict:
     api_cache = {}
     print_banner_to_log(LOGGER, "Populate API cache")
 
     resource_list = list_entities(type_="resource")
     for resource in resource_list:
         t0 = time.time()
-        LOGGER.info(f"Fetching data for {resource} from API")
-        api_cache[resource] = fetch_json_from_api(resource)
+        if not use_sample:
+            LOGGER.info(f"Fetching data for {resource} from API")
+        else:
+            LOGGER.info(f"Fetching data for {resource} from samples")
+        api_cache[resource] = fetch_json(resource, use_sample=use_sample)
 
         if save_response:
             attributes = read_attributes(resource)
@@ -62,15 +64,16 @@ def fetch_and_cache_api_responses(save_response: bool = False) -> dict:
         LOGGER.info(
             f"... took {time.time()-t0:0.0f} seconds for {len(api_cache[resource])} records"
         )
-        LOGGER.info(f"Delaying next call for {API_DELAY} seconds")
-        time.sleep(API_DELAY)
+        if not use_sample:
+            LOGGER.info(f"Delaying next call for {API_DELAY} seconds")
+            time.sleep(API_DELAY)
 
     LOGGER.info(f"Loaded {len(api_cache)} API responses to cache")
     assert len(api_cache) == 11, "Did not find data from expected 11 endpoints"
     return api_cache
 
 
-def fetch_and_cache_datasets():
+def fetch_and_cache_datasets(use_legacy: bool = False) -> dict:
     dataset_cache = {}
     print_banner_to_log(LOGGER, "Populate dataset cache")
     dataset_list = list_entities(type_="dataset")
@@ -79,7 +82,7 @@ def fetch_and_cache_datasets():
     for dataset in dataset_list:
         if dataset == COUNTRY_DATASET_BASENAME:
             continue
-        dataset_cache[dataset], _ = create_or_fetch_base_dataset(dataset)
+        dataset_cache[dataset], _ = create_or_fetch_base_dataset(dataset, use_legacy=use_legacy)
         n_topic_datasets += 1
 
     # Load country datasets
@@ -88,7 +91,7 @@ def fetch_and_cache_datasets():
     for country in countries.keys():
         dataset_name = COUNTRY_DATASET_BASENAME.replace("country", country.lower())
         dataset_cache[dataset_name], _ = create_or_fetch_base_dataset(
-            COUNTRY_DATASET_BASENAME, country_filter=country
+            COUNTRY_DATASET_BASENAME, country_filter=country, use_legacy=use_legacy
         )
         n_countries += 1
 
@@ -109,8 +112,12 @@ def check_api_has_not_changed(api_cache: dict) -> (bool, list):
     return has_changed, changed_list
 
 
-def decide_which_resources_have_fresh_data(dataset_cache: dict, api_cache: dict) -> list[str]:
+def decide_which_resources_have_fresh_data(
+    dataset_cache: dict, api_cache: dict, refresh_all: bool = False
+) -> list[str]:
     print_banner_to_log(LOGGER, "Identify updates")
+    if refresh_all:
+        LOGGER.info("`refresh_all` true so all resources will be refreshed")
 
     # Dates from dataset records
     dataset_list = list_entities(type_="dataset")
@@ -142,6 +149,11 @@ def decide_which_resources_have_fresh_data(dataset_cache: dict, api_cache: dict)
         dataset_key = f"insecurity-insight-{item}-dataset"
         update_str = ""
         if resource_recency[resource_key] > dataset_recency[dataset_key]:
+            update_str = "*"
+            items_to_update.append(
+                (item, resource_start_date[resource_key], resource_recency[resource_key])
+            )
+        elif refresh_all:
             update_str = "*"
             items_to_update.append(
                 (item, resource_start_date[resource_key], resource_recency[resource_key])
@@ -199,13 +211,18 @@ def refresh_spreadsheets_with_fresh_data(items_to_update: list[str], api_cache: 
 
 
 def update_datasets_whose_resources_have_changed(
-    items_to_update: list[str], api_cache: dict, dataset_cache: dict
-):
+    items_to_update: list[str],
+    api_cache: dict,
+    dataset_cache: dict,
+    dry_run: bool = True,
+    use_legacy: bool = False,
+) -> list[list]:
     print_banner_to_log(LOGGER, "Update datasets")
     if len(items_to_update) == 0:
         LOGGER.info("No datasets need to be updated")
         return
 
+    missing_report = []
     datasets = list_entities(type_="dataset")
     for item in items_to_update:
         for dataset_name in datasets:
@@ -214,13 +231,16 @@ def update_datasets_whose_resources_have_changed(
                     api_cache[f"insecurity-insight-{item[0]}-incidents"]
                 )
                 dataset_date = f"[{item[1]} TO {item[2]}]"
-                create_datasets_in_hdx(
+                dataset, n_missing_resources = create_datasets_in_hdx(
                     dataset_name,
                     dataset_cache=dataset_cache,
                     dataset_date=dataset_date,
                     countries_group=countries_group,
-                    dry_run=True,
+                    dry_run=dry_run,
+                    use_legacy=use_legacy,
                 )
+            if n_missing_resources != 0:
+                missing_report.append([dataset["name"], n_missing_resources])
 
     # If any data has updated we update all of the country datasets
     # LOGGER.info("**ONLY DOING ONE COUNTRY FOR TEST**")
@@ -231,7 +251,7 @@ def update_datasets_whose_resources_have_changed(
     for country in countries:
         countries_group = {"name": country.lower()}
 
-        create_datasets_in_hdx(
+        dataset, n_missing_resources = create_datasets_in_hdx(
             COUNTRY_DATASET_BASENAME,
             country_filter=country,
             dataset_cache=dataset_cache,
@@ -239,19 +259,36 @@ def update_datasets_whose_resources_have_changed(
             countries_group=countries_group,
             dry_run=True,
         )
-        # break
+        if n_missing_resources != 0:
+            missing_report.append([dataset["name"], n_missing_resources])
+
+    return missing_report
 
 
 if __name__ == "__main__":
+    USE_SAMPLE = True
+    DRY_RUN = True
+    REFRESH_ALL = True
+    USE_LEGACY = True
     T0 = time.time()
     print_banner_to_log(LOGGER, "Grand Run")
-    API_CACHE = fetch_and_cache_api_responses()
-    DATASET_CACHE = fetch_and_cache_datasets()
+    API_CACHE = fetch_and_cache_api_responses(use_sample=USE_SAMPLE)
+    DATASET_CACHE = fetch_and_cache_datasets(use_legacy=USE_LEGACY)
     HAS_CHANGED, CHANGED_LIST = check_api_has_not_changed(API_CACHE)
-    ITEMS_TO_UPDATE = decide_which_resources_have_fresh_data(DATASET_CACHE, API_CACHE)
+    ITEMS_TO_UPDATE = decide_which_resources_have_fresh_data(
+        DATASET_CACHE, API_CACHE, refresh_all=REFRESH_ALL
+    )
     refresh_spreadsheets_with_fresh_data(ITEMS_TO_UPDATE, API_CACHE)
-    update_datasets_whose_resources_have_changed(ITEMS_TO_UPDATE, API_CACHE, DATASET_CACHE)
+    MISSING_REPORT = update_datasets_whose_resources_have_changed(
+        ITEMS_TO_UPDATE, API_CACHE, DATASET_CACHE, dry_run=DRY_RUN, use_legacy=USE_LEGACY
+    )
 
-    LOGGER.info(f"{len(ITEMS_TO_UPDATE)} items updated in API")
+    LOGGER.info(f"{len(ITEMS_TO_UPDATE)} items updated in API:")
+    for ITEM in ITEMS_TO_UPDATE:
+        LOGGER.info(f"{ITEM[0]:<20.20}:{ITEM[2]}")
+    LOGGER.info("")
+    LOGGER.info("Datasets with missing resources:")
+    for MISSING in MISSING_REPORT:
+        LOGGER.info(f"{MISSING[0]:<80.80}: {MISSING[1]}")
 
     LOGGER.info(f"Total run time: {time.time()-T0:0.0f} seconds")

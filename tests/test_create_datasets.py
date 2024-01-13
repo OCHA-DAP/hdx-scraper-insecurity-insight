@@ -159,7 +159,7 @@ def test_create_datasets_in_hdx():
             "title": "Afghanistan",
         }
     ]
-    dataset = create_datasets_in_hdx(
+    dataset, _ = create_datasets_in_hdx(
         dataset_name,
         dataset_date=dataset_date,
         countries_group=countries_group,
@@ -182,7 +182,7 @@ def test_create_datasets_in_hdx_country():
             "title": "Afghanistan",
         }
     ]
-    dataset = create_datasets_in_hdx(
+    dataset, _ = create_datasets_in_hdx(
         dataset_name,
         country_filter="AFG",
         dataset_date=dataset_date,
@@ -212,7 +212,7 @@ def test_create_datasets_in_hdx_use_legacy():
             "title": "Afghanistan",
         }
     ]
-    dataset = create_datasets_in_hdx(
+    dataset, _ = create_datasets_in_hdx(
         dataset_name,
         dataset_date=dataset_date,
         countries_group=countries_group,
@@ -236,7 +236,7 @@ def test_create_datasets_in_hdx_country_use_legacy():
             "title": "Afghanistan",
         }
     ]
-    dataset = create_datasets_in_hdx(
+    dataset, _ = create_datasets_in_hdx(
         dataset_name,
         country_filter="AFG",
         dataset_date=dataset_date,
