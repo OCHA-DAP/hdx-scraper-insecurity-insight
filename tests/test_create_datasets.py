@@ -197,3 +197,56 @@ def test_create_datasets_in_hdx_country():
         "Afghanistan(AFG): Attacks on Aid Operations, Explosive Weapons Incident Data, "
         "Health and Protection"
     )
+
+
+def test_create_datasets_in_hdx_use_legacy():
+    dataset_name = "insecurity-insight-crsv-dataset"
+    dataset_date = "[2020-01-01T00:00:00 TO 2023-09-30T23:59:59]"
+    countries_group = [
+        {
+            "description": "",
+            "display_name": "Afghanistan",
+            "id": "afg",
+            "image_display_url": "",
+            "name": "afg",
+            "title": "Afghanistan",
+        }
+    ]
+    dataset = create_datasets_in_hdx(
+        dataset_name,
+        dataset_date=dataset_date,
+        countries_group=countries_group,
+        dry_run=True,
+        use_legacy=True,
+    )
+
+    assert dataset["name"] == "conflict-related-sexual-violence"
+
+
+def test_create_datasets_in_hdx_country_use_legacy():
+    dataset_name = "insecurity-insight-country-dataset"
+    dataset_date = "[2020-01-01T00:00:00 TO 2023-09-30T23:59:59]"
+    countries_group = [
+        {
+            "description": "",
+            "display_name": "Afghanistan",
+            "id": "afg",
+            "image_display_url": "",
+            "name": "afg",
+            "title": "Afghanistan",
+        }
+    ]
+    dataset = create_datasets_in_hdx(
+        dataset_name,
+        country_filter="AFG",
+        dataset_date=dataset_date,
+        countries_group=countries_group,
+        dry_run=True,
+        use_legacy=True,
+    )
+
+    assert dataset["name"] == "afghanistan-violence-against-civilians-and-vital-civilian-facilities"
+    assert dataset["title"] == (
+        "Afghanistan (AFG): Attacks on Aid Operations, Education, Explosive Weapons Incident "
+        "Data, and Health"
+    )

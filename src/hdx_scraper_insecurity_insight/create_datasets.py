@@ -60,6 +60,7 @@ def create_datasets_in_hdx(
     dataset_cache: dict = None,
     country_filter: str = "",
     dry_run: bool = False,
+    use_legacy: bool = True,
     dataset_date: str = None,
     countries_group: list[str] = None,
 ) -> Dataset:
@@ -72,7 +73,9 @@ def create_datasets_in_hdx(
     dataset_attributes = read_attributes(dataset_name)
 
     if dataset_cache is None:
-        dataset, _ = create_or_fetch_base_dataset(dataset_name, country_filter=country_filter)
+        dataset, _ = create_or_fetch_base_dataset(
+            dataset_name, country_filter=country_filter, use_legacy=use_legacy
+        )
     else:
         if country_filter is not None and country_filter != "":
             dataset_name = dataset_name.replace("country", country_filter.lower())
