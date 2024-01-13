@@ -47,6 +47,26 @@ def test_create_or_fetch_base_dataset_create_country():
     assert len(dataset.keys()) == 17
 
 
+def test_create_or_fetch_base_dataset_create_use_legacy():
+    dataset_name = "insecurity-insight-healthcare-dataset"
+    dataset, is_new = create_or_fetch_base_dataset(dataset_name, use_legacy=True)
+
+    assert not is_new
+    assert dataset["name"] == "sind-safeguarding-healthcare-monthly-news-briefs-dataset"
+    assert len(dataset.keys()) == 49
+
+
+def test_create_or_fetch_base_dataset_create_country_use_legacy():
+    dataset_name = "insecurity-insight-country-dataset"
+    dataset, is_new = create_or_fetch_base_dataset(
+        dataset_name, country_filter="MMR", use_legacy=True
+    )
+
+    assert not is_new
+    assert dataset["name"] == "myanmar-attacks-on-aid-operations-education-health-and-protection"
+    assert len(dataset.keys()) == 49
+
+
 def test_find_resource_filename():
     spreadsheet_directory = os.path.join(os.path.dirname(__file__), "fixtures")
     resource_name = "insecurity-insight-crsv-incidents"

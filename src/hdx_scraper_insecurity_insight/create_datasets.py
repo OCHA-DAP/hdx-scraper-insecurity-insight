@@ -126,19 +126,29 @@ def create_datasets_in_hdx(
 
 
 def create_or_fetch_base_dataset(
-    dataset_name: str, country_filter: str = "", force_create: bool = False
+    dataset_name: str,
+    country_filter: str = "",
+    force_create: bool = False,
+    use_legacy: bool = False,
 ) -> (dict, bool):
     is_new = True
     dataset_attributes = read_attributes(dataset_name)
     if country_filter is not None and country_filter != "":
         dataset_name = dataset_name.replace("country", country_filter.lower())
 
-    dataset = Dataset.read_from_hdx(dataset_name)
+    if use_legacy:
+        legacy_dataset_name = get_legacy_dataset_name(dataset_name, country_filter=country_filter)
+        dataset = Dataset.read_from_hdx(legacy_dataset_name)
+        dataset_label = legacy_dataset_name
+    else:
+        dataset = Dataset.read_from_hdx(dataset_name)
+        dataset_label = dataset_name
+
     if dataset is not None and not force_create:
         is_new = False
-        LOGGER.info(f"Fetching `{dataset_name}` from hdx_site: `{Configuration.read().hdx_site}`")
+        LOGGER.info(f"Fetching `{dataset_label}` from hdx_site: `{Configuration.read().hdx_site}`")
     else:
-        LOGGER.info(f"Creating `{dataset_name}` from `{dataset_attributes['dataset_template']}`")
+        LOGGER.info(f"Creating `{dataset_label}` from `{dataset_attributes['dataset_template']}`")
         dataset_template_filepath = os.path.join(
             os.path.dirname(__file__),
             "new-dataset-templates",
