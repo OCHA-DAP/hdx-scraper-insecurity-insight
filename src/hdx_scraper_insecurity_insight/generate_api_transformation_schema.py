@@ -97,7 +97,7 @@ def generate_schema(dataset_name: str) -> str:
         # Get HXL tags
         hxl_tags = resource_df.loc[0, :].values.flatten().tolist()
         hxl_tags = ["" if isinstance(x, float) else x for x in hxl_tags]
-    except FileNotFoundError:
+    except (FileNotFoundError, IsADirectoryError) as the_exception:
         print(f"No example spreadsheet provided for {dataset_name}", flush=True)
         resource_df = None
         column_names = api_fields
