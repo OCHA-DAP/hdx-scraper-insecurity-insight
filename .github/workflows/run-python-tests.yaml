@@ -8,6 +8,8 @@ on:
   workflow_dispatch:
 jobs:
   build:
+    environment: 
+      name: test
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -28,8 +30,8 @@ jobs:
       - name: Running unit tests
         env:
             HDX_KEY: ${{ secrets.HDX_KEY }}
-            HDX_SITE: ${{ secrets.HDX_SITE }}
-            USER_AGENT: ${{ secrets.USER_AGENT }}
-            PREPREFIX: ${{ secrets.PREPREFIX }}
+            HDX_SITE: ${{ vars.HDX_SITE }}
+            USER_AGENT: ${{ vars.USER_AGENT }}
+            PREPREFIX: ${{ vars.PREPREFIX }}
         run: |
           make unit_tests

@@ -220,7 +220,7 @@ def update_datasets_whose_resources_have_changed(
     print_banner_to_log(LOGGER, "Update datasets")
     if len(items_to_update) == 0:
         LOGGER.info("No datasets need to be updated")
-        return
+        return []
 
     missing_report = []
     datasets = list_entities(type_="dataset")
@@ -269,7 +269,7 @@ if __name__ == "__main__":
     USE_SAMPLE = True
     DRY_RUN = True
     REFRESH_ALL = True
-    USE_LEGACY = True
+    USE_LEGACY = False
     T0 = time.time()
     print_banner_to_log(LOGGER, "Grand Run")
     API_CACHE = fetch_and_cache_api_responses(use_sample=USE_SAMPLE)

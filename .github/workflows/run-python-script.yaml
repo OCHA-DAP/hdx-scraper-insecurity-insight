@@ -1,0 +1,44 @@
+# This workflow will install Python dependencies and run the script
+
+name: Run Insecurity Insight Script
+
+on:
+    workflow_dispatch: # add run button in GitHub UI
+#  schedule: #  Run script according to a cron schedule
+#    - cron: "30 14 * * *"
+
+jobs:
+  build:
+    environment: 
+        name: test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.x"
+    - name: Install dependencies
+      run: |
+        make install
+    - name: Run script
+      env: #  Environment variables mapped from GitHub repository's secrets to be used by script
+        HDX_KEY: ${{ secrets.HDX_KEY }}
+        HDX_SITE: ${{ vars.HDX_SITE }}
+        USER_AGENT: ${{ vars.USER_AGENT }}
+        PREPREFIX: ${{ vars.PREPREFIX }}
+      run: |
+        make run
+    - name: Send mail
+      if: failure()
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: ${{secrets.EMAIL_SERVER}}
+        server_port: ${{secrets.EMAIL_PORT}}
+        username: ${{secrets.EMAIL_USERNAME}}
+        password: ${{secrets.EMAIL_PASSWORD}}
+        subject: "FAILED: ${{github.repository}} run job"
+        body: GitHub Actions run job for ${{github.repository}} failed!
+        to: ${{secrets.EMAIL_LIST}}
+        from: ${{secrets.EMAIL_FROM}}
+        content_type: text/html
