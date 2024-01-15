@@ -34,11 +34,11 @@ jobs:
       uses: dawidd6/action-send-mail@v3
       with:
         server_address: ${{secrets.EMAIL_SERVER}}
-        server_port: ${{secrets.EMAIL_PORT}}
-        username: ${{secrets.EMAIL_USERNAME}}
+        server_port: ${{vars.EMAIL_PORT}}
+        username: ${{vars.EMAIL_USERNAME}}
         password: ${{secrets.EMAIL_PASSWORD}}
         subject: "FAILED: ${{github.repository}} run job"
         body: GitHub Actions run job for ${{github.repository}} failed!
         to: ${{secrets.EMAIL_LIST}}
-        from: ${{secrets.EMAIL_FROM}}
+        from: ${{vars.EMAIL_FROM}}
         content_type: text/html
