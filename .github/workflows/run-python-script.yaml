@@ -41,4 +41,3 @@ jobs:
         body: GitHub Actions run job for ${{github.repository}} failed!
         to: ${{secrets.EMAIL_LIST}}
         from: ${{vars.EMAIL_FROM}}
-        content_type: text/html
