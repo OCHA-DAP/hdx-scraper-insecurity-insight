@@ -105,17 +105,18 @@ def list_entities(type_: str = "dataset") -> list[str]:
     return entity_list
 
 
-def read_schema(dataset_name: str) -> dict:
-    with open(SCHEMA_FILEPATH, "r", encoding="UTF-8") as schema_filehandle:
-        schema_rows = csv.DictReader(schema_filehandle)
+def read_schema(dataset_name: str) -> tuple[dict, dict]:
+    hdx_row = {}
+    row_template = {}
+    if os.path.exists(SCHEMA_FILEPATH):
+        with open(SCHEMA_FILEPATH, "r", encoding="UTF-8") as schema_filehandle:
+            schema_rows = csv.DictReader(schema_filehandle)
 
-        hdx_row = {}
-        row_template = {}
-        for row in schema_rows:
-            if row["dataset_name"] != dataset_name:
-                continue
-            hdx_row[row["field_name"]] = row["terms"]
-            row_template[row["field_name"]] = row["upstream"]
+            for row in schema_rows:
+                if row["dataset_name"] != dataset_name:
+                    continue
+                hdx_row[row["field_name"]] = row["terms"]
+                row_template[row["field_name"]] = row["upstream"]
 
     return hdx_row, row_template
 
