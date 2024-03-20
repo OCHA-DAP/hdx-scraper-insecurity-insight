@@ -17,6 +17,7 @@ from hdx.location.country import Country
 from hdx_scraper_insecurity_insight.utilities import (
     fetch_json,
     read_attributes,
+    read_insecurity_insight_attributes_1,
     list_entities,
     parse_commandline_arguments,
     filter_json_rows,
@@ -82,6 +83,14 @@ def create_datasets_in_hdx(
         dataset = dataset_cache[dataset_name]
     LOGGER.info(f"Dataset name (used): {dataset['name']}")
     LOGGER.info(f"Dataset title: {dataset['title']}")
+    # This is where we get title, description and potentially name
+    # from New-HDX-APIs-1-HDX-Home-Page.csv
+    ii_metadata = read_insecurity_insight_attributes_1(dataset_name, country_filter)
+    dataset["title"] = ii_metadata["Page"]
+    dataset["description"] = ii_metadata["Page description"]
+    dataset["name"] = ii_metadata["legacy_name"]
+
+    # We should fetch resoure names from insecurity insight metadata here
     resource_names = dataset_attributes["resource"]
     # This is a bit nasty since it reads the API for every resource in a dataset
     if dataset_date is None or countries_group is None:
@@ -297,6 +306,30 @@ def get_legacy_dataset_name(dataset_name: str, country_filter: str = "") -> str 
         legacy_dataset_name = COUNTRIES.get(country_filter.upper(), None)
 
     return legacy_dataset_name
+
+
+def get_dataset_attributes_from_insecurity_insight_metadata(
+    dataset: dict, country_filter: str = ""
+) -> dict:
+    dataset_name = dataset["name"]
+    ii_metadata_path = os.path.join(os.path.dirname(__file__), "metadata", "attributes.csv")
+    with open(ii_metadata_path, "r", encoding="UTF-8") as attributes_filehandle:
+        attribute_rows = csv.DictReader(attributes_filehandle)
+
+        attributes = {}
+        for row in attribute_rows:
+            if row["dataset_name"] != dataset_name:
+                continue
+            if row["attribute"] == "resource":
+                if "resource" not in attributes:
+                    attributes["resource"] = [row["value"]]
+                else:
+                    attributes["resource"].append(row["value"])
+            else:
+                attributes[row["attribute"]] = row["value"]
+
+    return attributes
+    return dataset
 
 
 if __name__ == "__main__":

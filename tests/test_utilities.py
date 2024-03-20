@@ -14,6 +14,7 @@ from hdx_scraper_insecurity_insight.utilities import (
     parse_commandline_arguments,
     print_banner_to_log,
     read_attributes,
+    read_insecurity_insight_attributes_1,
     read_countries,
     read_field_mappings,
     read_schema,
@@ -107,6 +108,35 @@ def test_entity_list_datasets():
         "insecurity-insight-aidworkerKIKA-dataset",
         "insecurity-insight-country-dataset",
     ]
+
+
+def test_read_insecurity_insight_attributes_1():
+    dataset_list = list_entities()
+
+    for dataset_name in dataset_list:
+        if dataset_name == "insecurity-insight-country-dataset":
+            continue
+        ii_attributes = read_insecurity_insight_attributes_1(dataset_name)
+        assert ii_attributes
+        if ii_attributes:
+            print(f"{dataset_name},{ii_attributes['Page']},{ii_attributes['legacy_name']}")
+        else:
+            print(dataset_name)
+
+
+def test_read_insecurity_insight_attributes_1_countries():
+    dataset_template = "insecurity-insight-{country}-dataset"
+    countries = read_countries()
+
+    for country in countries:
+        dataset_name = dataset_template.format(country=country.lower())
+
+        ii_attributes = read_insecurity_insight_attributes_1(dataset_name)
+        assert ii_attributes
+        if ii_attributes:
+            print(f"{dataset_name},{ii_attributes['Page']},{ii_attributes['legacy_name']}")
+        else:
+            print(dataset_name)
 
 
 def test_entity_list_resourcess():
