@@ -72,16 +72,15 @@ def create_datasets_in_hdx(
     LOGGER.info(f"Dataset date provided: {dataset_date}")
     LOGGER.info(f"Length of countries group provided: {len(countries_group)}")
     t0 = time.time()
-    dataset_attributes = read_attributes(dataset_name)
 
     if dataset_cache is None:
         dataset, _ = create_or_fetch_base_dataset(
             dataset_name, country_filter=country_filter, use_legacy=use_legacy
         )
     else:
-        if country_filter is not None and country_filter != "":
-            dataset_name = dataset_name.replace("country", country_filter.lower())
         dataset = dataset_cache[dataset_name]
+    if country_filter is not None and country_filter != "":
+        dataset_name = dataset_name.replace("country", country_filter.lower())
     LOGGER.info(f"Dataset name (used): {dataset['name']}")
     LOGGER.info(f"Dataset title: {dataset['title']}")
     # This is where we get title, description and potentially name
@@ -95,7 +94,9 @@ def create_datasets_in_hdx(
     # resource_names = dataset_attributes["resource"]
     ii_resource_attributes = read_insecurity_insight_resource_attributes(dataset_name)
     resource_names = [x["ih_name"] for x in ii_resource_attributes]
+    resource_descriptions = {x["ih_name"]: x["Description"] for x in ii_resource_attributes}
     # This is a bit nasty since it reads the API for every resource in a dataset
+    # but we only do it if the dataset_date is
     if dataset_date is None or countries_group is None:
         dataset_date, countries_group = get_date_and_country_ranges_from_resources(
             resource_names, country_filter=country_filter
@@ -115,6 +116,9 @@ def create_datasets_in_hdx(
     LOGGER.info("Resources:")
     for resource_name in resource_names:
         attributes = read_attributes(resource_name)
+        # This skips the current year spreadsheet resources which have no dataset_name (yet)
+        if not attributes:
+            continue
         resource_filepath = find_resource_filepath(
             resource_name, attributes, country_filter=country_filter
         )
@@ -125,7 +129,7 @@ def create_datasets_in_hdx(
         resource = Resource(
             {
                 "name": os.path.basename(resource_filepath),
-                "description": attributes["description"],
+                "description": resource_descriptions[resource_name],
                 "format": attributes["file_format"],
             }
         )
@@ -150,7 +154,7 @@ def create_or_fetch_base_dataset(
     country_filter: str = "",
     force_create: bool = False,
     use_legacy: bool = False,
-) -> (dict, bool):
+) -> tuple[dict, bool]:
     is_new = True
     dataset_attributes = read_attributes(dataset_name)
     if country_filter is not None and country_filter != "":

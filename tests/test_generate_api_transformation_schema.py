@@ -65,6 +65,6 @@ def test_print_country_codes_analysis():
     print(hdx_countries_not_in_api, flush=True)
 
     assert (
-        len(api_countries_not_in_hdx) == 52
+        len(api_countries_not_in_hdx) == 57
     )  # Many countries appear in the API but do not have an HDX page
     assert len(hdx_countries_not_in_api) == 1  # IRQ appears in HDX but not API

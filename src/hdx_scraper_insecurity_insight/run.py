@@ -33,7 +33,7 @@ from hdx_scraper_insecurity_insight.create_spreadsheets import create_spreadshee
 setup_logging()
 LOGGER = logging.getLogger(__name__)
 COUNTRY_DATASET_BASENAME = "insecurity-insight-country-dataset"
-API_DELAY = 30
+API_DELAY = 5
 
 
 def fetch_and_cache_api_responses(save_response: bool = False, use_sample: bool = False) -> dict:
@@ -69,7 +69,7 @@ def fetch_and_cache_api_responses(save_response: bool = False, use_sample: bool 
             time.sleep(API_DELAY)
 
     LOGGER.info(f"Loaded {len(api_cache)} API responses to cache")
-    assert len(api_cache) == 11, "Did not find data from expected 11 endpoints"
+    assert len(api_cache) == 12, "Did not find data from expected 12 endpoints"
     return api_cache
 
 
@@ -80,6 +80,7 @@ def fetch_and_cache_datasets(use_legacy: bool = False) -> dict:
     # load topic datasets
     n_topic_datasets = 0
     for dataset in dataset_list:
+        print(dataset, flush=True)
         if dataset == COUNTRY_DATASET_BASENAME:
             continue
         dataset_cache[dataset], _ = create_or_fetch_base_dataset(dataset, use_legacy=use_legacy)
@@ -97,8 +98,8 @@ def fetch_and_cache_datasets(use_legacy: bool = False) -> dict:
 
     LOGGER.info(f"Loaded {len(dataset_cache)} datasets to cache")
 
-    assert n_topic_datasets == 6, f"Found {n_topic_datasets} not 7 topic datasets"
-    assert n_countries == 25, f"Found {n_countries} not 25 expected country datasets"
+    assert n_topic_datasets == 6, f"Found {n_topic_datasets} not 6 topic datasets"
+    assert n_countries == 24, f"Found {n_countries} not 24 expected country datasets"
     return dataset_cache
 
 
@@ -266,9 +267,9 @@ def update_datasets_whose_resources_have_changed(
 
 
 if __name__ == "__main__":
-    USE_SAMPLE = True
+    USE_SAMPLE = False
     DRY_RUN = True
-    REFRESH_ALL = True
+    REFRESH_ALL = False
     USE_LEGACY = False
     T0 = time.time()
     print_banner_to_log(LOGGER, "Grand Run")

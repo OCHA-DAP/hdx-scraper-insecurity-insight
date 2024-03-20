@@ -74,18 +74,20 @@ def test_fetch_json_generic():
     dataset_name = "insecurity-insight-crsv-overview"
     sample_response = fetch_json(dataset_name, use_sample=True)
 
-    assert list(sample_response[0].keys()) == [
-        "Country",
-        "Year",
-        "Country ISO",
-        "Recorded CRSV Events",
-        "Military or non state actor CRSV events",
-        "Security Personnel Perpetrator Events",
-        "Events Affecting Minors",
-        "Events Affecting Aid Workers",
-        "Events Affecting Health Workers",
-        "Events Affecting Educators",
-    ]
+    assert set(sample_response[0].keys()) == set(
+        [
+            "Country",
+            "Year",
+            "Country ISO",
+            "Recorded SV Events",
+            "CRSV events",
+            "SV by Security Personnel",
+            "Events Affecting Minors",
+            "Events Affecting Aid Workers",
+            "Events Affecting Health Workers",
+            "Events Affecting Educators",
+        ]
+    )
 
 
 def test_filter_json_rows():
@@ -171,7 +173,7 @@ def test_read_insecurity_insight_resource_attributes_countries():
 def test_entity_list_resourcess():
     resource_list = list_entities(type_="resource")
 
-    assert len(resource_list) == 11
+    assert len(resource_list) == 12
 
 
 def test_commandline_argument_handling_two_arg(monkeypatch):
@@ -240,4 +242,4 @@ def test_read_field_mappings():
 def test_read_countries():
     countries = read_countries()
 
-    assert len(countries) == 25
+    assert len(countries) == 24

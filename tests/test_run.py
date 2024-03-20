@@ -22,7 +22,7 @@ def test_fetch_and_cache_api_response():
 def test_fetch_and_cache_datasets():
     dataset_cache = fetch_and_cache_datasets()
 
-    assert len(dataset_cache) == 31
+    assert len(dataset_cache) == 30
 
 
 def test_check_api_has_not_changed():

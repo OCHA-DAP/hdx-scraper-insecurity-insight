@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+import json
 import os
 from unittest import mock
 
@@ -53,7 +54,7 @@ def test_create_or_fetch_base_dataset_create_use_legacy():
 
     assert not is_new
     assert dataset["name"] == "sind-safeguarding-healthcare-monthly-news-briefs-dataset"
-    assert len(dataset.keys()) == 49
+    assert len(dataset.keys()) == 48
 
 
 def test_create_or_fetch_base_dataset_create_country_use_legacy():
@@ -64,7 +65,7 @@ def test_create_or_fetch_base_dataset_create_country_use_legacy():
 
     assert not is_new
     assert dataset["name"] == "myanmar-attacks-on-aid-operations-education-health-and-protection"
-    assert len(dataset.keys()) == 49
+    assert len(dataset.keys()) == 48
 
 
 def test_find_resource_filename():
@@ -97,8 +98,8 @@ def test_get_date_and_country_ranges_from_resources():
         resource_names, use_sample=True
     )
 
-    assert dataset_date == "[2020 TO 2023-12-09]"
-    assert len(countries_group) == 76
+    assert dataset_date == "[2020 TO 2024-02-25]"
+    assert len(countries_group) == 80
 
 
 def test_get_date_range_from_api_response():
@@ -108,7 +109,7 @@ def test_get_date_range_from_api_response():
     start_date, end_date = get_date_range_from_api_response(api_response)
 
     assert start_date == "2020-01-01"
-    assert end_date == "2023-12-09"
+    assert end_date == "2024-02-25"
 
 
 def test_get_countries_group_from_api_response():
@@ -117,7 +118,7 @@ def test_get_countries_group_from_api_response():
 
     countries = get_countries_group_from_api_response(api_response)
 
-    assert len(countries) == 76
+    assert len(countries) == 80
     for country in countries:
         assert list(country.keys()) == ["name"]
         assert country["name"] == country["name"].lower()
@@ -164,9 +165,11 @@ def test_create_datasets_in_hdx():
         dataset_date=dataset_date,
         countries_group=countries_group,
         dry_run=True,
+        use_legacy=True,
     )
 
-    assert dataset["name"] == "insecurity-insight-crsv-dataset"
+    # print(dataset, flush=True)
+    assert dataset["name"] == "conflict-related-sexual-violence"
 
 
 def test_create_datasets_in_hdx_country():
@@ -192,10 +195,10 @@ def test_create_datasets_in_hdx_country():
 
     print(dataset.resources, flush=True)
 
-    assert dataset["name"] == "insecurity-insight-afg-dataset"
+    assert dataset["name"] == "afghanistan-violence-against-civilians-and-vital-civilian-facilities"
     assert dataset["title"] == (
-        "Afghanistan(AFG): Attacks on Aid Operations, Explosive Weapons Incident Data, "
-        "Health and Protection"
+        "Afghanistan (AFG): Attacks on Aid Operations, Education and Health Care, and "
+        "Explosive Weapons Incident Data"
     )
 
 
@@ -247,6 +250,6 @@ def test_create_datasets_in_hdx_country_use_legacy():
 
     assert dataset["name"] == "afghanistan-violence-against-civilians-and-vital-civilian-facilities"
     assert dataset["title"] == (
-        "Afghanistan (AFG): Attacks on Aid Operations, Education, Explosive Weapons Incident "
-        "Data, and Health"
+        "Afghanistan (AFG): Attacks on Aid Operations, Education and Health Care, "
+        "and Explosive Weapons Incident Data"
     )

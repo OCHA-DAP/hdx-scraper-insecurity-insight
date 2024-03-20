@@ -21,7 +21,7 @@ SAMPLE_RESPONSE = fetch_json_from_samples(DATASET_NAME)
 
 
 def test_create_spreadsheet():
-    expected_filename = "2020-2023-conflict-related-sexual-violence-incident-data.xlsx"
+    expected_filename = "2020-2024-conflict-related-sexual-violence-incident-data.xlsx"
     temp_directory = os.path.join(os.path.dirname(__file__), "temp")
 
     expected_file_path = os.path.join(temp_directory, expected_filename)
@@ -41,14 +41,14 @@ def test_date_range_from_json():
     start_year, end_year = date_range_from_json(SAMPLE_RESPONSE)
 
     assert start_year == "2020"
-    assert end_year == "2023"
+    assert end_year == "2024"
 
 
 def test_generate_spreadsheet_filename_two_year():
     attributes = read_attributes(DATASET_NAME)
     filename = generate_spreadsheet_filename("", attributes, SAMPLE_RESPONSE)
 
-    assert filename == "2020-2023-conflict-related-sexual-violence-incident-data.xlsx"
+    assert filename == "2020-2024-conflict-related-sexual-violence-incident-data.xlsx"
 
 
 def test_generate_spreadsheet_filename_one_year():
