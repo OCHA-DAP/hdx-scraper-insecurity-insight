@@ -20,8 +20,14 @@ from urllib3.util import Retry
 
 SCHEMA_FILEPATH = os.path.join(os.path.dirname(__file__), "metadata", "schema.csv")
 ATTRIBUTES_FILEPATH = os.path.join(os.path.dirname(__file__), "metadata", "attributes.csv")
-INSECURITY_INSIGHTS_FILEPATH_1 = os.path.join(
+INSECURITY_INSIGHTS_FILEPATH_PAGES = os.path.join(
     os.path.dirname(__file__), "metadata", "New-HDX-APIs-1-HDX-Home-Page.csv"
+)
+INSECURITY_INSIGHTS_FILEPATH_TOPICS = os.path.join(
+    os.path.dirname(__file__), "metadata", "New-HDX-APIs-2-Topics.csv"
+)
+INSECURITY_INSIGHTS_FILEPATH_COUNTRIES = os.path.join(
+    os.path.dirname(__file__), "metadata", "New-HDX-APIs-3-Country.csv"
 )
 
 
@@ -97,9 +103,9 @@ def read_attributes(dataset_name: str) -> dict:
     return attributes
 
 
-def read_insecurity_insight_attributes_1(dataset_name: str) -> dict:
+def read_insecurity_insight_attributes_pages(dataset_name: str) -> dict:
     ii_attributes = {}
-    with open(INSECURITY_INSIGHTS_FILEPATH_1, "r", encoding="UTF-8") as attributes_filehandle:
+    with open(INSECURITY_INSIGHTS_FILEPATH_PAGES, "r", encoding="UTF-8") as attributes_filehandle:
         attribute_rows = csv.DictReader(attributes_filehandle)
         for row in attribute_rows:
             if row["ih_name"] != dataset_name:
@@ -111,6 +117,29 @@ def read_insecurity_insight_attributes_1(dataset_name: str) -> dict:
         legacy_name = ii_attributes["HDX link"].split("/")[-1]
         ii_attributes["legacy_name"] = legacy_name
     return ii_attributes
+
+
+def read_insecurity_insight_resource_attributes(dataset_name: str) -> list[dict]:
+    resource_attributes = []
+
+    with open(INSECURITY_INSIGHTS_FILEPATH_TOPICS, "r", encoding="UTF-8") as attributes_filehandle:
+        attribute_rows = csv.DictReader(attributes_filehandle)
+        for row in attribute_rows:
+            if row["parent_name"] != dataset_name:
+                continue
+            resource_attributes.append(row)
+
+    if len(resource_attributes) == 0:
+        with open(
+            INSECURITY_INSIGHTS_FILEPATH_COUNTRIES, "r", encoding="UTF-8"
+        ) as attributes_filehandle:
+            attribute_rows = csv.DictReader(attributes_filehandle)
+            for row in attribute_rows:
+                if row["parent_name"] != dataset_name:
+                    continue
+                resource_attributes.append(row)
+
+    return resource_attributes
 
 
 def list_entities(type_: str = "dataset") -> list[str]:
