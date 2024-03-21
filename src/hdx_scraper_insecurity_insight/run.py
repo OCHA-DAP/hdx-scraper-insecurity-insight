@@ -215,8 +215,9 @@ def update_datasets_whose_resources_have_changed(
     items_to_update: list[str],
     api_cache: dict,
     dataset_cache: dict,
-    dry_run: bool = True,
+    dry_run: bool = False,
     use_legacy: bool = False,
+    hdx_site: str = "stage",
 ) -> list[list]:
     print_banner_to_log(LOGGER, "Update datasets")
     if len(items_to_update) == 0:
@@ -239,6 +240,7 @@ def update_datasets_whose_resources_have_changed(
                     countries_group=countries_group,
                     dry_run=dry_run,
                     use_legacy=use_legacy,
+                    hdx_site=hdx_site,
                 )
             if n_missing_resources != 0:
                 missing_report.append([dataset["name"], n_missing_resources])
@@ -250,7 +252,7 @@ def update_datasets_whose_resources_have_changed(
     end_date = max([x[2] for x in items_to_update])
     dataset_date = f"[{start_date} TO {end_date}]"
     for country in countries:
-        countries_group = {"name": country.lower()}
+        countries_group = [{"name": country.lower()}]
 
         dataset, n_missing_resources = create_datasets_in_hdx(
             COUNTRY_DATASET_BASENAME,
@@ -258,7 +260,7 @@ def update_datasets_whose_resources_have_changed(
             dataset_cache=dataset_cache,
             dataset_date=dataset_date,
             countries_group=countries_group,
-            dry_run=True,
+            dry_run=dry_run,
         )
         if n_missing_resources != 0:
             missing_report.append([dataset["name"], n_missing_resources])
@@ -268,9 +270,10 @@ def update_datasets_whose_resources_have_changed(
 
 if __name__ == "__main__":
     USE_SAMPLE = False
-    DRY_RUN = True
-    REFRESH_ALL = False
+    DRY_RUN = False
+    REFRESH_ALL = True
     USE_LEGACY = False
+    HDX_SITE = "stage"
     T0 = time.time()
     print_banner_to_log(LOGGER, "Grand Run")
     API_CACHE = fetch_and_cache_api_responses(use_sample=USE_SAMPLE)
@@ -281,7 +284,12 @@ if __name__ == "__main__":
     )
     refresh_spreadsheets_with_fresh_data(ITEMS_TO_UPDATE, API_CACHE)
     MISSING_REPORT = update_datasets_whose_resources_have_changed(
-        ITEMS_TO_UPDATE, API_CACHE, DATASET_CACHE, dry_run=DRY_RUN, use_legacy=USE_LEGACY
+        ITEMS_TO_UPDATE,
+        API_CACHE,
+        DATASET_CACHE,
+        dry_run=DRY_RUN,
+        use_legacy=USE_LEGACY,
+        hdx_site=HDX_SITE,
     )
 
     LOGGER.info(f"{len(ITEMS_TO_UPDATE)} items updated in API:")

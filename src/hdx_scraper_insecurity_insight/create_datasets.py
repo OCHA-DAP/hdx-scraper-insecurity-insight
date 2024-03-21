@@ -6,6 +6,7 @@ import logging
 import os
 import re
 import time
+import traceback
 
 from pathlib import Path
 
@@ -29,58 +30,48 @@ from hdx_scraper_insecurity_insight.utilities import (
 
 setup_logging()
 LOGGER = logging.getLogger(__name__)
-# Configuration.create(
-#     hdx_site="stage", user_agent="hdxds_insecurity_insight", hdx_key=os.getenv("HDX_KEY")
-# )
-
-try:
-    Configuration.create(
-        user_agent_config_yaml=os.path.join(os.path.expanduser("~"), ".useragents.yaml"),
-        user_agent_lookup="hdx-scraper-insecurity-insight",
-    )
-except ConfigurationError:
-    LOGGER.info("Configuration already exists when trying to create in `create_datasets.py`")
-
 
 COUNTRIES = read_countries()
 
 
-def marshall_datasets(dataset_name_pattern: str, country_pattern: str):
+def marshall_datasets(dataset_name_pattern: str, country_pattern: str, hdx_site: str = "stage"):
     if dataset_name_pattern.lower() != "all":
-        create_datasets_in_hdx(dataset_name_pattern, country_pattern)
+        create_datasets_in_hdx(dataset_name_pattern, country_pattern, hdx_site=hdx_site)
     else:
         dataset_names = list_entities(type_="dataset")
 
         LOGGER.info(f"Attributes file contains {len(dataset_names)} dataset names")
 
         for dataset_name in dataset_names:
-            create_datasets_in_hdx(dataset_name)
+            create_datasets_in_hdx(dataset_name, hdx_site=hdx_site)
 
 
 def create_datasets_in_hdx(
     dataset_name: str,
     dataset_cache: dict = None,
     country_filter: str = "",
+    hdx_site: str = "stage",
     dry_run: bool = False,
     use_legacy: bool = False,
     dataset_date: str = None,
     countries_group: list[str] = None,
 ) -> Dataset:
     print_banner_to_log(LOGGER, "Create dataset")
+    configure_hdx_connection(hdx_site)
     LOGGER.info(f"Dataset name: {dataset_name}")
     LOGGER.info(f"Country filter: {country_filter}")
     LOGGER.info(f"Dataset date provided: {dataset_date}")
     LOGGER.info(f"Length of countries group provided: {len(countries_group)}")
     t0 = time.time()
 
+    if country_filter is not None and country_filter != "":
+        dataset_name = dataset_name.replace("country", country_filter.lower())
     if dataset_cache is None:
         dataset, _ = create_or_fetch_base_dataset(
             dataset_name, country_filter=country_filter, use_legacy=use_legacy
         )
     else:
         dataset = dataset_cache[dataset_name]
-    if country_filter is not None and country_filter != "":
-        dataset_name = dataset_name.replace("country", country_filter.lower())
     LOGGER.info(f"Dataset name (used): {dataset['name']}")
     LOGGER.info(f"Dataset title: {dataset['title']}")
     # This is where we get title, description and potentially name
@@ -88,7 +79,7 @@ def create_datasets_in_hdx(
     ii_metadata = read_insecurity_insight_attributes_pages(dataset_name)
     dataset["title"] = ii_metadata["Page"]
     dataset["description"] = ii_metadata["Page description"]
-    dataset["name"] = ii_metadata["legacy_name"]
+    dataset["name"] = f"ihtest-{ii_metadata['legacy_name']}"
 
     # We should fetch resoure names from insecurity insight metadata here
     # resource_names = dataset_attributes["resource"]
@@ -126,10 +117,39 @@ def create_datasets_in_hdx(
         if resource_filepath is None:
             n_missing_resources += 1
             continue
+        # Update resource_description
+        resource_description = resource_descriptions[resource_name]
+        if "[current year]" in resource_description:
+            current_year = datetime.datetime.now().isoformat()[0:4]
+            if len(dataset_date) == 44:
+                current_year = dataset_date[24:28]
+            elif len(dataset_date) == 26:
+                current_year = dataset_date[15:19]
+            else:
+                LOGGER.warning(
+                    f"Dataset_date '{dataset_date}' is an unexpected length. Use current date"
+                )
+            resource_description = resource_description.replace("[current year]", current_year)
+
+        if "[to date]" in resource_description:
+            current_date_iso = datetime.datetime.now().isoformat()[0:10]
+            if len(dataset_date) == 44:
+                current_date_iso = dataset_date[24:34]
+            elif len(dataset_date) == 26:
+                current_year = dataset_date[15:23]
+            else:
+                LOGGER.warning(
+                    f"Dataset_date '{dataset_date}' is an unexpected length. Use current date"
+                )
+            current_date_dt = datetime.datetime.fromisoformat(current_date_iso)
+            current_date_human = current_date_dt.strftime("%d %B %Y")
+
+            resource_description = resource_description.replace("[to date]", current_date_human)
+
         resource = Resource(
             {
                 "name": os.path.basename(resource_filepath),
-                "description": resource_descriptions[resource_name],
+                "description": resource_description,
                 "format": attributes["file_format"],
             }
         )
@@ -138,7 +158,7 @@ def create_datasets_in_hdx(
 
     dataset.add_update_resources(resource_list)
     if not dry_run:
-        LOGGER.info("Dry_run flag not set so no data written to HDX")
+        LOGGER.info("Dry_run flag not set so data written to HDX")
         dataset.create_in_hdx()
     else:
         LOGGER.info("Dry_run flag set so no data written to HDX")
@@ -154,9 +174,11 @@ def create_or_fetch_base_dataset(
     country_filter: str = "",
     force_create: bool = False,
     use_legacy: bool = False,
+    hdx_site: str = "stage",
 ) -> tuple[dict, bool]:
     is_new = True
     dataset_attributes = read_attributes(dataset_name)
+    configure_hdx_connection(hdx_site)
     if country_filter is not None and country_filter != "":
         dataset_name = dataset_name.replace("country", country_filter.lower())
 
@@ -315,6 +337,24 @@ def get_legacy_dataset_name(dataset_name: str, country_filter: str = "") -> str 
     return legacy_dataset_name
 
 
+def configure_hdx_connection(hdx_site: str = "stage"):
+    try:
+        Configuration.delete()
+        Configuration.create(
+            user_agent_config_yaml=os.path.join(os.path.expanduser("~"), ".useragents.yaml"),
+            user_agent_lookup="hdx-scraper-insecurity-insight",
+            hdx_site=hdx_site,
+        )
+        LOGGER.info(f"Authenticated to HDX site at {Configuration.read().get_hdx_site_url()}")
+        hdx_key = Configuration.read().get_api_key()
+        LOGGER.info(f"With HDX_KEY ending {hdx_key[-10:]}")
+
+    except ConfigurationError:
+        LOGGER.info(traceback.format_exc())
+        LOGGER.info("Configuration already exists when trying to create in `create_datasets.py`")
+
+
 if __name__ == "__main__":
+    HDX_SITE = "stage"
     DATASET_NAME, COUNTRY_CODE = parse_commandline_arguments()
-    marshall_datasets(DATASET_NAME, COUNTRY_CODE)
+    marshall_datasets(DATASET_NAME, COUNTRY_CODE, HDX_SITE)
