@@ -44,7 +44,6 @@ EXPECTED_COUNTRY_LIST = list(read_countries().keys())
 # Datamesh style schema file
 SCHEMA_TEMPLATE = {
     "dataset_name": None,
-    "timestamp": None,
     "upstream": None,  # API field name
     "field_name": None,  # Excel field name
     "field_number": None,
@@ -78,9 +77,10 @@ def marshall_datasets(dataset_name_pattern: str):
     return status_list
 
 
-def generate_schema(dataset_name: str) -> str:
+def generate_schema(dataset_name: str, api_fields_basis: bool = False) -> str:
+    # api_fields_basis sets whether we use the API as the soruce for column names or the
+    # sample spreadsheets
     attributes = read_attributes(dataset_name)
-
     # Get relevant cached API response
     api_response = fetch_json_from_samples(dataset_name)
     api_fields = list(api_response[0].keys())
@@ -103,6 +103,7 @@ def generate_schema(dataset_name: str) -> str:
         column_names = api_fields
         hxl_tags = [""] * len(api_fields)
 
+    #
     # Display Original fields, HXL and matching API field
     columns = zip(column_names, hxl_tags)
 
@@ -110,7 +111,7 @@ def generate_schema(dataset_name: str) -> str:
 
     output_rows = []
 
-    timestamp = datetime.datetime.now().isoformat()
+    # timestamp = datetime.datetime.now().isoformat()
 
     print(f"\nEntries for the '{dataset_name}' endpoint", flush=True)
     print(f"{ '':<2}   {'Spreadsheet column':<50},{'HXL tag':<50}, {'api_field':<50}", flush=True)
@@ -124,12 +125,12 @@ def generate_schema(dataset_name: str) -> str:
         print(f"{i:<2}.  {column[0]:<50.50},{column[1]:<50.50}, {api_field:<50.50}", flush=True)
         output_row = SCHEMA_TEMPLATE.copy()
         output_row["dataset_name"] = dataset_name
-        output_row["timestamp"] = timestamp
+        # output_row["timestamp"] = timestamp
         output_row["upstream"] = api_field
         output_row["field_name"] = column[0]
         output_row["field_number"] = i
         output_row["field_type"] = ""
-        output_row["terms"] = column[1]  # Use this for NXL tags
+        output_row["terms"] = column[1]  # Use this for HXL tags
         output_row["tags"] = ""
         output_row["descriptions"] = ""
 
