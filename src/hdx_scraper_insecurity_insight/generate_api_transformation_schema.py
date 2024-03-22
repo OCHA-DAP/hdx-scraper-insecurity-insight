@@ -80,6 +80,14 @@ def marshall_datasets(dataset_name_pattern: str):
 def generate_schema(dataset_name: str, api_fields_basis: bool = False) -> str:
     # api_fields_basis sets whether we use the API as the soruce for column names or the
     # sample spreadsheets
+    status = {
+        "dataset_name": dataset_name,
+        "n_api_fields": "",
+        "n_spreadsheet_fields": "",
+        "n_hxl_tags": "",
+    }
+    if "overview" in dataset_name:
+        return status
     attributes = read_attributes(dataset_name)
     # Get relevant cached API response
     api_response = fetch_json_from_samples(dataset_name)

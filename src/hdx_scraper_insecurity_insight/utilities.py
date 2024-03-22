@@ -156,14 +156,19 @@ def list_entities(type_: str = "dataset") -> list[str]:
 def read_schema(dataset_name: str) -> tuple[dict, dict]:
     hdx_row = {}
     row_template = {}
-    if os.path.exists(SCHEMA_FILEPATH):
-        with open(SCHEMA_FILEPATH, "r", encoding="UTF-8") as schema_filehandle:
+    if "overview" not in dataset_name:
+        schema_filepath = SCHEMA_FILEPATH
+    else:
+        schema_filepath = SCHEMA_FILEPATH.replace("schema.csv", "schema-overview.csv")
+    if os.path.exists(schema_filepath):
+        with open(schema_filepath, "r", encoding="UTF-8") as schema_filehandle:
             schema_rows = csv.DictReader(schema_filehandle)
 
             for row in schema_rows:
                 if row["dataset_name"] != dataset_name:
                     continue
                 hdx_row[row["field_name"]] = row["terms"]
+                # This is where we would switch to using the API as the template
                 row_template[row["field_name"]] = row["upstream"]
 
     return hdx_row, row_template
@@ -214,7 +219,7 @@ def _make_write_dictionary_status(append: bool, filepath: str, newfile: bool) ->
     return status
 
 
-def parse_commandline_arguments() -> (str, str):
+def parse_commandline_arguments() -> tuple[str, str]:
     dataset_name = "insecurity-insight-aidworkerKIKA-overview"
     country_code = ""
     if len(sys.argv) == 2:
@@ -227,7 +232,7 @@ def parse_commandline_arguments() -> (str, str):
     return dataset_name, country_code
 
 
-def pick_date_and_iso_country_fields(row_dictionary: dict) -> (str, str):
+def pick_date_and_iso_country_fields(row_dictionary: dict) -> tuple[str, str]:
     iso_country_field = "Country ISO"
     if iso_country_field not in row_dictionary.keys():
         iso_country_field = "country_iso"

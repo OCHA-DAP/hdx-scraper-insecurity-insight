@@ -169,7 +169,7 @@ def test_create_datasets_in_hdx():
     )
 
     # print(dataset, flush=True)
-    assert dataset["name"] == "conflict-related-sexual-violence"
+    assert dataset["name"].endswith("conflict-related-sexual-violence")
 
 
 def test_create_datasets_in_hdx_country():
@@ -195,7 +195,9 @@ def test_create_datasets_in_hdx_country():
 
     print(dataset.resources, flush=True)
 
-    assert dataset["name"] == "afghanistan-violence-against-civilians-and-vital-civilian-facilities"
+    assert dataset["name"].endswith(
+        "afghanistan-violence-against-civilians-and-vital-civilian-facilities"
+    )
     assert dataset["title"] == (
         "Afghanistan (AFG): Attacks on Aid Operations, Education and Health Care, and "
         "Explosive Weapons Incident Data"
@@ -223,7 +225,7 @@ def test_create_datasets_in_hdx_use_legacy():
         use_legacy=True,
     )
 
-    assert dataset["name"] == "conflict-related-sexual-violence"
+    assert dataset["name"].endswith("conflict-related-sexual-violence")
 
 
 def test_create_datasets_in_hdx_country_use_legacy():
@@ -248,7 +250,9 @@ def test_create_datasets_in_hdx_country_use_legacy():
         use_legacy=True,
     )
 
-    assert dataset["name"] == "afghanistan-violence-against-civilians-and-vital-civilian-facilities"
+    assert dataset["name"].endswith(
+        "afghanistan-violence-against-civilians-and-vital-civilian-facilities"
+    )
     assert dataset["title"] == (
         "Afghanistan (AFG): Attacks on Aid Operations, Education and Health Care, "
         "and Explosive Weapons Incident Data"

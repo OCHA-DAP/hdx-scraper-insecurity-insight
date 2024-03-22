@@ -34,6 +34,14 @@ def test_read_schema():
     assert len(hdx_row.keys()) == 22
 
 
+def test_read_schema_overview():
+    dataset_name = "insecurity-insight-crsv-overview"
+    hdx_row, row_template = read_schema(dataset_name)
+
+    assert hdx_row.keys() == row_template.keys()
+    assert len(hdx_row.keys()) == 10
+
+
 def test_read_attributes():
     dataset_name = "insecurity-insight-crsv-incidents"
     attributes = read_attributes(dataset_name)

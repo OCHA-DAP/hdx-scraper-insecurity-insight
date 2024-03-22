@@ -27,9 +27,9 @@ def test_generate_schema_where_no_example_spreadsheet():
 
     assert summary == {
         "dataset_name": "insecurity-insight-crsv-overview",
-        "n_api_fields": 10,
-        "n_spreadsheet_fields": 10,
-        "n_hxl_tags": 0,
+        "n_api_fields": "",
+        "n_spreadsheet_fields": "",
+        "n_hxl_tags": "",
     }
 
 

@@ -64,14 +64,14 @@ def create_datasets_in_hdx(
     LOGGER.info(f"Length of countries group provided: {len(countries_group)}")
     t0 = time.time()
 
-    if country_filter is not None and country_filter != "":
-        dataset_name = dataset_name.replace("country", country_filter.lower())
     if dataset_cache is None:
         dataset, _ = create_or_fetch_base_dataset(
             dataset_name, country_filter=country_filter, use_legacy=use_legacy
         )
     else:
         dataset = dataset_cache[dataset_name]
+    if country_filter is not None and country_filter != "":
+        dataset_name = dataset_name.replace("country", country_filter.lower())
     LOGGER.info(f"Dataset name (used): {dataset['name']}")
     LOGGER.info(f"Dataset title: {dataset['title']}")
     # This is where we get title, description and potentially name
@@ -194,6 +194,8 @@ def create_or_fetch_base_dataset(
         is_new = False
         LOGGER.info(f"Fetching `{dataset_label}` from hdx_site: `{Configuration.read().hdx_site}`")
     else:
+        print(dataset_name, flush=True)
+        print(dataset_attributes, flush=True)
         LOGGER.info(f"Creating `{dataset_label}` from `{dataset_attributes['dataset_template']}`")
         dataset_template_filepath = os.path.join(
             os.path.dirname(__file__),
