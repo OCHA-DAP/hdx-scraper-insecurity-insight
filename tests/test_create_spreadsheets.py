@@ -37,6 +37,24 @@ def test_create_spreadsheet():
         os.remove(expected_file_path)
 
 
+def test_create_current_year_spreadsheet():
+    dataset_name = "insecurity-insight-crsv-incidents-current-year"
+    expected_filename = "2024-conflict-related-sexual-violence-incident-data.xlsx"
+    temp_directory = os.path.join(os.path.dirname(__file__), "temp")
+
+    expected_file_path = os.path.join(temp_directory, expected_filename)
+    if os.path.exists(expected_file_path):
+        os.remove(expected_file_path)
+    status = create_spreadsheet(
+        dataset_name, output_directory=temp_directory, api_response=SAMPLE_RESPONSE
+    )
+
+    assert expected_filename in status
+    assert os.path.exists(expected_file_path)
+    if os.path.exists(expected_file_path):
+        os.remove(expected_file_path)
+
+
 def test_date_range_from_json():
     start_year, end_year = date_range_from_json(SAMPLE_RESPONSE)
 

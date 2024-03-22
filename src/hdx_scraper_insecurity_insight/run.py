@@ -192,6 +192,7 @@ def refresh_spreadsheets_with_fresh_data(items_to_update: list[str], api_cache: 
     for item in items_to_update:
         for resource in resources:
             if item[0] in resource:
+                # This is where we would create a year spreadsheet
                 status = create_spreadsheet(resource, api_response=api_cache[resource])
                 LOGGER.info(status)
 
@@ -270,7 +271,7 @@ def update_datasets_whose_resources_have_changed(
 
 if __name__ == "__main__":
     USE_SAMPLE = False
-    DRY_RUN = False
+    DRY_RUN = True
     REFRESH_ALL = True
     USE_LEGACY = False
     HDX_SITE = "stage"

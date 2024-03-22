@@ -74,6 +74,11 @@ def create_spreadsheet(
 
     attributes = read_attributes(dataset_name)
 
+    if not year_filter:
+        year_filter = attributes.get("year_filter", "")
+        if year_filter == "current year":
+            year_filter = datetime.datetime.now().isoformat()[0:4]
+
     if api_response is None:
         # LOGGER.info("Using api_response sample, not live API")
         api_response = fetch_json_from_samples(dataset_name)
