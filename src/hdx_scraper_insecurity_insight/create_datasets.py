@@ -69,7 +69,10 @@ def create_datasets_in_hdx(
             dataset_name, country_filter=country_filter, use_legacy=use_legacy
         )
     else:
+        if country_filter is not None and country_filter != "":
+            dataset_name = dataset_name.replace("country", country_filter.lower())
         dataset = dataset_cache[dataset_name]
+
     if country_filter is not None and country_filter != "":
         dataset_name = dataset_name.replace("country", country_filter.lower())
     LOGGER.info(f"Dataset name (used): {dataset['name']}")
