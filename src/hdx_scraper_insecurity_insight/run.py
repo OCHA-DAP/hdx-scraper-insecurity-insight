@@ -69,7 +69,7 @@ def fetch_and_cache_api_responses(save_response: bool = False, use_sample: bool 
             time.sleep(API_DELAY)
 
     LOGGER.info(f"Loaded {len(api_cache)} API responses to cache")
-    assert len(api_cache) == 12, "Did not find data from expected 12 endpoints"
+    assert len(api_cache) == 18, "Did not find data from expected 12 endpoints"
     return api_cache
 
 
@@ -271,7 +271,7 @@ def update_datasets_whose_resources_have_changed(
 
 if __name__ == "__main__":
     USE_SAMPLE = False
-    DRY_RUN = True
+    DRY_RUN = False
     REFRESH_ALL = True
     USE_LEGACY = False
     HDX_SITE = "stage"

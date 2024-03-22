@@ -153,7 +153,7 @@ def create_datasets_in_hdx(
             {
                 "name": os.path.basename(resource_filepath),
                 "description": resource_description,
-                "format": attributes["file_format"],
+                "format": attributes.get("file_format", "XLSX"),
             }
         )
         resource.set_file_to_upload(resource_filepath)
@@ -197,8 +197,6 @@ def create_or_fetch_base_dataset(
         is_new = False
         LOGGER.info(f"Fetching `{dataset_label}` from hdx_site: `{Configuration.read().hdx_site}`")
     else:
-        print(dataset_name, flush=True)
-        print(dataset_attributes, flush=True)
         LOGGER.info(f"Creating `{dataset_label}` from `{dataset_attributes['dataset_template']}`")
         dataset_template_filepath = os.path.join(
             os.path.dirname(__file__),
@@ -219,7 +217,7 @@ def create_or_fetch_base_dataset(
 
 def find_resource_filepath(
     resource_name: list[str],
-    attributes: [],
+    attributes: dict,
     country_filter: str = "",
     spreadsheet_directory: str = None,
 ):
@@ -228,21 +226,23 @@ def find_resource_filepath(
     file_list = Path(spreadsheet_directory)
     files = []
 
+    year_filter = attributes.get("year_filter", "")
     # Finds year range files
     country_iso = ""
-    if (country_filter is not None) and (len(country_filter) != 0):
-        country_iso = f"-{country_filter}"
-    spreadsheet_regex_range = (
-        attributes["filename_template"]
-        .replace("{start_year}", "[0-9]{4}")
-        .replace("{end_year}", "[0-9]{4}")
-        .replace("{country_iso}", country_iso)
-    )
-
-    for file_ in file_list.iterdir():
-        matching_files = re.search(spreadsheet_regex_range, str(file_))
-        if matching_files is not None:
-            files.append(matching_files.group())
+    spreadsheet_regex_range = ""
+    if len(year_filter) == 0:
+        if (country_filter is not None) and (len(country_filter) != 0):
+            country_iso = f"-{country_filter}"
+        spreadsheet_regex_range = (
+            attributes["filename_template"]
+            .replace("{start_year}", "[0-9]{4}")
+            .replace("{end_year}", "[0-9]{4}")
+            .replace("{country_iso}", country_iso)
+        )
+        for file_ in file_list.iterdir():
+            matching_files = re.search(spreadsheet_regex_range, str(file_))
+            if matching_files is not None:
+                files.append(matching_files.group())
 
     # Finds single year range files
     spreadsheet_regex_single_year = ""
@@ -254,7 +254,9 @@ def find_resource_filepath(
             .replace("{country_iso}", country_iso)
         )
         for file_ in file_list.iterdir():
-            matching_files = re.search(spreadsheet_regex_single_year, str(file_))
+            matching_files = re.search(
+                "^" + spreadsheet_regex_single_year, str(os.path.basename(file_))
+            )
             if matching_files is not None:
                 files.append(matching_files.group())
 
