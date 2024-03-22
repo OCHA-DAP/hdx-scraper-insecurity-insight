@@ -71,7 +71,7 @@ def marshall_datasets(dataset_name_pattern: str):
 
         for dataset_name in dataset_names:
             LOGGER.info(f"Processing {dataset_name}")
-            status = generate_schema(dataset_name)
+            status = generate_schema(dataset_name, api_fields_basis=True)
             status_list.append(status)
 
     return status_list
@@ -111,6 +111,11 @@ def generate_schema(dataset_name: str, api_fields_basis: bool = False) -> str:
         column_names = api_fields
         hxl_tags = [""] * len(api_fields)
 
+    if api_fields_basis:
+        hxl_tag_dict = {column_names[i]: hxl_tags[i] for i in range(len(column_names))}
+        column_names = api_fields
+        hxl_tags = [hxl_tag_dict.get(x, "") for x in api_fields]
+        resource_df = None
     #
     # Display Original fields, HXL and matching API field
     columns = zip(column_names, hxl_tags)
