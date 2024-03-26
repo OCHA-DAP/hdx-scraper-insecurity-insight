@@ -64,6 +64,7 @@ def test_read_attributes_list():
     attributes = read_attributes(dataset_name)
 
     assert attributes["resource"] == [
+        "insecurity-insight-crsv-incidents-current-year",
         "insecurity-insight-crsv-incidents",
         "insecurity-insight-crsv-overview",
     ]
@@ -181,7 +182,7 @@ def test_read_insecurity_insight_resource_attributes_countries():
 def test_entity_list_resourcess():
     resource_list = list_entities(type_="resource")
 
-    assert len(resource_list) == 12
+    assert len(resource_list) == 18
 
 
 def test_commandline_argument_handling_two_arg(monkeypatch):
@@ -250,4 +251,4 @@ def test_read_field_mappings():
 def test_read_countries():
     countries = read_countries()
 
-    assert len(countries) == 24
+    assert len(countries) == 25

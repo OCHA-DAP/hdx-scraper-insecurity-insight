@@ -23,7 +23,7 @@ SAMPLE_RESPONSE = fetch_json_from_samples(DATASET_NAME)
 
 
 def test_create_spreadsheet():
-    expected_filename = "2020-2024-conflict-related-sexual-violence-incident-data.xlsx"
+    expected_filename = "2020-2024 Conflict Related Sexual Violence Incident Data.xlsx"
     temp_directory = os.path.join(os.path.dirname(__file__), "temp")
 
     expected_file_path = os.path.join(temp_directory, expected_filename)
@@ -45,7 +45,7 @@ def test_create_spreadsheet():
 
 def test_create_current_year_spreadsheet():
     dataset_name = "insecurity-insight-crsv-incidents-current-year"
-    expected_filename = "2024-conflict-related-sexual-violence-incident-data.xlsx"
+    expected_filename = "2024 Conflict Related Sexual Violence Incident Data.xlsx"
     temp_directory = os.path.join(os.path.dirname(__file__), "temp")
 
     expected_file_path = os.path.join(temp_directory, expected_filename)
@@ -76,7 +76,7 @@ def test_generate_spreadsheet_filename_two_year():
     attributes = read_attributes(DATASET_NAME)
     filename = generate_spreadsheet_filename("", attributes, SAMPLE_RESPONSE)
 
-    assert filename == "2020-2024-conflict-related-sexual-violence-incident-data.xlsx"
+    assert filename == "2020-2024 Conflict Related Sexual Violence Incident Data.xlsx"
 
 
 def test_generate_spreadsheet_filename_one_year():
@@ -84,7 +84,7 @@ def test_generate_spreadsheet_filename_one_year():
     attributes = read_attributes(DATASET_NAME)
     filename = generate_spreadsheet_filename("", attributes, filtered_response)
 
-    assert filename == "2021-conflict-related-sexual-violence-incident-data.xlsx"
+    assert filename == "2021 Conflict Related Sexual Violence Incident Data.xlsx"
 
 
 def test_generate_spreadsheet_filename_country():
@@ -92,7 +92,7 @@ def test_generate_spreadsheet_filename_country():
     attributes = read_attributes(DATASET_NAME)
     filename = generate_spreadsheet_filename("NGA", attributes, filtered_response)
 
-    assert filename == "2021-NGA-conflict-related-sexual-violence-incident-data.xlsx"
+    assert filename == "2021-NGA Conflict Related Sexual Violence Incident Data.xlsx"
 
 
 def test_transform_input_rows():

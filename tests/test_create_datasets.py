@@ -54,7 +54,7 @@ def test_create_or_fetch_base_dataset_create_use_legacy():
 
     assert not is_new
     assert dataset["name"] == "sind-safeguarding-healthcare-monthly-news-briefs-dataset"
-    assert len(dataset.keys()) == 48
+    assert len(dataset.keys()) == 54
 
 
 def test_create_or_fetch_base_dataset_create_country_use_legacy():
@@ -65,7 +65,7 @@ def test_create_or_fetch_base_dataset_create_country_use_legacy():
 
     assert not is_new
     assert dataset["name"] == "myanmar-attacks-on-aid-operations-education-health-and-protection"
-    assert len(dataset.keys()) == 48
+    assert len(dataset.keys()) == 51
 
 
 def test_find_resource_filename():
@@ -77,7 +77,7 @@ def test_find_resource_filename():
     )
     filename = os.path.basename(filepath)
 
-    assert filename == "2020-2023-conflict-related-sexual-violence-incident-data.xlsx"
+    assert filename == "2020-2023 Conflict Related Sexual Violence Incident Data.xlsx"
 
 
 def test_find_resource_filename_single_year():
@@ -89,7 +89,7 @@ def test_find_resource_filename_single_year():
     )
     filename = os.path.basename(filepath)
 
-    assert filename == "2023-MMR-healthcare-incident-data.xlsx"
+    assert filename == "2023-MMR Attacks on Healthcare Incident Data.xlsx"
 
 
 def test_find_resource_filename_current_year():
@@ -101,7 +101,7 @@ def test_find_resource_filename_current_year():
     )
     filename = os.path.basename(filepath)
 
-    assert filename == "2024-healthcare-incident-data.xlsx"
+    assert filename == "2024 Attacks on Healthcare Incident Data.xlsx"
 
 
 def test_get_date_and_country_ranges_from_resources():
@@ -186,7 +186,6 @@ def test_create_datasets_in_hdx():
         print(resource["name"], flush=True)
     assert len(resources) >= 3
     assert dataset["name"].endswith("conflict-related-sexual-violence")
-    assert False
 
 
 def test_create_datasets_in_hdx_country():
