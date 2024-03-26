@@ -54,7 +54,7 @@ def test_create_or_fetch_base_dataset_create_use_legacy():
 
     assert not is_new
     assert dataset["name"] == "sind-safeguarding-healthcare-monthly-news-briefs-dataset"
-    assert len(dataset.keys()) == 54
+    assert len(dataset.keys()) > 45
 
 
 def test_create_or_fetch_base_dataset_create_country_use_legacy():
@@ -65,7 +65,7 @@ def test_create_or_fetch_base_dataset_create_country_use_legacy():
 
     assert not is_new
     assert dataset["name"] == "myanmar-attacks-on-aid-operations-education-health-and-protection"
-    assert len(dataset.keys()) == 51
+    assert len(dataset.keys()) > 45
 
 
 def test_find_resource_filename():

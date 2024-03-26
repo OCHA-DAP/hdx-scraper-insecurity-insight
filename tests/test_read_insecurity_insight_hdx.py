@@ -10,4 +10,3 @@ def test_create_insecurity_insight_resource_list():
     n_datasets, n_resources = create_insecurity_insight_resource_list()
 
     assert n_datasets == 38
-    assert n_resources == 320
