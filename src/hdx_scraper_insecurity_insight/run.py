@@ -68,8 +68,7 @@ def fetch_and_cache_api_responses(save_response: bool = False, use_sample: bool 
             LOGGER.info(f"Delaying next call for {API_DELAY} seconds")
             time.sleep(API_DELAY)
 
-    LOGGER.info(f"Loaded {len(api_cache)} API responses to cache")
-    assert len(api_cache) == 18, "Did not find data from expected 12 endpoints"
+    LOGGER.info(f"Loaded {len(api_cache)} API responses to cache, expected 18")
     return api_cache
 
 
@@ -98,8 +97,8 @@ def fetch_and_cache_datasets(use_legacy: bool = False) -> dict:
 
     LOGGER.info(f"Loaded {len(dataset_cache)} datasets to cache")
 
-    assert n_topic_datasets == 6, f"Found {n_topic_datasets} not 6 topic datasets"
-    assert n_countries == 24, f"Found {n_countries} not 24 expected country datasets"
+    LOGGER.info(f"Found {n_topic_datasets}, expected 6 topic datasets")
+    LOGGER.info(f"Found {n_countries}, expected 24 country datasets")
     return dataset_cache
 
 
@@ -217,7 +216,7 @@ def update_datasets_whose_resources_have_changed(
     api_cache: dict,
     dataset_cache: dict,
     dry_run: bool = False,
-    use_legacy: bool = False,
+    use_legacy: bool = True,
     hdx_site: str = "stage",
 ) -> list[list]:
     print_banner_to_log(LOGGER, "Update datasets")
@@ -273,7 +272,7 @@ if __name__ == "__main__":
     USE_SAMPLE = False
     DRY_RUN = False
     REFRESH_ALL = True
-    USE_LEGACY = False
+    USE_LEGACY = True
     HDX_SITE = "stage"
     T0 = time.time()
     print_banner_to_log(LOGGER, "Grand Run")

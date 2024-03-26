@@ -2,8 +2,8 @@ country_iso3,legacy_dataset_name
 PSE,opt-violent-and-threatening-incidents-against-healthcare
 MMR,myanmar-attacks-on-aid-operations-education-health-and-protection
 SDN,sudan-violence-against-civilians-and-vital-civilian-facilities
-SYR,syria-violent-and-threatening-incidents-against-healthcare
 AFG,afghanistan-violence-against-civilians-and-vital-civilian-facilities
+BGD,bangladesh-bgd-attacks-on-protection
 BFA,burkina-faso-violence-against-civilians-and-vital-civilian-facilities
 CMR,cameroon-attacks-on-civilians-and-vital-civilian-facilities
 UKR,ukraine-data-on-attacks-on-aid-operations-education-health-and-protection
@@ -23,3 +23,4 @@ CAF,car-violence-against-civilians-and-vital-civlian-facilities
 MEX,mexico-violent-and-threatening-incidents-against-health-care
 PAK,pakistan-violence-against-civilians-and-vital-civilian-facilities
 LBN,aid-security-risk-in-lebanon
+SYR,syria-violent-and-threatening-incidents-against-healthcare

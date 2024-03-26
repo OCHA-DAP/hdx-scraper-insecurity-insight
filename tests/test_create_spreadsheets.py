@@ -2,6 +2,8 @@
 # encoding: utf-8
 
 import os
+import pandas
+
 from hdx_scraper_insecurity_insight.create_spreadsheets import (
     generate_spreadsheet_filename,
     date_range_from_json,
@@ -33,6 +35,10 @@ def test_create_spreadsheet():
 
     assert expected_filename in status
     assert os.path.exists(expected_file_path)
+
+    sheets_df = pandas.read_excel(expected_file_path)
+
+    assert len(sheets_df) > 1
     if os.path.exists(expected_file_path):
         os.remove(expected_file_path)
 
@@ -48,6 +54,10 @@ def test_create_current_year_spreadsheet():
     status = create_spreadsheet(
         dataset_name, output_directory=temp_directory, api_response=SAMPLE_RESPONSE
     )
+
+    sheets_df = pandas.read_excel(expected_file_path)
+
+    assert len(sheets_df) == 19
 
     assert expected_filename in status
     assert os.path.exists(expected_file_path)

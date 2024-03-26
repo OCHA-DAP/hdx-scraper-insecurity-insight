@@ -82,7 +82,7 @@ def create_datasets_in_hdx(
     ii_metadata = read_insecurity_insight_attributes_pages(dataset_name)
     dataset["title"] = ii_metadata["Page"]
     dataset["description"] = ii_metadata["Page description"]
-    dataset["name"] = f"ihtest-{ii_metadata['legacy_name']}"
+    dataset["name"] = ii_metadata["legacy_name"]
 
     # We should fetch resoure names from insecurity insight metadata here
     # resource_names = dataset_attributes["resource"]
@@ -102,7 +102,10 @@ def create_datasets_in_hdx(
     dataset.set_maintainer(
         "972627a5-4f23-4922-8892-371ece6531b6"
     )  # It me # From Insecurity Insight 878dc76d-d357-4dce-8562-59f6421714e1
-    dataset.set_organization("hdx")  # Insecurity Insight 648d346e-3995-44cc-a559-29f8192a3010
+    dataset.set_organization("hdx")
+    dataset.set_organization(
+        "648d346e-3995-44cc-a559-29f8192a3010"
+    )  # Insecurity Insight 648d346e-3995-44cc-a559-29f8192a3010
 
     resource_list = []
 
@@ -135,19 +138,18 @@ def create_datasets_in_hdx(
             resource_description = resource_description.replace("[current year]", current_year)
 
         if "[to date]" in resource_description:
-            current_date_iso = datetime.datetime.now().isoformat()[0:10]
             if len(dataset_date) == 44:
-                current_date_iso = dataset_date[24:34]
+                most_recent_iso = dataset_date[24:34]
             elif len(dataset_date) == 26:
-                current_year = dataset_date[15:23]
+                most_recent_iso = dataset_date[15:25]
             else:
                 LOGGER.warning(
                     f"Dataset_date '{dataset_date}' is an unexpected length. Use current date"
                 )
-            current_date_dt = datetime.datetime.fromisoformat(current_date_iso)
-            current_date_human = current_date_dt.strftime("%d %B %Y")
+            most_recent_dt = datetime.datetime.fromisoformat(most_recent_iso)
+            most_recent_human = most_recent_dt.strftime("%d %B %Y")
 
-            resource_description = resource_description.replace("[to date]", current_date_human)
+            resource_description = resource_description.replace("[to date]", most_recent_human)
 
         resource = Resource(
             {
@@ -162,7 +164,9 @@ def create_datasets_in_hdx(
     dataset.add_update_resources(resource_list)
     if not dry_run:
         LOGGER.info("Dry_run flag not set so data written to HDX")
-        dataset.create_in_hdx()
+        # dataset.pop("extras")
+        # dataset.update_in_hdx(keys_to_delete=("extras",))
+        dataset.update_in_hdx()
     else:
         LOGGER.info("Dry_run flag set so no data written to HDX")
     LOGGER.info(f"{n_missing_resources} of {len(resource_names)} resources missing")

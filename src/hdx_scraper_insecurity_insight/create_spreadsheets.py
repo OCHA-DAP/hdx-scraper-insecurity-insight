@@ -78,6 +78,7 @@ def create_spreadsheet(
         year_filter = attributes.get("year_filter", "")
         if year_filter == "current year":
             year_filter = datetime.datetime.now().isoformat()[0:4]
+        # print(year_filter, flush=True)
 
     if api_response is None:
         # LOGGER.info("Using api_response sample, not live API")
@@ -87,7 +88,13 @@ def create_spreadsheet(
         # LOGGER.info("Using supplied API response")
 
     # Fetch API to Spreadsheet lookup
-    hdx_row, row_template = read_schema(dataset_name)
+    if dataset_name.endswith("current-year"):
+        modified_dataset_name = dataset_name.replace("-current-year", "")
+    else:
+        modified_dataset_name = dataset_name
+    hdx_row, row_template = read_schema(modified_dataset_name)
+    print(hdx_row, flush=True)
+    print(row_template, flush=True)
 
     output_rows.append(hdx_row)
 
