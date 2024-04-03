@@ -93,8 +93,6 @@ def create_spreadsheet(
     else:
         modified_dataset_name = dataset_name
     hdx_row, row_template = read_schema(modified_dataset_name)
-    print(hdx_row, flush=True)
-    print(row_template, flush=True)
 
     output_rows.append(hdx_row)
 

@@ -226,6 +226,7 @@ def update_datasets_whose_resources_have_changed(
 
     missing_report = []
     datasets = list_entities(type_="dataset")
+    n_missing_resources = 0
     for item in items_to_update:
         for dataset_name in datasets:
             if item[0] in dataset_name:
