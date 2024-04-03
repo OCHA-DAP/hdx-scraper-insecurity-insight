@@ -36,7 +36,9 @@ COUNTRIES = read_countries()
 
 def marshall_datasets(dataset_name_pattern: str, country_pattern: str, hdx_site: str = "stage"):
     if dataset_name_pattern.lower() != "all":
-        create_datasets_in_hdx(dataset_name_pattern, country_pattern, hdx_site=hdx_site)
+        create_datasets_in_hdx(
+            dataset_name_pattern, country_filter=country_pattern, hdx_site=hdx_site, use_legacy=True
+        )
     else:
         dataset_names = list_entities(type_="dataset")
 
@@ -61,7 +63,8 @@ def create_datasets_in_hdx(
     LOGGER.info(f"Dataset name: {dataset_name}")
     LOGGER.info(f"Country filter: {country_filter}")
     LOGGER.info(f"Dataset date provided: {dataset_date}")
-    LOGGER.info(f"Length of countries group provided: {len(countries_group)}")
+    if countries_group is not None:
+        LOGGER.info(f"Length of countries group provided: {len(countries_group)}")
     t0 = time.time()
 
     if dataset_cache is None:
@@ -127,25 +130,26 @@ def create_datasets_in_hdx(
         resource_description = resource_descriptions[resource_name]
         if "[current year]" in resource_description:
             current_year = datetime.datetime.now().isoformat()[0:4]
-            if len(dataset_date) == 44:
-                current_year = dataset_date[24:28]
-            elif len(dataset_date) == 26:
-                current_year = dataset_date[15:19]
+            date_regex = re.findall(r"\d{4}-\d{2}-\d{2}", dataset_date)
+            if len(date_regex) == 2:
+                most_recent_iso = date_regex[1][0:4]
             else:
                 LOGGER.warning(
-                    f"Dataset_date '{dataset_date}' is an unexpected length. Use current date"
+                    f"Dataset_date '{dataset_date}' is an unexpected format, "
+                    "using current date for most recent"
                 )
             resource_description = resource_description.replace("[current year]", current_year)
 
         if "[to date]" in resource_description:
-            if len(dataset_date) == 44:
-                most_recent_iso = dataset_date[24:34]
-            elif len(dataset_date) == 26:
-                most_recent_iso = dataset_date[15:25]
+            date_regex = re.findall(r"\d{4}-\d{2}-\d{2}", dataset_date)
+            if len(date_regex) == 2:
+                most_recent_iso = date_regex[1]
             else:
                 LOGGER.warning(
-                    f"Dataset_date '{dataset_date}' is an unexpected length. Use current date"
+                    f"Dataset_date '{dataset_date}' is an unexpected format, "
+                    "using current date for most recent"
                 )
+                most_recent_iso = datetime.datetime.now().isoformat()
             most_recent_dt = datetime.datetime.fromisoformat(most_recent_iso)
             most_recent_human = most_recent_dt.strftime("%d %B %Y")
 
@@ -166,7 +170,7 @@ def create_datasets_in_hdx(
         LOGGER.info("Dry_run flag not set so data written to HDX")
         # dataset.pop("extras")
         # dataset.update_in_hdx(keys_to_delete=("extras",))
-        dataset.update_in_hdx()
+        dataset.update_in_hdx(hxl_update=False)
     else:
         LOGGER.info("Dry_run flag set so no data written to HDX")
     LOGGER.info(f"{n_missing_resources} of {len(resource_names)} resources missing")
