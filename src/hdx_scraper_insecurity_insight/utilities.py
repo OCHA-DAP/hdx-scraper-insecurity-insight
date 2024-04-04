@@ -46,7 +46,7 @@ def fetch_json_from_api(dataset_name: str) -> list[dict]:
         "GET", attributes["api_url"], timeout=60, retries=Retry(90, backoff_factor=1.0)
     )
 
-    print(f"Response status: {response.status()}", flush=True)
+    print(f"Response status: {response.status}", flush=True)
     try:
         json_response = response.json()
     except json.decoder.JSONDecodeError:
