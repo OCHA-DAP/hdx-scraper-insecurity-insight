@@ -86,6 +86,7 @@ def create_datasets_in_hdx(
     dataset["title"] = ii_metadata["Page"]
     dataset["description"] = ii_metadata["Page description"]
     dataset["name"] = ii_metadata["legacy_name"]
+    dataset["maintainer"] = "878dc76d-d357-4dce-8562-59f6421714e1"  # insecurityinsight
 
     # We should fetch resoure names from insecurity insight metadata here
     # resource_names = dataset_attributes["resource"]
