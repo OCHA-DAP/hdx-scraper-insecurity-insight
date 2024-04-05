@@ -86,7 +86,6 @@ def create_datasets_in_hdx(
     dataset["title"] = ii_metadata["Page"]
     dataset["description"] = ii_metadata["Page description"]
     dataset["name"] = ii_metadata["legacy_name"]
-    dataset["maintainer"] = "878dc76d-d357-4dce-8562-59f6421714e1"  # insecurityinsight
 
     # We should fetch resoure names from insecurity insight metadata here
     # resource_names = dataset_attributes["resource"]
@@ -104,9 +103,8 @@ def create_datasets_in_hdx(
     dataset["groups"] = countries_group
     # Set organisation and maintainer in code because it is easier to update later.
     dataset.set_maintainer(
-        "972627a5-4f23-4922-8892-371ece6531b6"
-    )  # It me # From Insecurity Insight 878dc76d-d357-4dce-8562-59f6421714e1
-    dataset.set_organization("hdx")
+        "878dc76d-d357-4dce-8562-59f6421714e1"
+    )  # From Insecurity Insight 878dc76d-d357-4dce-8562-59f6421714e1
     dataset.set_organization(
         "648d346e-3995-44cc-a559-29f8192a3010"
     )  # Insecurity Insight 648d346e-3995-44cc-a559-29f8192a3010
