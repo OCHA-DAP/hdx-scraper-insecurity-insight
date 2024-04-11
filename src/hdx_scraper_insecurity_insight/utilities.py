@@ -12,6 +12,7 @@ import json
 import logging
 import os
 import sys
+import time
 
 from typing import Any
 
@@ -47,16 +48,13 @@ def fetch_json_from_api(dataset_name: str) -> list[dict]:
     )
 
     print(f"Response status: {response.status}", flush=True)
-    try:
-        json_response = response.json()
-    except json.decoder.JSONDecodeError:
-        print(
-            "Response from API threw a json.decoder.JSONDecodeError, trying once more", flush=True
-        )
+    if response.status == 503:
+        time.sleep(300)
         response = request(
             "GET", attributes["api_url"], timeout=60, retries=Retry(90, backoff_factor=1.0)
         )
-        json_response = response.json()
+
+    json_response = response.json()
 
     return json_response
 
