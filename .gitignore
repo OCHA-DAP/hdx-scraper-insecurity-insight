@@ -11,3 +11,5 @@ src/hdx_scraper_insecurity_insight/legacy-dataset-json/
 cov.xml
 
 tests/fixtures/test.csv
+
+logs/
