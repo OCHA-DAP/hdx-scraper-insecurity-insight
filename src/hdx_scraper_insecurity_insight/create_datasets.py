@@ -167,9 +167,9 @@ def create_datasets_in_hdx(
     dataset.add_update_resources(resource_list)
     if not dry_run:
         LOGGER.info("Dry_run flag not set so data written to HDX")
-        # dataset.pop("extras")
-        dataset.update_in_hdx(keys_to_delete=("extras",), hxl_update=False)
-        # dataset.update_in_hdx(hxl_update=False)
+        if "extras" in dataset.data:
+            dataset.data.pop("extras")
+        dataset.update_in_hdx(hxl_update=False)
     else:
         LOGGER.info("Dry_run flag set so no data written to HDX")
     LOGGER.info(f"{n_missing_resources} of {len(resource_names)} resources missing")

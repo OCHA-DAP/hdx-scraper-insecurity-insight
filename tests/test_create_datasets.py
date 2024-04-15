@@ -176,7 +176,7 @@ def test_create_datasets_in_hdx():
         dataset_name,
         dataset_date=dataset_date,
         countries_group=countries_group,
-        dry_run=True,
+        dry_run=True,  # If debugging the "extras" issue then set this to False
         use_legacy=True,
     )
 
