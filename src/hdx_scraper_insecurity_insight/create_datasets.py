@@ -170,7 +170,7 @@ def create_datasets_in_hdx(
         # This is required to address https://humanitarian.atlassian.net/browse/HDX-9716
         if "extras" in dataset.data:
             dataset.data.pop("extras")
-        dataset.update_in_hdx(hxl_update=False)
+        dataset.create_in_hdx(hxl_update=False)
     else:
         LOGGER.info("Dry_run flag set so no data written to HDX")
     LOGGER.info(f"{n_missing_resources} of {len(resource_names)} resources missing")
