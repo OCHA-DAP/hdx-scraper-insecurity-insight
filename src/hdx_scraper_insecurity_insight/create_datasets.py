@@ -171,6 +171,7 @@ def create_datasets_in_hdx(
         if "extras" in dataset.data:
             dataset.data.pop("extras")
         dataset.create_in_hdx(hxl_update=False, keys_to_delete=["extras"])
+        # dataset.update_in_hdx(hxl_update=False, keys_to_delete=[("extras",)])
     else:
         LOGGER.info("Dry_run flag set so no data written to HDX")
     LOGGER.info(f"{n_missing_resources} of {len(resource_names)} resources missing")
