@@ -89,7 +89,7 @@ def test_find_resource_filename_single_year():
     )
     filename = os.path.basename(filepath)
 
-    assert filename == "2023-MMR Attacks on Healthcare Incident Data.xlsx"
+    assert filename == "2023-MMR Attacks on Health Care Incident Data.xlsx"
 
 
 def test_find_resource_filename_current_year():
@@ -101,7 +101,7 @@ def test_find_resource_filename_current_year():
     )
     filename = os.path.basename(filepath)
 
-    assert filename == "2024 Attacks on Healthcare Incident Data.xlsx"
+    assert filename == "2024 Attacks on Health Care Incident Data.xlsx"
 
 
 def test_get_date_and_country_ranges_from_resources():
