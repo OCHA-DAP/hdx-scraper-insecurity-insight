@@ -102,7 +102,7 @@ def fetch_and_cache_datasets(use_legacy: bool = False) -> dict:
     return dataset_cache
 
 
-def check_api_has_not_changed(api_cache: dict) -> (bool, list):
+def check_api_has_not_changed(api_cache: dict) -> tuple[bool, list]:
     has_changed, changed_list = compare_api_to_samples(api_cache)
     LOGGER.info("\nChanged API endpoints:")
     for dataset_name in changed_list:
@@ -249,12 +249,18 @@ def update_datasets_whose_resources_have_changed(
     # If any data has updated we update all of the country datasets
     # LOGGER.info("**ONLY DOING ONE COUNTRY FOR TEST**")
     countries = read_countries()
+    # Make a default dataset_date in case a country dataset has no data
     start_date = min([x[1] for x in items_to_update])
     end_date = max([x[2] for x in items_to_update])
     dataset_date = f"[{start_date} TO {end_date}]"
     for country in countries:
         countries_group = [{"name": country.lower()}]
 
+        # start_date, end_date = get_date_range_from_api_response(
+        #     api_cache[f"insecurity-insight-{item[0]}-incidents"], country_filter=country
+        # )
+        # if start_date is not None and end_date is not None:
+        #     dataset_date = f"[{start_date} TO {end_date}]"
         dataset, n_missing_resources = create_datasets_in_hdx(
             COUNTRY_DATASET_BASENAME,
             country_filter=country,

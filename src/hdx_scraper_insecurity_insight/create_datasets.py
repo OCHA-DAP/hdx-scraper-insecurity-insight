@@ -93,7 +93,7 @@ def create_datasets_in_hdx(
     resource_names = [x["ih_name"] for x in ii_resource_attributes]
     resource_descriptions = {x["ih_name"]: x["Description"] for x in ii_resource_attributes}
     # This is a bit nasty since it reads the API for every resource in a dataset
-    # but we only do it if the dataset_date is
+    # but we only do it if the dataset_date is not set
     if dataset_date is None or countries_group is None:
         dataset_date, countries_group = get_date_and_country_ranges_from_resources(
             resource_names, country_filter=country_filter
@@ -164,14 +164,26 @@ def create_datasets_in_hdx(
         resource.set_file_to_upload(resource_filepath)
         resource_list.append(resource)
 
+    resource_list_names = [x["name"] for x in resource_list]
+
     dataset.add_update_resources(resource_list)
     if not dry_run:
         LOGGER.info("Dry_run flag not set so data written to HDX")
-        # This is required to address https://humanitarian.atlassian.net/browse/HDX-9716
-        if "extras" in dataset.data:
-            dataset.data.pop("extras")
-        dataset.create_in_hdx(hxl_update=False, keys_to_delete=["extras"])
-        # dataset.update_in_hdx(hxl_update=False, keys_to_delete=[("extras",)])
+        dataset_name = dataset["name"]
+        dataset.create_in_hdx(hxl_update=False)
+        # Reorder resources so that the datasets from the API come first - code from hdx-cli-toolkit
+        revised_dataset = Dataset.read_from_hdx(dataset_name)
+        resources_check = revised_dataset.get_resources()
+
+        reordered_resource_ids = [
+            x["id"] for x in resources_check if x["name"] in resource_list_names
+        ]
+        reordered_resource_ids.extend(
+            [x["id"] for x in resources_check if x["name"] not in resource_list_names]
+        )
+
+        revised_dataset.reorder_resources(hxl_update=False, resource_ids=reordered_resource_ids)
+
     else:
         LOGGER.info("Dry_run flag set so no data written to HDX")
     LOGGER.info(f"{n_missing_resources} of {len(resource_names)} resources missing")
@@ -313,16 +325,22 @@ def get_date_and_country_ranges_from_resources(
     return dataset_date, countries_group
 
 
-def get_date_range_from_api_response(api_response: list[dict]) -> (str, str):
+def get_date_range_from_api_response(
+    api_response: list[dict], country_filter: str = ""
+) -> tuple[str, str]:
+    filtered_json = filter_json_rows(country_filter, "", api_response)
     dates = []
 
     date_field, _ = pick_date_and_iso_country_fields(api_response[0])
 
-    for row in api_response:
+    for row in filtered_json:
         dates.append(row[date_field])
 
-    start_date = min(dates).replace("Z", "")[0:10]
-    end_date = max(dates).replace("Z", "")[0:10]
+    start_date = None
+    end_date = None
+    if len(dates) != 0:
+        start_date = min(dates).replace("Z", "")[0:10]
+        end_date = max(dates).replace("Z", "")[0:10]
 
     return start_date, end_date
 

@@ -157,7 +157,7 @@ def generate_spreadsheet_filename(
     return filename
 
 
-def date_range_from_json(json_response: list[dict]) -> (str, str):
+def date_range_from_json(json_response: list[dict]) -> tuple[str, str]:
     date_field, _ = pick_date_and_iso_country_fields(json_response[0])
 
     # The tail command ensures the HDX tag line is skipped
