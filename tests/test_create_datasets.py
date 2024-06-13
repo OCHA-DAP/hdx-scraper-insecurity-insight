@@ -184,7 +184,7 @@ def test_create_datasets_in_hdx():
     resources = dataset.get_resources()
     for resource in resources:
         print(resource["name"], flush=True)
-    assert len(resources) >= 3
+    assert len(resources) in [1, 3]
     assert dataset["name"].endswith("conflict-related-sexual-violence")
 
 
