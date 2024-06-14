@@ -285,7 +285,8 @@ def test_get_date_range_from_resource_file():
 
     for filename in test_filenames:
         test_filepath = os.path.join(test_file_directory, filename)
-        start_date, end_date = get_date_range_from_resource_file(test_filepath)
-        print(filename, start_date, end_date, flush=True)
-
-    assert False
+        _, end_date = get_date_range_from_resource_file(test_filepath)
+        if filename == "2020-2023 Conflict Related Sexual Violence Incident Data.xlsx":
+            assert end_date == "2023-12-09T00:00:00"
+        else:
+            assert end_date == "2023-04-29T00:00:00"
