@@ -11,7 +11,6 @@ import traceback
 from pathlib import Path
 
 import pandas
-from pandas.io.formats import excel
 
 from hdx.utilities.easy_logging import setup_logging
 from hdx.api.configuration import Configuration, ConfigurationError
@@ -134,9 +133,7 @@ def create_datasets_in_hdx(
         if "[current year]" in resource_description:
             current_year = datetime.datetime.now().isoformat()[0:4]
             date_regex = re.findall(r"\d{4}-\d{2}-\d{2}", dataset_date)
-            if len(date_regex) == 2:
-                most_recent_iso = date_regex[1][0:4]
-            else:
+            if len(date_regex) != 2:
                 LOGGER.warning(
                     f"Dataset_date '{dataset_date}' is an unexpected format, "
                     "using current date for most recent"
