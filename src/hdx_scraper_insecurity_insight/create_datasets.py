@@ -10,6 +10,9 @@ import traceback
 
 from pathlib import Path
 
+import pandas
+from pandas.io.formats import excel
+
 from hdx.utilities.easy_logging import setup_logging
 from hdx.api.configuration import Configuration, ConfigurationError
 from hdx.data.dataset import Dataset
@@ -125,6 +128,7 @@ def create_datasets_in_hdx(
         if resource_filepath is None:
             n_missing_resources += 1
             continue
+
         # Update resource_description
         resource_description = resource_descriptions[resource_name]
         if "[current year]" in resource_description:
@@ -139,20 +143,23 @@ def create_datasets_in_hdx(
                 )
             resource_description = resource_description.replace("[current year]", current_year)
 
+        # This is where we would get start and end dates for an actual dataset
         if "[to date]" in resource_description:
-            date_regex = re.findall(r"\d{4}-\d{2}-\d{2}", dataset_date)
-            if len(date_regex) == 2:
-                most_recent_iso = date_regex[1]
-            else:
-                LOGGER.warning(
-                    f"Dataset_date '{dataset_date}' is an unexpected format, "
-                    "using current date for most recent"
-                )
-                most_recent_iso = datetime.datetime.now().isoformat()
-            most_recent_dt = datetime.datetime.fromisoformat(most_recent_iso)
-            most_recent_human = most_recent_dt.strftime("%d %B %Y")
+            _, end_date = get_date_range_from_resource_file(resource_filepath)
+            # date_regex = re.findall(r"\d{4}-\d{2}-\d{2}", dataset_date)
+            # if len(date_regex) == 2:
+            #     most_recent_iso = date_regex[1]
+            # else:
+            #     LOGGER.warning(
+            #         f"Dataset_date '{dataset_date}' is an unexpected format, "
+            #         "using current date for most recent"
+            #     )
+            #     most_recent_iso = datetime.datetime.now().isoformat()
+            end_date_dt = datetime.datetime.fromisoformat(end_date)
+            end_date_human = end_date_dt.strftime("%d %B %Y")
 
-            resource_description = resource_description.replace("[to date]", most_recent_human)
+            resource_description = resource_description.replace("[to date]", end_date_human)
+            print(resource_description, flush=True)
 
         resource = Resource(
             {
@@ -341,6 +348,28 @@ def get_date_range_from_api_response(
     if len(dates) != 0:
         start_date = min(dates).replace("Z", "")[0:10]
         end_date = max(dates).replace("Z", "")[0:10]
+
+    return start_date, end_date
+
+
+def get_date_range_from_resource_file(resource_filepath: str) -> str:
+    if "Overview" in resource_filepath:
+        resource_filepath = resource_filepath.replace("Overview", "Incident")
+
+    start_date = None
+    end_date = None
+
+    sheets_df = pandas.read_excel(resource_filepath)
+    sheets_df.drop(sheets_df.head(1).index, inplace=True)
+    first_row = sheets_df.to_dict(orient="records")[0]
+
+    date_field, _ = pick_date_and_iso_country_fields(first_row)
+
+    dates = sheets_df[date_field].to_list()
+    start_date = min(dates).replace("Z", "")
+    end_date = max(dates).replace("Z", "")
+    start_date = datetime.datetime.fromisoformat(start_date).isoformat()
+    end_date = datetime.datetime.fromisoformat(end_date).isoformat()
 
     return start_date, end_date
 

@@ -14,6 +14,7 @@ from hdx_scraper_insecurity_insight.create_datasets import (
     get_legacy_dataset_name,
     create_or_fetch_base_dataset,
     create_datasets_in_hdx,
+    get_date_range_from_resource_file,
 )
 
 
@@ -273,3 +274,18 @@ def test_create_datasets_in_hdx_country_use_legacy():
         "Afghanistan (AFG): Attacks on Aid Operations, Education and Health Care, "
         "and Explosive Weapons Incident Data"
     )
+
+
+def test_get_date_range_from_resource_file():
+    test_filenames = [
+        "2020-2023 Conflict Related Sexual Violence Incident Data.xlsx",
+        "2023-MMR Attacks on Health Care Incident Data.xlsx",
+    ]
+    test_file_directory = os.path.join(os.path.dirname(__file__), "fixtures")
+
+    for filename in test_filenames:
+        test_filepath = os.path.join(test_file_directory, filename)
+        start_date, end_date = get_date_range_from_resource_file(test_filepath)
+        print(filename, start_date, end_date, flush=True)
+
+    assert False
