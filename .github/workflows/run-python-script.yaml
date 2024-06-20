@@ -5,8 +5,8 @@ name: Run Insecurity Insight Script
 on:
     workflow_dispatch: # add run button in GitHub UI
     schedule: #  Run script according to a cron schedule
-    - cron: "0 7 * * *" # schedule for test
-    #- cron: "0 7 * * MON" # Schedule for production
+    # - cron: "0 7 * * *" # schedule for test
+    - cron: "0 7 * * MON" # Schedule for production
 
 jobs:
   build:
@@ -24,7 +24,8 @@ jobs:
         make install
     - name: Run script
       env: #  Environment variables mapped from GitHub repository's secrets to be used by script
-        HDX_KEY: ${{ secrets.HDX_KEY }}
+        HDX_KEY_STAGE: ${{ secrets.HDX_KEY_STAGE }}
+        HDX_KEY: ${{ secrets.HDX_BOT_SCRAPERS_API_TOKEN }}
         HDX_SITE: ${{ vars.HDX_SITE }}
         USER_AGENT: ${{ vars.USER_AGENT }}
         PREPREFIX: ${{ vars.PREPREFIX }}
