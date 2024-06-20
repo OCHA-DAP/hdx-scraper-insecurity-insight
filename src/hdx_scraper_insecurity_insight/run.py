@@ -72,7 +72,7 @@ def fetch_and_cache_api_responses(save_response: bool = False, use_sample: bool 
     return api_cache
 
 
-def fetch_and_cache_datasets(use_legacy: bool = False, hdx_site:str="stage") -> dict:
+def fetch_and_cache_datasets(use_legacy: bool = False, hdx_site: str = "stage") -> dict:
     dataset_cache = {}
     print_banner_to_log(LOGGER, "Populate dataset cache")
     dataset_list = list_entities(type_="dataset")
