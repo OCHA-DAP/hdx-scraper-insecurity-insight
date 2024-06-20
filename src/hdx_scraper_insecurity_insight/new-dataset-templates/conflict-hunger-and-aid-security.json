@@ -1,0 +1,39 @@
+{
+    "name": "insecurity-insight-foodsecurity-dataset",
+    "title": "Conflict, Hunger and Aid Security",
+    "private": false,
+    "notes": "This page provides data on conflict events affecting food insecurity in the form of the Food Insecurity and Violent Conflict (FIVC) datasets. Please get in touch if you are interested in curated datasets: info@insecurityinsight.org",
+    "dataset_source": "Insecurity Insight",
+    "dataset_date": "[2020-01-01T00:00:00 TO 2023-10-17T23:59:59]",
+    "data_update_frequency": "30",
+    "groups": [
+        {
+            "name": "afg"
+        },
+        {
+            "name": "world"
+        }
+    ],
+    "isopen": true,
+    "license_id": "cc-by",
+    "maintainer": "972627a5-4f23-4922-8892-371ece6531b6",
+    "methodology": "Other",
+    "methodology_other": "Systematically collected from open source, public reports as well as verified submissions from our partner agencies.",
+    "caveats": "Not representative or a comprehensive compilation of all events impacting food security. Data collection is ongoing and data may change as more information is made available.",
+    "owner_org": "hdx",
+    "subnational": 1,
+    "tags": [
+        {
+            "name": "hxl"
+        },
+        {
+            "name": "conflict-violence"
+        },
+        {
+            "name": "food security"
+        },
+        {
+            "name": "OPT-Israel-hostilities"
+        }
+    ]
+}
