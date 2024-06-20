@@ -202,7 +202,7 @@ def create_or_fetch_base_dataset(
     country_filter: str = "",
     force_create: bool = False,
     use_legacy: bool = False,
-    hdx_site: str = "prod",
+    hdx_site: str = "stage",
 ) -> tuple[dict, bool]:
     is_new = True
     dataset_attributes = read_attributes(dataset_name)

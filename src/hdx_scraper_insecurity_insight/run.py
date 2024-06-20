@@ -290,7 +290,7 @@ if __name__ == "__main__":
     T0 = time.time()
     print_banner_to_log(LOGGER, "Grand Run")
     API_CACHE = fetch_and_cache_api_responses(use_sample=USE_SAMPLE)
-    DATASET_CACHE = fetch_and_cache_datasets(use_legacy=USE_LEGACY)
+    DATASET_CACHE = fetch_and_cache_datasets(use_legacy=USE_LEGACY, hdx_site=HDX_SITE)
     HAS_CHANGED, CHANGED_LIST = check_api_has_not_changed(API_CACHE)
     ITEMS_TO_UPDATE = decide_which_resources_have_fresh_data(
         DATASET_CACHE, API_CACHE, refresh_all=REFRESH_ALL
