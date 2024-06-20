@@ -54,7 +54,7 @@ def create_datasets_in_hdx(
     dataset_name: str,
     dataset_cache: dict = None,
     country_filter: str = "",
-    hdx_site: str = "stage",
+    hdx_site: str = "prod",
     dry_run: bool = False,
     use_legacy: bool = False,
     dataset_date: str = None,
@@ -71,7 +71,7 @@ def create_datasets_in_hdx(
 
     if dataset_cache is None:
         dataset, _ = create_or_fetch_base_dataset(
-            dataset_name, country_filter=country_filter, use_legacy=use_legacy
+            dataset_name, country_filter=country_filter, use_legacy=use_legacy, hdx_site=hdx_site
         )
     else:
         if country_filter is not None and country_filter != "":
@@ -202,7 +202,7 @@ def create_or_fetch_base_dataset(
     country_filter: str = "",
     force_create: bool = False,
     use_legacy: bool = False,
-    hdx_site: str = "stage",
+    hdx_site: str = "prod",
 ) -> tuple[dict, bool]:
     is_new = True
     dataset_attributes = read_attributes(dataset_name)

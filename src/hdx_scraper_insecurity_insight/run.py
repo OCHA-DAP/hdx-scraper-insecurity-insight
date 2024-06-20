@@ -72,7 +72,7 @@ def fetch_and_cache_api_responses(save_response: bool = False, use_sample: bool 
     return api_cache
 
 
-def fetch_and_cache_datasets(use_legacy: bool = False) -> dict:
+def fetch_and_cache_datasets(use_legacy: bool = False, hdx_site:str="stage") -> dict:
     dataset_cache = {}
     print_banner_to_log(LOGGER, "Populate dataset cache")
     dataset_list = list_entities(type_="dataset")
@@ -82,7 +82,9 @@ def fetch_and_cache_datasets(use_legacy: bool = False) -> dict:
         print(dataset, flush=True)
         if dataset == COUNTRY_DATASET_BASENAME:
             continue
-        dataset_cache[dataset], _ = create_or_fetch_base_dataset(dataset, use_legacy=use_legacy)
+        dataset_cache[dataset], _ = create_or_fetch_base_dataset(
+            dataset, use_legacy=use_legacy, hdx_site=hdx_site
+        )
         n_topic_datasets += 1
 
     # Load country datasets
@@ -91,7 +93,10 @@ def fetch_and_cache_datasets(use_legacy: bool = False) -> dict:
     for country in countries.keys():
         dataset_name = COUNTRY_DATASET_BASENAME.replace("country", country.lower())
         dataset_cache[dataset_name], _ = create_or_fetch_base_dataset(
-            COUNTRY_DATASET_BASENAME, country_filter=country, use_legacy=use_legacy
+            COUNTRY_DATASET_BASENAME,
+            country_filter=country,
+            use_legacy=use_legacy,
+            hdx_site=hdx_site,
         )
         n_countries += 1
 
@@ -217,7 +222,7 @@ def update_datasets_whose_resources_have_changed(
     dataset_cache: dict,
     dry_run: bool = False,
     use_legacy: bool = True,
-    hdx_site: str = "stage",
+    hdx_site: str = "prod",
 ) -> list[list]:
     print_banner_to_log(LOGGER, "Update datasets")
     if len(items_to_update) == 0:
@@ -268,6 +273,7 @@ def update_datasets_whose_resources_have_changed(
             dataset_date=dataset_date,
             countries_group=countries_group,
             dry_run=dry_run,
+            hdx_site=hdx_site,
         )
         if n_missing_resources != 0:
             missing_report.append([dataset["name"], n_missing_resources])
