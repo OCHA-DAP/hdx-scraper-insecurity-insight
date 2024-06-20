@@ -105,7 +105,7 @@ insecurity-insight-healthcare-overview,2023-11-27T13:47:07.398144,legacy_resourc
 insecurity-insight-healthcare-overview,2023-11-27T13:47:07.398144,description,Overview dataset on attacks on healthcare based on agency- and open source events.,
 insecurity-insight-healthcare-overview,2023-11-27T13:47:07.398144,api_url,https://sind-api.herokuapp.com/hdx/v1/healthcareOverview,
 insecurity-insight-healthcare-overview,2023-11-27T13:47:07.398144,api_response_filename,healthcareOverview.json,
-insecurity-insight-healthcare-overview,2023-11-27T13:47:07.398144,filename_template,{start_year}-{end_year}{country_iso} Attacks on Healthcare Overview Data.xlsx,
+insecurity-insight-healthcare-overview,2023-11-27T13:47:07.398144,filename_template,{start_year}-{end_year}{country_iso} Attacks on Health Care Overview Data.xlsx,
 insecurity-insight-healthcare-overview,2023-11-27T13:47:07.398144,file_format,XLSX,
 insecurity-insight-protection-dataset,2023-11-27T13:47:07.398144,entity_type,dataset,
 insecurity-insight-protection-dataset,2023-11-27T13:47:07.398144,legacy_name,sind-protection-in-danger-monthly-news-briefs-dataset,
