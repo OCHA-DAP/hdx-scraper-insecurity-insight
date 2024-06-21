@@ -87,6 +87,7 @@ def generate_schema(dataset_name: str, api_fields_basis: bool = False) -> str:
         "n_hxl_tags": "",
     }
     if "overview" in dataset_name:
+        print("Overview files should be updated manually in schema-overview.csv", flush=True)
         return status
     attributes = read_attributes(dataset_name)
     # Get relevant cached API response

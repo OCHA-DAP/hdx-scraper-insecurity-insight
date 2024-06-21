@@ -70,3 +70,7 @@ insecurity-insight-aidworkerKIKA-overview,Total Aid Workers Kidnapped,Total Aid 
 insecurity-insight-aidworkerKIKA-overview,Total Aid Workers Arrested,Total Aid Workers Arrested,8,,#affected,,
 insecurity-insight-aidworkerKIKA-overview,Total Aid Workers Killed In Captivity,Total Aid Workers Killed In Captivity,9,,#affected +killed,,
 insecurity-insight-aidworkerKIKA-overview,Total Aid Workers Maltreated In Captivity,Total Aid Workers Maltreated In Captivity,10,,#affected,,
+insecurity-insight-foodsecurity-overview,Country,Country,0,,#country,,
+insecurity-insight-foodsecurity-overview,Year,Year,1,,#date +occurred,,
+insecurity-insight-foodsecurity-overview,Country ISO,Country ISO,2,,#country_ISO,,
+insecurity-insight-foodsecurity-overview,Number of Events,Number of Events,3,,#event +count,,

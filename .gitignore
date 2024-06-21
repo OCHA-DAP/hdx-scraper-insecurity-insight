@@ -13,3 +13,5 @@ cov.xml
 tests/fixtures/test.csv
 
 logs/
+
+src/hdx_scraper_insecurity_insight/temp/
