@@ -126,6 +126,7 @@ def test_read_insecurity_insight_attributes_pages():
     dataset_list = list_entities()
 
     for dataset_name in dataset_list:
+        print(dataset_name, flush=True)
         if dataset_name == "insecurity-insight-country-dataset":
             continue
         ii_attributes = read_insecurity_insight_attributes_pages(dataset_name)

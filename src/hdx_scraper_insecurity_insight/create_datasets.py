@@ -54,7 +54,7 @@ def create_datasets_in_hdx(
     dataset_name: str,
     dataset_cache: dict = None,
     country_filter: str = "",
-    hdx_site: str = "prod",
+    hdx_site: str = None,
     dry_run: bool = False,
     use_legacy: bool = False,
     dataset_date: str = None,
@@ -84,7 +84,10 @@ def create_datasets_in_hdx(
     LOGGER.info(f"Dataset title: {dataset['title']}")
     # This is where we get title, description and potentially name
     # from New-HDX-APIs-1-HDX-Home-Page.csv
+    print(dataset_name, flush=True)
     ii_metadata = read_insecurity_insight_attributes_pages(dataset_name)
+    if "foodsecurity" in dataset_name:
+        print(ii_metadata, flush=True)
     dataset["title"] = ii_metadata["Page"]
     dataset["description"] = ii_metadata["Page description"]
     dataset["name"] = ii_metadata["legacy_name"]

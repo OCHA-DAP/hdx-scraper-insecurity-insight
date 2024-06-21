@@ -34,6 +34,15 @@ setup_logging()
 LOGGER = logging.getLogger(__name__)
 COUNTRY_DATASET_BASENAME = "insecurity-insight-country-dataset"
 API_DELAY = 5
+TOPICS = [
+    "crsv",
+    "education",
+    "explosive",
+    "healthcare",
+    "protection",
+    "aidworkerKIKA",
+    "foodsecurity",
+]
 
 
 def fetch_and_cache_api_responses(save_response: bool = False, use_sample: bool = False) -> dict:
@@ -149,7 +158,7 @@ def decide_which_resources_have_fresh_data(
     # Compare
     items_to_update = []
     LOGGER.info(f"{'item':<15} {'API Date':<10} {'Dataset Date':<8}")
-    for item in ["crsv", "education", "explosive", "healthcare", "protection", "aidworkerKIKA"]:
+    for item in TOPICS:
         resource_key = f"insecurity-insight-{item}-incidents"
         dataset_key = f"insecurity-insight-{item}-dataset"
         update_str = ""
@@ -222,7 +231,7 @@ def update_datasets_whose_resources_have_changed(
     dataset_cache: dict,
     dry_run: bool = False,
     use_legacy: bool = True,
-    hdx_site: str = "prod",
+    hdx_site: str = None,
 ) -> list[list]:
     print_banner_to_log(LOGGER, "Update datasets")
     if len(items_to_update) == 0:
@@ -283,7 +292,7 @@ def update_datasets_whose_resources_have_changed(
 
 if __name__ == "__main__":
     USE_SAMPLE = False
-    DRY_RUN = True
+    DRY_RUN = False
     REFRESH_ALL = True
     USE_LEGACY = True
     HDX_SITE = "stage"
