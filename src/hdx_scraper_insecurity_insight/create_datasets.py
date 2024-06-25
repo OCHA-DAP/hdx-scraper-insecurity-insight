@@ -84,10 +84,7 @@ def create_datasets_in_hdx(
     LOGGER.info(f"Dataset title: {dataset['title']}")
     # This is where we get title, description and potentially name
     # from New-HDX-APIs-1-HDX-Home-Page.csv
-    print(dataset_name, flush=True)
     ii_metadata = read_insecurity_insight_attributes_pages(dataset_name)
-    if "foodsecurity" in dataset_name:
-        print(ii_metadata, flush=True)
     dataset["title"] = ii_metadata["Page"]
     dataset["description"] = ii_metadata["Page description"]
     dataset["name"] = ii_metadata["legacy_name"]
@@ -295,6 +292,8 @@ def find_resource_filepath(
             f"`{spreadsheet_regex_single_year}` "
             "found in `output-spreadsheets`, 1 was expected"
         )
+        for file in files:
+            print(file, flush=True)
         # raise FileNotFoundError
     else:
         filename = files[0]
