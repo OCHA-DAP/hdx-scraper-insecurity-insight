@@ -5,8 +5,8 @@ name: Run Insecurity Insight Script
 on:
     workflow_dispatch: # add run button in GitHub UI
     schedule: #  Run script according to a cron schedule
-    # - cron: "0 7 * * *" # schedule for test
-    - cron: "0 7 * * MON" # Schedule for production
+    - cron: "0 7 * * *" # schedule for test
+    # - cron: "0 7 * * MON" # Schedule for production
 
 jobs:
   build:
