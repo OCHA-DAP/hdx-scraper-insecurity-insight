@@ -3,10 +3,10 @@
 import pytest
 
 from hdx_scraper_insecurity_insight.run import (
-    update_date_from_string,
+    parse_dates_from_string,
     fetch_and_cache_datasets,
     fetch_and_cache_api_responses,
-    # decide_which_resources_have_fresh_data,
+    decide_which_resources_have_fresh_data,
     # refresh_spreadsheets_with_fresh_data,
     # update_datasets_whose_resources_have_changed,
 )
@@ -32,15 +32,72 @@ def test_check_api_has_not_changed():
 
 
 def test_decide_which_resources_have_fresh_data():
-    pass
+    dataset_cache = {
+        "insecurity-insight-healthcare-dataset": {
+            "dataset_date": "[2020-01-01T00:00:00 TO 2023-10-17T23:59:59]"
+        }
+    }
+    api_cache = {
+        "insecurity-insight-healthcare-incidents": [
+            {
+                "Date": "2024-03-06T00:00:00.000Z",
+                "Country ISO": "UKR",
+            },
+            {
+                "Date": "2024-03-03T00:00:00.000Z",
+                "Country ISO": "UKR",
+            },
+        ]
+    }
+    items_to_update = decide_which_resources_have_fresh_data(
+        dataset_cache,
+        api_cache,
+        refresh_all=False,
+        dataset_list=["insecurity-insight-healthcare-dataset"],
+        resource_list=["insecurity-insight-healthcare-incidents"],
+        topic_list=["healthcare"],
+    )
+
+    assert items_to_update == [("healthcare", "2024-03-03", "2024-03-06")]
 
 
-def test_update_date_from_string():
+def test_decide_which_resources_have_fresh_data_backfill():
+    dataset_cache = {
+        "insecurity-insight-healthcare-dataset": {
+            "dataset_date": "[2020-01-01T00:00:00 TO 2023-10-17T23:59:59]"
+        }
+    }
+    api_cache = {
+        "insecurity-insight-healthcare-incidents": [
+            {
+                "Date": "2023-10-17T00:00:00.000Z",
+                "Country ISO": "UKR",
+            },
+            {
+                "Date": "2019-01-01T00:00:00.000Z",
+                "Country ISO": "UKR",
+            },
+        ]
+    }
+    items_to_update = decide_which_resources_have_fresh_data(
+        dataset_cache,
+        api_cache,
+        refresh_all=False,
+        dataset_list=["insecurity-insight-healthcare-dataset"],
+        resource_list=["insecurity-insight-healthcare-incidents"],
+        topic_list=["healthcare"],
+    )
+    print(items_to_update, flush=True)
+    assert items_to_update == [("healthcare", "2019-01-01", "2023-10-17")]
+
+
+def test_parse_dates_from_string():
     dataset_date = "[2020-01-01T00:00:00 TO 2023-10-17T23:59:59]"
 
-    update_date = update_date_from_string(dataset_date)
+    start_date, end_date = parse_dates_from_string(dataset_date)
 
-    assert update_date == "2023-10-17"
+    assert start_date == "2020-01-01"
+    assert end_date == "2023-10-17"
 
 
 def test_refresh_spreadsheets_with_fresh_data():
