@@ -37,7 +37,9 @@ def fetch_json(dataset_name: str, use_sample: bool = False):
         json_response = fetch_json_from_samples(dataset_name)
     else:
         json_response = fetch_json_from_api(dataset_name)
-    return json_response
+
+    censored_location_response = censor_location("PSE", json_response)
+    return censored_location_response
 
 
 def fetch_json_from_api(dataset_name: str) -> list[dict]:
@@ -91,6 +93,26 @@ def filter_json_rows(country_filter: str, year_filter: str, api_response: list[d
         filtered_rows.append(api_row)
 
     return filtered_rows
+
+
+def censor_location(countries: list[str], api_response: list[dict]) -> list[dict]:
+    censored_rows = []
+
+    if "Latitude" not in api_response[0].keys():
+        logging.info("API response does not contain latitude/longitude fields")
+    else:
+        logging.info(f"API response contains latitude/longitude fields, censoring for {countries}")
+    date_field, iso_country_field = pick_date_and_iso_country_fields(api_response[0])
+
+    # Geo fields are Latitude, Longitude and Geo Precision
+    for api_row in api_response:
+        if api_row[iso_country_field] in countries:
+            api_row["Latitude"] = ""
+            api_row["Longitude"] = ""
+            api_row["Geo Precision"] = "censored"
+        censored_rows.append(api_row)
+
+    return censored_rows
 
 
 def read_attributes(dataset_name: str) -> dict:
