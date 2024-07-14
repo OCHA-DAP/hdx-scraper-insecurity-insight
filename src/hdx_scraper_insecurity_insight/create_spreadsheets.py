@@ -186,7 +186,7 @@ def make_type_dict(row_template: dict) -> dict:
             type_dict[key] = "datetime64[ns, UTC]"
         elif "#geo" in value and "+precision" not in value:
             type_dict[key] = "float64"
-        elif "#affected" in value or "#num" in value:
+        elif "#affected" in value or "+num" in value:
             type_dict[key] = "Int64"
         else:
             type_dict[key] = str
