@@ -126,8 +126,8 @@ def test_censor_location():
             flush=True,
         )
         if record["Country ISO"] == "PSE":
-            assert len(record["Latitude"]) == 0
-            assert len(record["Longitude"]) == 0
+            assert record["Latitude"] is None
+            assert record["Longitude"] is None
             assert record["Geo Precision"] == "censored"
             break
         else:

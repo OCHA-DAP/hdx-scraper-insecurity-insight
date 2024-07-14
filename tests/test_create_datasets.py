@@ -278,15 +278,13 @@ def test_create_datasets_in_hdx_country_use_legacy():
 
 def test_get_date_range_from_resource_file():
     test_filenames = [
-        "2020-2023 Conflict Related Sexual Violence Incident Data.xlsx",
-        "2023-MMR Attacks on Health Care Incident Data.xlsx",
+        ("2024 Conflict Related Sexual Violence Incident Data.xlsx", "2024-05-21T00:00:00"),
+        ("2020-2023 Conflict Related Sexual Violence Incident Data.xlsx", "2023-12-09T00:00:00"),
+        ("2023-MMR Attacks on Health Care Incident Data.xlsx", "2023-04-29T00:00:00+00:00"),
     ]
     test_file_directory = os.path.join(os.path.dirname(__file__), "fixtures")
 
-    for filename in test_filenames:
+    for filename, expected_end_date in test_filenames:
         test_filepath = os.path.join(test_file_directory, filename)
         _, end_date = get_date_range_from_resource_file(test_filepath)
-        if filename == "2020-2023 Conflict Related Sexual Violence Incident Data.xlsx":
-            assert end_date == "2023-12-09T00:00:00"
-        else:
-            assert end_date == "2023-04-29T00:00:00"
+        assert end_date == expected_end_date

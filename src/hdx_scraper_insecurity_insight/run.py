@@ -66,7 +66,7 @@ def fetch_and_cache_api_responses(save_response: bool = False, use_sample: bool 
             f"... took {time.time()-t0:0.0f} seconds for {len(api_cache[resource])} records"
         )
         if not use_sample:
-            LOGGER.info(f"Delaying next call for {API_DELAY} seconds")
+            LOGGER.info(f"Delaying next call for {API_DELAY} seconds\n")
             time.sleep(API_DELAY)
 
     LOGGER.info(f"Loaded {len(api_cache)} API responses to cache, expected 18")
@@ -326,7 +326,7 @@ def update_datasets_whose_resources_have_changed(
 
 if __name__ == "__main__":
     USE_SAMPLE = False
-    DRY_RUN = False
+    DRY_RUN = True
     REFRESH_ALL = False
     USE_LEGACY = True
     HDX_SITE = "prod"

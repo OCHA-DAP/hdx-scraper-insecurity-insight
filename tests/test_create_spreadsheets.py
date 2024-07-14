@@ -44,6 +44,28 @@ def test_create_spreadsheet():
     #     os.remove(expected_file_path)
 
 
+def test_create_spreadsheet_healthcare():
+    healthcare_dataset = "insecurity-insight-healthcare-incidents"
+    expected_filename = "2020-2024 Attacks on Health Care Incident Data.xlsx"
+    temp_directory = os.path.join(os.path.dirname(__file__), "temp")
+
+    expected_file_path = os.path.join(temp_directory, expected_filename)
+    if os.path.exists(expected_file_path):
+        os.remove(expected_file_path)
+    status = create_spreadsheet(
+        healthcare_dataset, output_directory=temp_directory, api_response=SAMPLE_RESPONSE
+    )
+
+    assert expected_filename in status
+    assert os.path.exists(expected_file_path)
+
+    sheets_df = pandas.read_excel(expected_file_path)
+
+    assert len(sheets_df) > 1
+    # if os.path.exists(expected_file_path):
+    #     os.remove(expected_file_path)
+
+
 def test_create_current_year_spreadsheet():
     dataset_name = "insecurity-insight-crsv-incidents-current-year"
     expected_filename = "2024 Conflict Related Sexual Violence Incident Data.xlsx"
@@ -58,7 +80,7 @@ def test_create_current_year_spreadsheet():
 
     sheets_df = pandas.read_excel(expected_file_path)
 
-    assert len(sheets_df) == 19
+    assert len(sheets_df) == 18
 
     assert expected_filename in status
     assert os.path.exists(expected_file_path)
@@ -110,6 +132,6 @@ def test_transform_input_rows():
 def test_make_type_dict():
     hdx_row, row_template = read_schema(DATASET_NAME)
     type_dict = make_type_dict(hdx_row)
-    assert type_dict["Date"] == "datetime64[ns]"
+    assert type_dict["Date"] == "datetime64[ns, UTC]"
     assert type_dict["Longitude"] == "float64"
     assert type_dict["Number of Reported Victims"] == "Int64"

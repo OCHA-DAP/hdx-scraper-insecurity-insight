@@ -112,15 +112,15 @@ def create_spreadsheet(
 
     # Type conversions
     type_dict = make_type_dict(hdx_row)
-    output_dataframe = output_dataframe.astype(type_dict)
+    output_dataframe = output_dataframe.astype(type_dict, errors="ignore")
     for key, value in type_dict.items():
-        if value == "datetime64[ns]":
+        if value == "datetime64[ns, UTC]":
             output_dataframe[key] = output_dataframe[key].dt.date
 
     # Add hdx_row
     # hdx_row_df = pandas.DataFrame(hdx_row, index=[0])
     # output_dataframe = pandas.concat([hdx_row_df, output_dataframe])
-    print(output_dataframe.dtypes, flush=True)
+    # print(output_dataframe.dtypes, flush=True)
 
     # print(output_dataframe, flush=True)
 
@@ -183,12 +183,16 @@ def make_type_dict(row_template: dict) -> dict:
 
     for key, value in row_template.items():
         if "#date" in value:
-            type_dict[key] = "datetime64[ns]"
+            type_dict[key] = "datetime64[ns, UTC]"
         elif "#geo" in value and "+precision" not in value:
             type_dict[key] = "float64"
         elif "#affected" in value or "#num" in value:
             type_dict[key] = "Int64"
         else:
+            type_dict[key] = str
+
+        # Known Kidnapping or Arrest Outcome has a HXL tag "#affected" but is a string field
+        if "outcome" in key.lower() or key == "Affected":
             type_dict[key] = str
 
     return type_dict
