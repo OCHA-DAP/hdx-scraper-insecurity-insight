@@ -35,10 +35,15 @@ INSECURITY_INSIGHTS_FILEPATH_COUNTRIES = os.path.join(
 def fetch_json(dataset_name: str, use_sample: bool = False):
     if use_sample:
         json_response = fetch_json_from_samples(dataset_name)
+        censored_location_response = censor_location("PSE", json_response)
     else:
         json_response = fetch_json_from_api(dataset_name)
+        # Email from Helen Buck on 19th July 2024 that censoring on API has already been
+        # implemented
+        censored_location_response = json_response
 
-    censored_location_response = censor_location("PSE", json_response)
+    #
+
     return censored_location_response
 
 
