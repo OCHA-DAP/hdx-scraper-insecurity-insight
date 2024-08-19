@@ -10,6 +10,7 @@ from hdx_scraper_insecurity_insight.utilities import (
     fetch_json_from_api,
     fetch_json_from_samples,
     filter_json_rows,
+    censor_location,
     list_entities,
     parse_commandline_arguments,
     print_banner_to_log,
@@ -105,6 +106,38 @@ def test_filter_json_rows():
     filtered_response = filter_json_rows("NGA", "2021", sample_response)
 
     assert len(filtered_response) == 15
+
+
+def test_censor_location():
+    dataset_name = "insecurity-insight-healthcare-incidents"
+    sample_response = fetch_json_from_samples(dataset_name)
+    censored_response = censor_location(["PSE"], sample_response)
+
+    censored_count = len([x for x in censored_response if x["Geo Precision"] == "censored"])
+    pse_count = len([x for x in censored_response if x["Country ISO"] == "PSE"])
+
+    for i, record in enumerate(censored_response):
+        print(
+            i,
+            record["Country ISO"],
+            record["Latitude"],
+            record["Longitude"],
+            record["Geo Precision"],
+            flush=True,
+        )
+        if record["Country ISO"] == "PSE":
+            assert record["Latitude"] is None
+            assert record["Longitude"] is None
+            assert record["Geo Precision"] == "censored"
+            break
+        else:
+            assert float(record["Latitude"])
+            assert float(record["Longitude"])
+            assert record["Geo Precision"] != "censored"
+
+    assert censored_count == pse_count
+
+    assert len(censored_response) == len(sample_response)
 
 
 def test_entity_list_datasets():

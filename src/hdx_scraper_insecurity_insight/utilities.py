@@ -37,7 +37,10 @@ def fetch_json(dataset_name: str, use_sample: bool = False):
         json_response = fetch_json_from_samples(dataset_name)
     else:
         json_response = fetch_json_from_api(dataset_name)
-    return json_response
+
+    censored_location_response = censor_location("PSE", json_response)
+
+    return censored_location_response
 
 
 def fetch_json_from_api(dataset_name: str) -> list[dict]:
@@ -47,8 +50,10 @@ def fetch_json_from_api(dataset_name: str) -> list[dict]:
         "GET", attributes["api_url"], timeout=60, retries=Retry(90, backoff_factor=1.0)
     )
 
-    print(f"Response status: {response.status}", flush=True)
     if response.status == 503:
+        logging.info(
+            f"Endpoint returned a 503 status for {dataset_name}, waiting 300 seconds to retry"
+        )
         time.sleep(300)
         response = request(
             "GET", attributes["api_url"], timeout=60, retries=Retry(90, backoff_factor=1.0)
@@ -91,6 +96,32 @@ def filter_json_rows(country_filter: str, year_filter: str, api_response: list[d
         filtered_rows.append(api_row)
 
     return filtered_rows
+
+
+def censor_location(countries: list[str], api_response: list[dict]) -> list[dict]:
+    censored_rows = []
+
+    if "Latitude" not in api_response[0].keys():
+        logging.info("API response does not contain latitude/longitude fields")
+        return api_response
+    else:
+        logging.info(f"API response contains latitude/longitude fields, censoring for {countries}")
+    _, iso_country_field = pick_date_and_iso_country_fields(api_response[0])
+
+    # Geo fields are Latitude, Longitude and Geo Precision
+    n_censored = 0
+    n_records = 0
+    for api_row in api_response:
+        n_records += 1
+        if api_row[iso_country_field] in countries:
+            n_censored += 1
+            api_row["Latitude"] = None
+            api_row["Longitude"] = None
+            api_row["Geo Precision"] = "censored"
+        censored_rows.append(api_row)
+
+    logging.info(f"{n_censored} of {n_records} censored for {countries}")
+    return censored_rows
 
 
 def read_attributes(dataset_name: str) -> dict:

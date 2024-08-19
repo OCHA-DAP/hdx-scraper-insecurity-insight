@@ -94,7 +94,7 @@ def create_spreadsheet(
         modified_dataset_name = dataset_name
     hdx_row, row_template = read_schema(modified_dataset_name)
 
-    output_rows.append(hdx_row)
+    # output_rows.append(hdx_row)
 
     filtered_rows = filter_json_rows(country_filter, year_filter, api_response)
 
@@ -109,6 +109,18 @@ def create_spreadsheet(
     output_rows.extend(transform_input_rows(row_template, filtered_rows))
 
     output_dataframe = pandas.DataFrame.from_dict(output_rows)
+
+    # Type conversions
+    type_dict = make_type_dict(hdx_row)
+    output_dataframe = output_dataframe.astype(type_dict, errors="ignore")
+    for key, value in type_dict.items():
+        if value == "datetime64[ns, UTC]":
+            output_dataframe[key] = output_dataframe[key].dt.date
+
+    # Add hdx_row
+    # hdx_row_df = pandas.DataFrame(hdx_row, index=[0])
+    # output_dataframe = pandas.concat([hdx_row_df, output_dataframe])
+    # print(output_dataframe.dtypes, flush=True)
 
     # print(output_dataframe, flush=True)
 
@@ -164,6 +176,26 @@ def date_range_from_json(json_response: list[dict]) -> tuple[str, str]:
     start_year = min([x[date_field] for x in json_response])[0:4]
     end_year = max([x[date_field] for x in json_response])[0:4]
     return start_year, end_year
+
+
+def make_type_dict(row_template: dict) -> dict:
+    type_dict = {}
+
+    for key, value in row_template.items():
+        if "#date" in value:
+            type_dict[key] = "datetime64[ns, UTC]"
+        elif "#geo" in value and "+precision" not in value:
+            type_dict[key] = "float64"
+        elif "#affected" in value or "+num" in value:
+            type_dict[key] = "Int64"
+        else:
+            type_dict[key] = str
+
+        # Known Kidnapping or Arrest Outcome has a HXL tag "#affected" but is a string field
+        if "outcome" in key.lower() or key == "Affected":
+            type_dict[key] = str
+
+    return type_dict
 
 
 if __name__ == "__main__":

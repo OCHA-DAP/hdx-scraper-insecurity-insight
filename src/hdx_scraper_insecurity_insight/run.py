@@ -6,6 +6,7 @@ import logging
 import os
 import re
 import time
+from typing import Optional
 
 from hdx.utilities.easy_logging import setup_logging
 
@@ -74,7 +75,7 @@ def fetch_and_cache_api_responses(save_response: bool = False, use_sample: bool 
             f"... took {time.time()-t0:0.0f} seconds for {len(api_cache[resource])} records"
         )
         if not use_sample:
-            LOGGER.info(f"Delaying next call for {API_DELAY} seconds")
+            LOGGER.info(f"Delaying next call for {API_DELAY} seconds\n")
             time.sleep(API_DELAY)
 
     LOGGER.info(f"Loaded {len(api_cache)} API responses to cache, expected 18")
@@ -127,70 +128,112 @@ def check_api_has_not_changed(api_cache: dict) -> tuple[bool, list]:
 
 
 def decide_which_resources_have_fresh_data(
-    dataset_cache: dict, api_cache: dict, refresh_all: bool = False
+    dataset_cache: dict,
+    api_cache: dict,
+    refresh_all: bool = False,
+    dataset_list: Optional[list[str]] = None,
+    resource_list: Optional[list[str]] = None,
+    topic_list: Optional[list[str]] = None,
 ) -> list[str]:
+    """This function returns a list of tuples for datasets that need updating containing:
+    (topic, api start date, api end date)
+    The api start and end date are used to populate dataset_date later in the process.
+
+    Arguments:
+        dataset_cache {dict} -- _description_
+        api_cache {dict} -- _description_
+
+    Keyword Arguments:
+        refresh_all {bool} -- _description_ (default: {False})
+        dataset_list {Optional[list[str]]} -- _description_ (default: {None})
+        resource_list {Optional[list[str]]} -- _description_ (default: {None})
+        topic_list {Optional[list[str]]} -- _description_ (default: {None})
+
+    Returns:
+        list[str] -- _description_
+    """
     print_banner_to_log(LOGGER, "Identify updates")
     if refresh_all:
         LOGGER.info("`refresh_all` true so all resources will be refreshed")
 
     # Dates from dataset records
-    dataset_list = list_entities(type_="dataset")
-    dataset_recency = {}
+    if dataset_list is None:
+        dataset_list = list_entities(type_="dataset")
+
+    dataset_end_date = {}
+    dataset_start_date = {}
     for dataset in dataset_list:
         if dataset == COUNTRY_DATASET_BASENAME:
             continue
-        dataset_update_date = update_date_from_string(dataset_cache[dataset]["dataset_date"])
-        dataset_recency[dataset] = dataset_update_date
+        start_date, end_date = parse_dates_from_string(dataset_cache[dataset]["dataset_date"])
+        dataset_end_date[dataset] = end_date
+        dataset_start_date[dataset] = start_date
 
     # Dates from resources
-    resource_list = list_entities(type_="resource")
+    if resource_list is None:
+        resource_list = list_entities(type_="resource")
 
-    resource_recency = {}
+    resource_end_date = {}
     resource_start_date = {}
     for resource in resource_list:
         if not resource.endswith("-incidents"):
             continue
-        start_date, end_date = get_date_range_from_api_response(api_cache[resource])
-        end_date = update_date_from_string(end_date)
-        resource_recency[resource] = end_date
-        resource_start_date[resource] = start_date
 
+        start_date, end_date = get_date_range_from_api_response(api_cache[resource])
+        _, resource_end_date[resource] = parse_dates_from_string(end_date)
+        _, resource_start_date[resource] = parse_dates_from_string(start_date)
     # Compare
+    if topic_list is None:
+        topic_list = ["crsv", "education", "explosive", "healthcare", "protection", "aidworkerKIKA"]
     items_to_update = []
-    LOGGER.info(f"{'item':<15} {'API Date':<10} {'Dataset Date':<8}")
-    for item in TOPICS:
+    LOGGER.info(
+        f"{'item':<15} {'API Start ':<10} {'API End':<10} "
+        f"{'Dataset Start':<15} {'Dataset End':<10} "
+    )
+    for item in topic_list:
         resource_key = f"insecurity-insight-{item}-incidents"
         dataset_key = f"insecurity-insight-{item}-dataset"
         update_str = ""
-        if resource_recency[resource_key] > dataset_recency[dataset_key]:
-            update_str = "*"
+        if resource_end_date[resource_key] > dataset_end_date[dataset_key]:
+            update_str = "*>"
             items_to_update.append(
-                (item, resource_start_date[resource_key], resource_recency[resource_key])
+                (item, resource_start_date[resource_key], resource_end_date[resource_key])
+            )
+        elif resource_start_date[resource_key] < dataset_start_date[dataset_key]:
+            update_str = "*<"
+            items_to_update.append(
+                (item, resource_start_date[resource_key], resource_end_date[resource_key])
             )
         elif refresh_all:
             update_str = "*"
             items_to_update.append(
-                (item, resource_start_date[resource_key], resource_recency[resource_key])
+                (item, resource_start_date[resource_key], resource_end_date[resource_key])
             )
 
         LOGGER.info(
             f"{item:<15} "
-            f"{resource_recency[resource_key]} "
-            f"{dataset_recency[dataset_key]}"
+            f"{resource_start_date[resource_key]:<10} "
+            f"{resource_end_date[resource_key]:<10} "
+            f"{dataset_start_date[dataset_key]:<15} "
+            f"{dataset_end_date[dataset_key]:<10} "
             f"{update_str}"
         )
 
     return items_to_update
 
 
-def update_date_from_string(date_str: str) -> list[str]:
+def parse_dates_from_string(date_str: str) -> list[str]:
     matched_strings = re.findall(r"(\d{4}-([0]\d|1[0-2])-([0-2]\d|3[01]))", date_str)
 
-    update_date = ""
-    if len(matched_strings) > 0:
-        update_date = matched_strings[-1][0]
+    start_date = ""
+    end_date = ""
+    if len(matched_strings) == 1:
+        end_date = matched_strings[-1][0]
+    elif len(matched_strings) == 2:
+        start_date = matched_strings[0][0]
+        end_date = matched_strings[-1][0]
 
-    return update_date
+    return start_date, end_date
 
 
 def refresh_spreadsheets_with_fresh_data(items_to_update: list[str], api_cache: dict):

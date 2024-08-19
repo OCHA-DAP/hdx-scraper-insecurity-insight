@@ -14,6 +14,10 @@ tests/fixtures/test.csv
 
 logs/
 
+src/hdx_scraper_insecurity_insight/old-output-spreadsheets/
+
+src/hdx_scraper_insecurity_insight/temp/
+
 src/hdx_scraper_insecurity_insight/temp/
 
 src/hdx_scraper_insecurity_insight/old-output-spreadsheets/

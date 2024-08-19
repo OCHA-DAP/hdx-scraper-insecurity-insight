@@ -365,8 +365,9 @@ def get_date_range_from_resource_file(resource_filepath: str) -> str:
     date_field, _ = pick_date_and_iso_country_fields(first_row)
 
     dates = sheets_df[date_field].to_list()
-    start_date = min(dates).replace("Z", "")
-    end_date = max(dates).replace("Z", "")
+    start_date = str(min(dates))  # .replace("Z", "")
+    end_date = str(max(dates))  # .replace("Z", "")
+    print(start_date, end_date, flush=True)
     start_date = datetime.datetime.fromisoformat(start_date).isoformat()
     end_date = datetime.datetime.fromisoformat(end_date).isoformat()
 
