@@ -344,9 +344,9 @@ def update_datasets_whose_resources_have_changed(
 if __name__ == "__main__":
     USE_SAMPLE = False
     DRY_RUN = False
-    REFRESH_ALL = True
+    REFRESH_ALL = False
     USE_LEGACY = True
-    HDX_SITE = "stage"
+    HDX_SITE = "prod"
     T0 = time.time()
     print_banner_to_log(LOGGER, "Grand Run")
     API_CACHE = fetch_and_cache_api_responses(use_sample=USE_SAMPLE)
