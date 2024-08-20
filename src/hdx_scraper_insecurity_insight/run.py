@@ -184,7 +184,15 @@ def decide_which_resources_have_fresh_data(
         _, resource_start_date[resource] = parse_dates_from_string(start_date)
     # Compare
     if topic_list is None:
-        topic_list = ["crsv", "education", "explosive", "healthcare", "protection", "aidworkerKIKA"]
+        topic_list = [
+            "crsv",
+            "education",
+            "explosive",
+            "healthcare",
+            "protection",
+            "aidworkerKIKA",
+            "foodsecurity",
+        ]
     items_to_update = []
     LOGGER.info(
         f"{'item':<15} {'API Start ':<10} {'API End':<10} "
