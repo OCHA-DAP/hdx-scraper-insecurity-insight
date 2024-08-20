@@ -54,7 +54,7 @@ def create_datasets_in_hdx(
     dataset_name: str,
     dataset_cache: dict = None,
     country_filter: str = "",
-    hdx_site: str = "prod",
+    hdx_site: str = None,
     dry_run: bool = False,
     use_legacy: bool = False,
     dataset_date: str = None,
@@ -292,6 +292,8 @@ def find_resource_filepath(
             f"`{spreadsheet_regex_single_year}` "
             "found in `output-spreadsheets`, 1 was expected"
         )
+        for file in files:
+            print(file, flush=True)
         # raise FileNotFoundError
     else:
         filename = files[0]
@@ -357,7 +359,7 @@ def get_date_range_from_resource_file(resource_filepath: str) -> str:
     end_date = None
 
     sheets_df = pandas.read_excel(resource_filepath)
-    sheets_df.drop(sheets_df.head(1).index, inplace=True)
+    # sheets_df.drop(sheets_df.head(1).index, inplace=True)
     first_row = sheets_df.to_dict(orient="records")[0]
 
     date_field, _ = pick_date_and_iso_country_fields(first_row)
