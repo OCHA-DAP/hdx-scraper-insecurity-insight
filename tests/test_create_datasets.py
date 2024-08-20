@@ -278,7 +278,7 @@ def test_create_datasets_in_hdx_country_use_legacy():
 
 def test_get_date_range_from_resource_file():
     test_filenames = [
-        ("2024 Conflict Related Sexual Violence Incident Data.xlsx", "2024-05-21T00:00:00"),
+        ("2024 Conflict Related Sexual Violence Incident Data.xlsx", "2024-05-28T00:00:00"),
         ("2020-2023 Conflict Related Sexual Violence Incident Data.xlsx", "2023-12-09T00:00:00"),
         ("2023-MMR Attacks on Health Care Incident Data.xlsx", "2023-04-29T00:00:00+00:00"),
     ]

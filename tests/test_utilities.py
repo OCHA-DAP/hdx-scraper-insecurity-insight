@@ -151,6 +151,7 @@ def test_entity_list_datasets():
         "insecurity-insight-healthcare-dataset",
         "insecurity-insight-protection-dataset",
         "insecurity-insight-aidworkerKIKA-dataset",
+        "insecurity-insight-foodsecurity-dataset",
         "insecurity-insight-country-dataset",
     ]
 
@@ -213,10 +214,10 @@ def test_read_insecurity_insight_resource_attributes_countries():
             print(f"\t{resource_['ih_name']}", flush=True)
 
 
-def test_entity_list_resourcess():
+def test_entity_list_resources():
     resource_list = list_entities(type_="resource")
 
-    assert len(resource_list) == 18
+    assert len(resource_list) == 21
 
 
 def test_commandline_argument_handling_two_arg(monkeypatch):
