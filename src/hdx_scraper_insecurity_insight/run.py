@@ -46,13 +46,29 @@ TOPICS = [
 ]
 
 
-def fetch_and_cache_api_responses(save_response: bool = False, use_sample: bool = False) -> dict:
+def fetch_and_cache_api_responses(
+    save_response: bool = False, use_sample: bool = False, refresh: Optional[list] = None
+) -> dict:
+    if refresh is None:
+        refresh = ["all"]
     api_cache = {}
     print_banner_to_log(LOGGER, "Populate API cache")
 
     resource_list = list_entities(type_="resource")
     for resource in resource_list:
         t0 = time.time()
+        refresh_flag = False
+        for item in refresh:
+            if item == "all":
+                refresh_flag = True
+                break
+            elif item in resource:
+                refresh_flag = True
+                break
+        if not refresh_flag:
+            LOGGER.info(f"Skipping {resource} because refresh = {refresh}")
+            continue
+
         if not use_sample:
             LOGGER.info(f"Fetching data for {resource} from API")
         else:
@@ -82,13 +98,28 @@ def fetch_and_cache_api_responses(save_response: bool = False, use_sample: bool 
     return api_cache
 
 
-def fetch_and_cache_datasets(use_legacy: bool = False, hdx_site: str = "stage") -> dict:
+def fetch_and_cache_datasets(
+    use_legacy: bool = False, hdx_site: str = "stage", refresh: Optional[list] = None
+) -> dict:
+    if refresh is None:
+        refresh = ["all"]
     dataset_cache = {}
     print_banner_to_log(LOGGER, "Populate dataset cache")
     dataset_list = list_entities(type_="dataset")
     # load topic datasets
     n_topic_datasets = 0
     for dataset in dataset_list:
+        refresh_flag = False
+        for item in refresh:
+            if item == "all":
+                refresh_flag = True
+                break
+            elif item in dataset:
+                refresh_flag = True
+                break
+        if not refresh_flag:
+            LOGGER.info(f"Skipping {dataset} because refresh = {refresh}")
+            continue
         print(dataset, flush=True)
         if dataset == COUNTRY_DATASET_BASENAME:
             continue
@@ -117,8 +148,16 @@ def fetch_and_cache_datasets(use_legacy: bool = False, hdx_site: str = "stage") 
     return dataset_cache
 
 
-def check_api_has_not_changed(api_cache: dict) -> tuple[bool, list]:
-    has_changed, changed_list = compare_api_to_samples(api_cache)
+def check_api_has_not_changed(api_cache: dict, refresh: Optional[list] = None) -> tuple[bool, list]:
+    dataset_names = None
+    if refresh is None or "all" in refresh:
+        pass
+    else:
+        dataset_names = []
+        for item in refresh:
+            dataset_names.append(f"insecurity-insight-{item}-incidents")
+    print(dataset_names, flush=True)
+    has_changed, changed_list = compare_api_to_samples(api_cache, dataset_names=dataset_names)
     LOGGER.info("\nChanged API endpoints:")
     for dataset_name in changed_list:
         LOGGER.info(dataset_name)
@@ -130,7 +169,7 @@ def check_api_has_not_changed(api_cache: dict) -> tuple[bool, list]:
 def decide_which_resources_have_fresh_data(
     dataset_cache: dict,
     api_cache: dict,
-    refresh_all: bool = False,
+    refresh: Optional[list] = None,
     dataset_list: Optional[list[str]] = None,
     resource_list: Optional[list[str]] = None,
     topic_list: Optional[list[str]] = None,
@@ -144,7 +183,7 @@ def decide_which_resources_have_fresh_data(
         api_cache {dict} -- _description_
 
     Keyword Arguments:
-        refresh_all {bool} -- _description_ (default: {False})
+        refresh {bool} -- _description_ (default: {False})
         dataset_list {Optional[list[str]]} -- _description_ (default: {None})
         resource_list {Optional[list[str]]} -- _description_ (default: {None})
         topic_list {Optional[list[str]]} -- _description_ (default: {None})
@@ -153,8 +192,10 @@ def decide_which_resources_have_fresh_data(
         list[str] -- _description_
     """
     print_banner_to_log(LOGGER, "Identify updates")
-    if refresh_all:
-        LOGGER.info("`refresh_all` true so all resources will be refreshed")
+    if refresh is None:
+        refresh = []
+    if len(refresh) != 0 and "all" in refresh:
+        LOGGER.info("`refresh` is set to `all` all resources will be refreshed")
 
     # Dates from dataset records
     if dataset_list is None:
@@ -165,9 +206,13 @@ def decide_which_resources_have_fresh_data(
     for dataset in dataset_list:
         if dataset == COUNTRY_DATASET_BASENAME:
             continue
-        start_date, end_date = parse_dates_from_string(dataset_cache[dataset]["dataset_date"])
-        dataset_end_date[dataset] = end_date
-        dataset_start_date[dataset] = start_date
+        try:
+            start_date, end_date = parse_dates_from_string(dataset_cache[dataset]["dataset_date"])
+            dataset_end_date[dataset] = end_date
+            dataset_start_date[dataset] = start_date
+        except KeyError:
+            dataset_end_date[dataset] = ""
+            dataset_start_date[dataset] = ""
 
     # Dates from resources
     if resource_list is None:
@@ -179,9 +224,13 @@ def decide_which_resources_have_fresh_data(
         if not resource.endswith("-incidents"):
             continue
 
-        start_date, end_date = get_date_range_from_api_response(api_cache[resource])
-        _, resource_end_date[resource] = parse_dates_from_string(end_date)
-        _, resource_start_date[resource] = parse_dates_from_string(start_date)
+        try:
+            start_date, end_date = get_date_range_from_api_response(api_cache[resource])
+            _, resource_end_date[resource] = parse_dates_from_string(end_date)
+            _, resource_start_date[resource] = parse_dates_from_string(start_date)
+        except KeyError:
+            resource_end_date[resource] = ""
+            resource_start_date[resource] = ""
     # Compare
     if topic_list is None:
         topic_list = [
@@ -193,6 +242,7 @@ def decide_which_resources_have_fresh_data(
             "aidworkerKIKA",
             "foodsecurity",
         ]
+
     items_to_update = []
     LOGGER.info(
         f"{'item':<15} {'API Start ':<10} {'API End':<10} "
@@ -202,21 +252,24 @@ def decide_which_resources_have_fresh_data(
         resource_key = f"insecurity-insight-{item}-incidents"
         dataset_key = f"insecurity-insight-{item}-dataset"
         update_str = ""
-        if resource_end_date[resource_key] > dataset_end_date[dataset_key]:
-            update_str = "*>"
-            items_to_update.append(
-                (item, resource_start_date[resource_key], resource_end_date[resource_key])
-            )
-        elif resource_start_date[resource_key] < dataset_start_date[dataset_key]:
-            update_str = "*<"
-            items_to_update.append(
-                (item, resource_start_date[resource_key], resource_end_date[resource_key])
-            )
-        elif refresh_all:
-            update_str = "*"
-            items_to_update.append(
-                (item, resource_start_date[resource_key], resource_end_date[resource_key])
-            )
+        try:
+            if resource_end_date[resource_key] > dataset_end_date[dataset_key]:
+                update_str = update_str + "*>"
+                items_to_update.append(
+                    (item, resource_start_date[resource_key], resource_end_date[resource_key])
+                )
+            elif resource_start_date[resource_key] < dataset_start_date[dataset_key]:
+                update_str = update_str + "*<"
+                items_to_update.append(
+                    (item, resource_start_date[resource_key], resource_end_date[resource_key])
+                )
+            elif len(refresh) != 0 and "all" in refresh or item in refresh:
+                update_str = update_str + "*"
+                items_to_update.append(
+                    (item, resource_start_date[resource_key], resource_end_date[resource_key])
+                )
+        except KeyError:
+            pass
 
         LOGGER.info(
             f"{item:<15} "
@@ -257,7 +310,11 @@ def refresh_spreadsheets_with_fresh_data(items_to_update: list[str], api_cache: 
         for resource in resources:
             if item[0] in resource:
                 # This is where we would create a year spreadsheet
-                status = create_spreadsheet(resource, api_response=api_cache[resource])
+                try:
+                    status = create_spreadsheet(resource, api_response=api_cache[resource])
+                except KeyError:
+                    pass
+
                 LOGGER.info(status)
 
     LOGGER.info("Refreshing all country spreadsheets")
@@ -268,9 +325,12 @@ def refresh_spreadsheets_with_fresh_data(items_to_update: list[str], api_cache: 
     for country in countries:
         LOGGER.info(f"Processing for {country}")
         for resource in resource_names:
-            status = create_spreadsheet(
-                resource, country_filter=country, api_response=api_cache[resource]
-            )
+            try:
+                status = create_spreadsheet(
+                    resource, country_filter=country, api_response=api_cache[resource]
+                )
+            except KeyError:
+                pass
             LOGGER.info(status)
 
         # break  # just do one spreadsheet for testing
@@ -344,16 +404,19 @@ def update_datasets_whose_resources_have_changed(
 if __name__ == "__main__":
     USE_SAMPLE = False
     DRY_RUN = False
-    REFRESH_ALL = False
+    REFRESH = ["foodsecurity"]
     USE_LEGACY = True
     HDX_SITE = "prod"
     T0 = time.time()
     print_banner_to_log(LOGGER, "Grand Run")
+    # Using refresh=REFRESH here is for testing only
     API_CACHE = fetch_and_cache_api_responses(use_sample=USE_SAMPLE)
     DATASET_CACHE = fetch_and_cache_datasets(use_legacy=USE_LEGACY, hdx_site=HDX_SITE)
+    # Using refresh=REFRESH here is for testing only
     HAS_CHANGED, CHANGED_LIST = check_api_has_not_changed(API_CACHE)
+    # Using refresh here allows a forced refresh for particular datasets
     ITEMS_TO_UPDATE = decide_which_resources_have_fresh_data(
-        DATASET_CACHE, API_CACHE, refresh_all=REFRESH_ALL
+        DATASET_CACHE, API_CACHE, refresh=REFRESH
     )
     refresh_spreadsheets_with_fresh_data(ITEMS_TO_UPDATE, API_CACHE)
     MISSING_REPORT = update_datasets_whose_resources_have_changed(
