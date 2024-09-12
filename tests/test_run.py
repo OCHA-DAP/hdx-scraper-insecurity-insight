@@ -52,7 +52,7 @@ def test_decide_which_resources_have_fresh_data():
     items_to_update = decide_which_resources_have_fresh_data(
         dataset_cache,
         api_cache,
-        refresh_all=False,
+        refresh=[],
         dataset_list=["insecurity-insight-healthcare-dataset"],
         resource_list=["insecurity-insight-healthcare-incidents"],
         topic_list=["healthcare"],
@@ -82,7 +82,7 @@ def test_decide_which_resources_have_fresh_data_backfill():
     items_to_update = decide_which_resources_have_fresh_data(
         dataset_cache,
         api_cache,
-        refresh_all=False,
+        refresh=[],
         dataset_list=["insecurity-insight-healthcare-dataset"],
         resource_list=["insecurity-insight-healthcare-incidents"],
         topic_list=["healthcare"],

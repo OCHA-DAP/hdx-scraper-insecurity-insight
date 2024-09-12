@@ -1,11 +1,19 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+
 import json
 import os
 from unittest import mock
 
-from hdx_scraper_insecurity_insight.utilities import read_attributes, fetch_json_from_samples
+import pandas
+
+from hdx_scraper_insecurity_insight.utilities import (
+    read_attributes,
+    fetch_json_from_samples,
+    fetch_json_from_api,
+    pick_date_and_iso_country_fields,
+)
 from hdx_scraper_insecurity_insight.create_datasets import (
     find_resource_filepath,
     get_date_and_country_ranges_from_resources,
@@ -288,3 +296,33 @@ def test_get_date_range_from_resource_file():
         test_filepath = os.path.join(test_file_directory, filename)
         _, end_date = get_date_range_from_resource_file(test_filepath)
         assert end_date == expected_end_date
+
+
+def test_for_intermediate_backfill():
+    # Wrote this to check a query from Insecurity Insight 2024-09-11
+    # This is a demonstration test, worth keeping if we wish to implement in future
+    # Load up the food security spreadsheet
+    resource_filepath = os.path.join(
+        os.path.dirname(__file__), "fixtures", "2020-2024-food-security-incident-data-backfill.xlsx"
+    )
+    sheets_df = pandas.read_excel(resource_filepath)
+    # sheets_df.drop(sheets_df.head(1).index, inplace=True)
+    first_row = sheets_df.to_dict(orient="records")[0]
+
+    resource_date_field, _ = pick_date_and_iso_country_fields(first_row)
+
+    resource_dates = set(sheets_df[resource_date_field].to_list())
+
+    # Load the cached API response
+    with open(
+        os.path.join(os.path.dirname(__file__), "fixtures", "foodsecurity-backfill.json"),
+        "r",
+        encoding="UTF-8",
+    ) as api_response_filehandle:
+        json_response = json.load(api_response_filehandle)
+
+    api_date_field, _ = pick_date_and_iso_country_fields(json_response[0])
+
+    api_dates = {x[api_date_field] for x in json_response}
+
+    assert resource_dates != api_dates
