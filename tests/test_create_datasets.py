@@ -315,7 +315,7 @@ def test_for_intermediate_backfill():
 
     # Load the cached API response
     with open(
-        os.path.join(os.path.dirname(__file__), "fixtures", "foodsecurity-backfill.json"),
+        os.path.join(os.path.dirname(__file__), "fixtures", "foodSecurity-backfill.json"),
         "r",
         encoding="UTF-8",
     ) as api_response_filehandle:
