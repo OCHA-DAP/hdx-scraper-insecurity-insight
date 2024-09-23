@@ -66,6 +66,29 @@ def test_create_spreadsheet_healthcare():
     #     os.remove(expected_file_path)
 
 
+def test_create_spreadsheet_pse_crisis_healthcare():
+    healthcare_dataset = "insecurity-insight-healthcare-incidents-pse-crisis"
+    healthcare_response = fetch_json_from_samples(healthcare_dataset)
+    expected_filename = "2023-2024 Israel and oPt Attacks on Health Care Incident Data.xlsx"
+    temp_directory = os.path.join(os.path.dirname(__file__), "temp")
+
+    expected_file_path = os.path.join(temp_directory, expected_filename)
+    if os.path.exists(expected_file_path):
+        os.remove(expected_file_path)
+    status = create_spreadsheet(
+        healthcare_dataset,
+        output_directory=temp_directory,
+        api_response=healthcare_response,
+    )
+
+    assert expected_filename in status
+    assert os.path.exists(expected_file_path)
+
+    sheets_df = pandas.read_excel(expected_file_path)
+
+    assert len(sheets_df) == 995
+
+
 def test_create_current_year_spreadsheet():
     dataset_name = "insecurity-insight-crsv-incidents-current-year"
     expected_filename = "2024 Conflict Related Sexual Violence Incident Data.xlsx"
@@ -75,7 +98,9 @@ def test_create_current_year_spreadsheet():
     if os.path.exists(expected_file_path):
         os.remove(expected_file_path)
     status = create_spreadsheet(
-        dataset_name, output_directory=temp_directory, api_response=SAMPLE_RESPONSE
+        dataset_name,
+        output_directory=temp_directory,
+        api_response=SAMPLE_RESPONSE,
     )
 
     sheets_df = pandas.read_excel(expected_file_path)

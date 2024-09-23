@@ -82,17 +82,25 @@ def filter_json_rows(country_filter: str, year_filter: str, api_response: list[d
 
     for api_row in api_response:
         if (
+            year_filter is not None
+            and year_filter == "pse crisis"
+            and api_row[date_field][0:10] < "2023-10-07"
+        ):
+            continue
+        elif (
+            year_filter is not None
+            and len(year_filter) != 0
+            and year_filter != "pse crisis"
+            and api_row[date_field][0:4] != year_filter
+        ):
+            continue
+        if (
             country_filter is not None
             and len(country_filter) != 0
             and api_row[iso_country_field] != country_filter
         ):
             continue
-        if (
-            year_filter is not None
-            and len(year_filter) != 0
-            and api_row[date_field][0:4] != year_filter
-        ):
-            continue
+
         filtered_rows.append(api_row)
 
     return filtered_rows

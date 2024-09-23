@@ -108,6 +108,15 @@ def test_filter_json_rows():
     assert len(filtered_response) == 15
 
 
+def test_filter_json_rows_pse_crisis():
+    dataset_name = "insecurity-insight-healthcare-incidents-pse-crisis"
+    sample_response = fetch_json_from_samples(dataset_name)
+    filtered_response = filter_json_rows("PSE", "pse crisis", sample_response)
+    for item in filtered_response:
+        print(item["Date"], item["Country ISO"], item["Event Description"], flush=True)
+    assert len(filtered_response) == 995
+
+
 def test_censor_location():
     dataset_name = "insecurity-insight-healthcare-incidents"
     sample_response = fetch_json_from_samples(dataset_name)

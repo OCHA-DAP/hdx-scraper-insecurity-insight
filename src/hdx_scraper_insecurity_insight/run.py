@@ -402,11 +402,11 @@ def update_datasets_whose_resources_have_changed(
 
 
 if __name__ == "__main__":
-    USE_SAMPLE = False
-    DRY_RUN = False
+    USE_SAMPLE = True
+    DRY_RUN = True
     REFRESH = ["foodsecurity"]
     USE_LEGACY = True
-    HDX_SITE = "prod"
+    HDX_SITE = "stage"
     T0 = time.time()
     print_banner_to_log(LOGGER, "Grand Run")
     # Using refresh=REFRESH here is for testing only

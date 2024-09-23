@@ -80,6 +80,9 @@ def create_spreadsheet(
             year_filter = datetime.datetime.now().isoformat()[0:4]
         # print(year_filter, flush=True)
 
+    if not country_filter:
+        country_filter = attributes.get("country_filter", "").upper()
+
     if api_response is None:
         # LOGGER.info("Using api_response sample, not live API")
         api_response = fetch_json_from_samples(dataset_name)
@@ -90,6 +93,8 @@ def create_spreadsheet(
     # Fetch API to Spreadsheet lookup
     if dataset_name.endswith("current-year"):
         modified_dataset_name = dataset_name.replace("-current-year", "")
+    elif dataset_name.endswith("pse-crisis"):
+        modified_dataset_name = dataset_name.replace("-pse-crisis", "")
     else:
         modified_dataset_name = dataset_name
     hdx_row, row_template = read_schema(modified_dataset_name)
