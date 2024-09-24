@@ -77,6 +77,34 @@ def test_create_or_fetch_base_dataset_create_country_use_legacy():
     assert len(dataset.keys()) > 45
 
 
+def test_create_pse_healthcare_dataset_with_crisis():
+    dataset_name = "insecurity-insight-country-dataset"
+    dataset_date = "[2020-01-01T00:00:00 TO 2023-09-30T23:59:59]"
+    countries_group = [
+        {
+            "description": "",
+            "display_name": "Palestine",
+            "id": "pse",
+            "image_display_url": "",
+            "name": "pse",
+            "title": "Palestine",
+        }
+    ]
+    dataset, _ = create_datasets_in_hdx(
+        dataset_name,
+        dataset_date=dataset_date,
+        country_filter="PSE",
+        countries_group=countries_group,
+        dry_run=True,  # If debugging the "extras" issue then set this to False
+        use_legacy=True,
+    )
+
+    resource_names = [x["name"] for x in dataset.resources]
+
+    assert dataset["name"] == "opt-violent-and-threatening-incidents-against-healthcare"
+    assert "2023-2024 Israel and oPt Attacks on Health Care Incident Data.xlsx" in resource_names
+
+
 def test_find_resource_filename():
     spreadsheet_directory = os.path.join(os.path.dirname(__file__), "fixtures")
     resource_name = "insecurity-insight-crsv-incidents"
