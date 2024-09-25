@@ -60,6 +60,11 @@ def fetch_and_cache_api_responses(
     print_banner_to_log(LOGGER, "Populate API cache")
 
     resource_list = list_entities(type_="resource")
+    resource_list = [
+        x
+        for x in resource_list
+        if not x.endswith("-current-year") and not x.endswith("-pse-crisis")
+    ]
     for resource in resource_list:
         t0 = time.time()
         refresh_flag = False
@@ -323,11 +328,12 @@ def refresh_spreadsheets_with_fresh_data(
     for item in items_to_update:
         for resource in resources:
             if item[0] in resource:
-                # This is where we would create a year spreadsheet
-                try:
-                    status = create_spreadsheet(resource, api_response=api_cache[resource])
-                except KeyError:
-                    pass
+                # try:
+                cache_name = resource.replace("-current-year", "").replace("-pse-crisis", "")
+                status = create_spreadsheet(resource, api_response=api_cache[cache_name])
+                # except KeyError:
+                #     LOGGER.info(f"Data not in api_cache for {cache_name}")
+                #     pass
 
                 LOGGER.info(status)
 
@@ -372,24 +378,29 @@ def update_datasets_whose_resources_have_changed(
     missing_report = []
     datasets = list_entities(type_="dataset")
     n_missing_resources = 0
-    for item in items_to_update:
-        for dataset_name in datasets:
-            if item[0] in dataset_name:
-                countries_group = get_countries_group_from_api_response(
-                    api_cache[f"insecurity-insight-{item[0]}-incidents"]
-                )
-                dataset_date = f"[{item[1]} TO {item[2]}]"
-                dataset, n_missing_resources = create_datasets_in_hdx(
-                    dataset_name,
-                    dataset_cache=dataset_cache,
-                    dataset_date=dataset_date,
-                    countries_group=countries_group,
-                    dry_run=dry_run,
-                    use_legacy=use_legacy,
-                    hdx_site=hdx_site,
-                )
-            if n_missing_resources != 0:
-                missing_report.append([dataset["name"], n_missing_resources])
+    if countries is None:
+        for item in items_to_update:
+            for dataset_name in datasets:
+                if item[0] in dataset_name:
+                    countries_group = get_countries_group_from_api_response(
+                        api_cache[f"insecurity-insight-{item[0]}-incidents"]
+                    )
+                    dataset_date = f"[{item[1]} TO {item[2]}]"
+                    dataset, n_missing_resources = create_datasets_in_hdx(
+                        dataset_name,
+                        dataset_cache=dataset_cache,
+                        dataset_date=dataset_date,
+                        countries_group=countries_group,
+                        dry_run=dry_run,
+                        use_legacy=use_legacy,
+                        hdx_site=hdx_site,
+                    )
+                if n_missing_resources != 0:
+                    missing_report.append([dataset["name"], n_missing_resources])
+    else:
+        LOGGER.info(
+            f"Skipping topic dataset updates because countries list has been provided: {countries}"
+        )
 
     # If any data has updated we update all of the country datasets
     # LOGGER.info("**ONLY DOING ONE COUNTRY FOR TEST**")
@@ -426,8 +437,8 @@ def update_datasets_whose_resources_have_changed(
 
 
 if __name__ == "__main__":
-    USE_SAMPLE = True
-    DRY_RUN = True
+    USE_SAMPLE = False
+    DRY_RUN = False
     REFRESH = ["all"]  # ["foodsecurity"]
     COUNTRIES = ["PSE"]
     USE_LEGACY = True

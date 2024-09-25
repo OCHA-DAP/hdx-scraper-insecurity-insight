@@ -204,7 +204,8 @@ def compare_api_to_samples(
         attributes = read_attributes(dataset_name)
 
         samples_response = fetch_json_from_samples(dataset_name)
-        api_response = api_cache[dataset_name]
+        cache_name = dataset_name.replace("-current-year", "").replace("-pse-crisis", "")
+        api_response = api_cache[cache_name]
 
         sample_keys = samples_response[0].keys()
         if len(api_response) != 0:
