@@ -141,6 +141,18 @@ def test_find_resource_filename_current_year():
     assert filename == "2024 Attacks on Health Care Incident Data.xlsx"
 
 
+def test_find_resource_filename_pse_crisis():
+    spreadsheet_directory = os.path.join(os.path.dirname(__file__), "fixtures")
+    resource_name = "insecurity-insight-healthcare-incidents-pse-crisis"
+    attributes = read_attributes(resource_name)
+    filepath = find_resource_filepath(
+        resource_name, attributes, country_filter="PSE", spreadsheet_directory=spreadsheet_directory
+    )
+    filename = os.path.basename(filepath)
+
+    assert filename == "2023-2024 Israel and oPt Attacks on Health Care Incident Data.xlsx"
+
+
 def test_get_date_and_country_ranges_from_resources():
     resource_names = ["insecurity-insight-crsv-incidents", "insecurity-insight-crsv-overview"]
     dataset_date, countries_group = get_date_and_country_ranges_from_resources(

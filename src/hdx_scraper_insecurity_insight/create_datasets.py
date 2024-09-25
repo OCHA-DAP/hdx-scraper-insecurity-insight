@@ -156,7 +156,7 @@ def create_datasets_in_hdx(
             end_date_human = end_date_dt.strftime("%d %B %Y")
 
             resource_description = resource_description.replace("[to date]", end_date_human)
-            print(resource_description, flush=True)
+            LOGGER.debug(resource_description)
 
         resource = Resource(
             {
@@ -255,6 +255,17 @@ def find_resource_filepath(
     # Finds year range files
     country_iso = ""
     spreadsheet_regex_range = ""
+    if year_filter == "pse crisis":
+        spreadsheet_regex_range = (
+            attributes["filename_template"]
+            .replace("{start_year}", "[0-9]{4}")
+            .replace("{end_year}", "[0-9]{4}")
+        )
+        for file_ in file_list.iterdir():
+            matching_files = re.search(spreadsheet_regex_range, str(file_))
+            if matching_files is not None:
+                files.append(matching_files.group())
+
     if len(year_filter) == 0:
         if (country_filter is not None) and (len(country_filter) != 0):
             country_iso = f"-{country_filter}"
@@ -408,9 +419,9 @@ def configure_hdx_connection(hdx_site: str = "stage"):
             user_agent_lookup="hdx-scraper-insecurity-insight",
             hdx_site=hdx_site,
         )
-        LOGGER.info(f"Authenticated to HDX site at {Configuration.read().get_hdx_site_url()}")
+        LOGGER.debug(f"Authenticated to HDX site at {Configuration.read().get_hdx_site_url()}")
         hdx_key = Configuration.read().get_api_key()
-        LOGGER.info(f"With HDX_KEY ending {hdx_key[-10:]}")
+        LOGGER.debug(f"With HDX_KEY ending {hdx_key[-10:]}")
 
     except ConfigurationError:
         LOGGER.info(traceback.format_exc())

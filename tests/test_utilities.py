@@ -226,7 +226,7 @@ def test_read_insecurity_insight_resource_attributes_countries():
 def test_entity_list_resources():
     resource_list = list_entities(type_="resource")
 
-    assert len(resource_list) == 21
+    assert len(resource_list) == 22
 
 
 def test_commandline_argument_handling_two_arg(monkeypatch):

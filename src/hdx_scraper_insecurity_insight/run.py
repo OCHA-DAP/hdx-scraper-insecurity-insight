@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+import glob
 import json
 import logging
 import os
@@ -29,10 +30,14 @@ from hdx_scraper_insecurity_insight.create_datasets import (
     create_datasets_in_hdx,
 )
 
-from hdx_scraper_insecurity_insight.create_spreadsheets import create_spreadsheet
+from hdx_scraper_insecurity_insight.create_spreadsheets import create_spreadsheet, OUTPUT_DIRECTORY
 
 setup_logging()
 LOGGER = logging.getLogger(__name__)
+HDX_LOGGER = logging.getLogger("hdx")
+HDX_LOGGER.setLevel(logging.WARN)
+
+
 COUNTRY_DATASET_BASENAME = "insecurity-insight-country-dataset"
 API_DELAY = 5
 TOPICS = [
@@ -120,7 +125,7 @@ def fetch_and_cache_datasets(
         if not refresh_flag:
             LOGGER.info(f"Skipping {dataset} because refresh = {refresh}")
             continue
-        print(dataset, flush=True)
+
         if dataset == COUNTRY_DATASET_BASENAME:
             continue
         dataset_cache[dataset], _ = create_or_fetch_base_dataset(
@@ -156,7 +161,7 @@ def check_api_has_not_changed(api_cache: dict, refresh: Optional[list] = None) -
         dataset_names = []
         for item in refresh:
             dataset_names.append(f"insecurity-insight-{item}-incidents")
-    print(dataset_names, flush=True)
+
     has_changed, changed_list = compare_api_to_samples(api_cache, dataset_names=dataset_names)
     LOGGER.info("\nChanged API endpoints:")
     for dataset_name in changed_list:
@@ -297,8 +302,17 @@ def parse_dates_from_string(date_str: str) -> list[str]:
     return start_date, end_date
 
 
-def refresh_spreadsheets_with_fresh_data(items_to_update: list[str], api_cache: dict):
+def refresh_spreadsheets_with_fresh_data(
+    items_to_update: list[str], api_cache: dict, countries: Optional[list] = None
+):
     print_banner_to_log(LOGGER, "Refresh spreadsheets")
+
+    files = glob.glob(os.path.join(OUTPUT_DIRECTORY, "*.xlsx"))
+    for filepath in files:
+        file_ = os.path.basename(filepath)
+        LOGGER.info(f"Deleting existing file {file_}")
+        os.remove(filepath)
+
     if len(items_to_update) == 0:
         LOGGER.info("No spreadsheets need to be updated")
         return
@@ -317,14 +331,19 @@ def refresh_spreadsheets_with_fresh_data(items_to_update: list[str], api_cache: 
 
                 LOGGER.info(status)
 
-    LOGGER.info("Refreshing all country spreadsheets")
     # LOGGER.info("**ONLY DOING ONE COUNTRY FOR TEST**")
-    countries = read_countries()
+    if countries is None:
+        LOGGER.info("Refreshing all country spreadsheets")
+        countries = read_countries()
+    else:
+        LOGGER.info(f"Refreshing spreadsheets for countries: {countries}")
     country_attributes = read_attributes(COUNTRY_DATASET_BASENAME)
     resource_names = country_attributes["resource"]
+    assert "insecurity-insight-healthcare-incidents-pse-crisis" in resource_names
     for country in countries:
         LOGGER.info(f"Processing for {country}")
         for resource in resource_names:
+            print(resource, flush=True)
             try:
                 status = create_spreadsheet(
                     resource, country_filter=country, api_response=api_cache[resource]
@@ -343,6 +362,7 @@ def update_datasets_whose_resources_have_changed(
     dry_run: bool = False,
     use_legacy: bool = True,
     hdx_site: str = None,
+    countries: Optional[list] = None,
 ) -> list[list]:
     print_banner_to_log(LOGGER, "Update datasets")
     if len(items_to_update) == 0:
@@ -373,7 +393,11 @@ def update_datasets_whose_resources_have_changed(
 
     # If any data has updated we update all of the country datasets
     # LOGGER.info("**ONLY DOING ONE COUNTRY FOR TEST**")
-    countries = read_countries()
+    if countries is None:
+        LOGGER.info("Refreshing all country datasets")
+        countries = read_countries()
+    else:
+        LOGGER.info(f"Refreshing datasets for countries: {countries}")
     # Make a default dataset_date in case a country dataset has no data
     start_date = min([x[1] for x in items_to_update])
     end_date = max([x[2] for x in items_to_update])
@@ -404,7 +428,8 @@ def update_datasets_whose_resources_have_changed(
 if __name__ == "__main__":
     USE_SAMPLE = True
     DRY_RUN = True
-    REFRESH = ["foodsecurity"]
+    REFRESH = ["all"]  # ["foodsecurity"]
+    COUNTRIES = ["PSE"]
     USE_LEGACY = True
     HDX_SITE = "stage"
     T0 = time.time()
@@ -418,7 +443,7 @@ if __name__ == "__main__":
     ITEMS_TO_UPDATE = decide_which_resources_have_fresh_data(
         DATASET_CACHE, API_CACHE, refresh=REFRESH
     )
-    refresh_spreadsheets_with_fresh_data(ITEMS_TO_UPDATE, API_CACHE)
+    refresh_spreadsheets_with_fresh_data(ITEMS_TO_UPDATE, API_CACHE, countries=COUNTRIES)
     MISSING_REPORT = update_datasets_whose_resources_have_changed(
         ITEMS_TO_UPDATE,
         API_CACHE,
@@ -426,6 +451,7 @@ if __name__ == "__main__":
         dry_run=DRY_RUN,
         use_legacy=USE_LEGACY,
         hdx_site=HDX_SITE,
+        countries=COUNTRIES,
     )
 
     LOGGER.info(f"{len(ITEMS_TO_UPDATE)} items updated in API:")

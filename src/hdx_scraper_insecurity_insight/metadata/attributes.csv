@@ -203,6 +203,7 @@ insecurity-insight-country-dataset,2023-11-27T13:47:07.398144,dataset_template,c
 insecurity-insight-country-dataset,2023-11-27T13:47:07.398144,resource,insecurity-insight-aidworkerKIKA-incidents,
 insecurity-insight-country-dataset,2023-11-27T13:47:07.398144,resource,insecurity-insight-aidworkerKIKA-overview,
 insecurity-insight-country-dataset,2023-11-27T13:47:07.398144,resource,insecurity-insight-healthcare-incidents,
+insecurity-insight-country-dataset,2023-11-27T13:47:07.398144,resource,insecurity-insight-healthcare-incidents-pse-crisis,
 insecurity-insight-country-dataset,2023-11-27T13:47:07.398144,resource,insecurity-insight-healthcare-overview,
 insecurity-insight-country-dataset,2023-11-27T13:47:07.398144,resource,insecurity-insight-education-incidents,
 insecurity-insight-country-dataset,2023-11-27T13:47:07.398144,resource,insecurity-insight-education-overview,
@@ -214,5 +215,6 @@ insecurity-insight-country-dataset,2023-11-27T13:47:07.398144,resource,insecurit
 insecurity-insight-country-dataset,2023-11-27T13:47:07.398144,resource,insecurity-insight-protection-overview,
 insecurity-insight-country-dataset,2023-11-27T13:47:07.398144,resource,insecurity-insight-crsv-incidents,
 insecurity-insight-country-dataset,2023-11-27T13:47:07.398144,resource,insecurity-insight-crsv-overview,
+
 
 
