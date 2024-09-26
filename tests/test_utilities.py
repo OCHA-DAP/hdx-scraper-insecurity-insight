@@ -5,6 +5,8 @@ import csv
 import logging
 import os
 
+import pytest
+
 from hdx_scraper_insecurity_insight.utilities import (
     fetch_json,
     fetch_json_from_api,
@@ -71,6 +73,7 @@ def test_read_attributes_list():
     ]
 
 
+@pytest.mark.skip(reason="Testing API is really slow, and not a unit test")
 def test_fetching_json():
     dataset_name = "insecurity-insight-crsv-incidents"
 
@@ -111,10 +114,10 @@ def test_filter_json_rows():
 def test_filter_json_rows_pse_crisis():
     dataset_name = "insecurity-insight-healthcare-incidents-pse-crisis"
     sample_response = fetch_json_from_samples(dataset_name)
-    filtered_response = filter_json_rows("PSE", "pse crisis", sample_response)
+    filtered_response = filter_json_rows(["PSE", "ISR"], "pse crisis", sample_response)
     for item in filtered_response:
         print(item["Date"], item["Country ISO"], item["Event Description"], flush=True)
-    assert len(filtered_response) == 995
+    assert len(filtered_response) == 1024
 
 
 def test_censor_location():

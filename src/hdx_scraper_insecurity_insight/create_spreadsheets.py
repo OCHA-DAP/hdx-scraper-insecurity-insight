@@ -100,6 +100,8 @@ def create_spreadsheet(
     hdx_row, row_template = read_schema(modified_dataset_name)
 
     # output_rows.append(hdx_row)
+    if dataset_name.endswith("-pse-crisis"):
+        country_filter = ["PSE", "ISR"]
 
     filtered_rows = filter_json_rows(country_filter, year_filter, api_response)
 

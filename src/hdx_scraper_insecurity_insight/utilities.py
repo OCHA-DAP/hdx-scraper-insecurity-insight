@@ -14,7 +14,7 @@ import os
 import sys
 import time
 
-from typing import Any
+from typing import Any, Union
 
 from urllib3 import request
 from urllib3.util import Retry
@@ -75,7 +75,11 @@ def fetch_json_from_samples(dataset_name: str) -> list[dict]:
     return json_response
 
 
-def filter_json_rows(country_filter: str, year_filter: str, api_response: list[dict]) -> list[dict]:
+def filter_json_rows(
+    country_filter: Union[str, list[str]], year_filter: str, api_response: list[dict]
+) -> list[dict]:
+    if isinstance(country_filter, str):
+        country_filter = [country_filter]
     filtered_rows = []
 
     date_field, iso_country_field = pick_date_and_iso_country_fields(api_response[0])
@@ -96,8 +100,8 @@ def filter_json_rows(country_filter: str, year_filter: str, api_response: list[d
             continue
         if (
             country_filter is not None
-            and len(country_filter) != 0
-            and api_row[iso_country_field] != country_filter
+            and len(country_filter[0]) != 0
+            and api_row[iso_country_field] not in country_filter
         ):
             continue
 

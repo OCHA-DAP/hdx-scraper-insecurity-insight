@@ -86,7 +86,7 @@ def test_create_spreadsheet_pse_crisis_healthcare():
 
     sheets_df = pandas.read_excel(expected_file_path)
 
-    assert len(sheets_df) == 995
+    assert len(sheets_df) == 1024
 
 
 def test_create_current_year_spreadsheet():
