@@ -11,6 +11,7 @@ from hdx_scraper_insecurity_insight.utilities import (
     fetch_json_from_samples,
     filter_json_rows,
     censor_location,
+    censor_event_description,
     list_entities,
     parse_commandline_arguments,
     print_banner_to_log,
@@ -138,6 +139,23 @@ def test_censor_location():
     assert censored_count == pse_count
 
     assert len(censored_response) == len(sample_response)
+
+
+def test_censor_event_description():
+    dataset_name = "insecurity-insight-healthcare-incidents"
+    sample_response = fetch_json_from_samples(dataset_name)
+    censored_response = censor_event_description(sample_response)
+
+    for i, record in enumerate(censored_response):
+        print(
+            i,
+            record["Country ISO"],
+            record["Latitude"],
+            record["Longitude"],
+            record["Geo Precision"],
+            flush=True,
+        )
+        assert record["Event Description"] is None
 
 
 def test_entity_list_datasets():

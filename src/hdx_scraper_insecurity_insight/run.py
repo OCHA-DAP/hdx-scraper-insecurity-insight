@@ -404,7 +404,8 @@ def update_datasets_whose_resources_have_changed(
 if __name__ == "__main__":
     USE_SAMPLE = False
     DRY_RUN = False
-    REFRESH = ["foodsecurity"]
+    REFRESH = ["all"]  # ["foodsecurity"]
+    COUNTRIES = None  # ["PSE"]
     USE_LEGACY = True
     HDX_SITE = "prod"
     T0 = time.time()

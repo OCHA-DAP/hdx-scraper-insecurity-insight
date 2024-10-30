@@ -39,6 +39,7 @@ def fetch_json(dataset_name: str, use_sample: bool = False):
         json_response = fetch_json_from_api(dataset_name)
 
     censored_location_response = censor_location("PSE", json_response)
+    censored_response = censor_event_description(censored_location_response)
 
     return censored_location_response
 
@@ -121,6 +122,29 @@ def censor_location(countries: list[str], api_response: list[dict]) -> list[dict
         censored_rows.append(api_row)
 
     logging.info(f"{n_censored} of {n_records} censored for {countries}")
+    return censored_rows
+
+
+def censor_event_description(api_response: list[dict]) -> list[dict]:
+    censored_rows = []
+
+    if "Event Description" not in api_response[0].keys():
+        logging.info("API response does not contain Event Description fields")
+        return api_response
+    else:
+        logging.info(f"API response contains Event Description, censoring for all countries")
+    _, iso_country_field = pick_date_and_iso_country_fields(api_response[0])
+
+    # Geo fields are Latitude, Longitude and Geo Precision
+    n_censored = 0
+    n_records = 0
+    for api_row in api_response:
+        n_records += 1
+        n_censored += 1
+        api_row["Event Description"] = None
+        censored_rows.append(api_row)
+
+    logging.info(f"{n_censored} of {n_records} Event Description")
     return censored_rows
 
 
