@@ -155,7 +155,7 @@ def test_censor_event_description():
             record["Geo Precision"],
             flush=True,
         )
-        assert record["Event Description"] is None
+        assert record["Event Description"] == ""
 
 
 def test_entity_list_datasets():

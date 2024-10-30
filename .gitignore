@@ -21,3 +21,5 @@ src/hdx_scraper_insecurity_insight/temp/
 src/hdx_scraper_insecurity_insight/temp/
 
 src/hdx_scraper_insecurity_insight/old-output-spreadsheets/
+
+tests/temp/*.xlsx

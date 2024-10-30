@@ -141,10 +141,11 @@ def censor_event_description(api_response: list[dict]) -> list[dict]:
     for api_row in api_response:
         n_records += 1
         n_censored += 1
-        api_row["Event Description"] = None
+        api_row["Event Description"] = ""
+        # api_row.pop("Event Description", None)
         censored_rows.append(api_row)
 
-    logging.info(f"{n_censored} of {n_records} Event Description")
+    logging.info(f"{n_censored} of {n_records} Event Description blanked")
     return censored_rows
 
 
