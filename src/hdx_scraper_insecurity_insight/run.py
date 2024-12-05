@@ -410,10 +410,8 @@ if __name__ == "__main__":
     HDX_SITE = "prod"
     T0 = time.time()
     print_banner_to_log(LOGGER, "Grand Run")
-    # Using refresh=REFRESH here is for testing only
     API_CACHE = fetch_and_cache_api_responses(use_sample=USE_SAMPLE)
     DATASET_CACHE = fetch_and_cache_datasets(use_legacy=USE_LEGACY, hdx_site=HDX_SITE)
-    # Using refresh=REFRESH here is for testing only
     HAS_CHANGED, CHANGED_LIST = check_api_has_not_changed(API_CACHE)
     # Using refresh here allows a forced refresh for particular datasets
     ITEMS_TO_UPDATE = decide_which_resources_have_fresh_data(

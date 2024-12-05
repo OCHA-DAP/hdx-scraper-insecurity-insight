@@ -51,17 +51,34 @@ Dataset updates use the `run` target in the [Makefile](Makefile) which simply ex
 ```
 Which is controlled by a set of flags:
 
-1. `USE_SAMPLE` - if `True` then samples of the API are used rather than the live API are used  
+1. `USE_SAMPLE` - if `True` then samples of the API are used rather than the live API are used. This is handy for testing because it is fast.  
 2. `DRY_RUN` - if `True` then there are no writes to HDX
-3. `REFRESH_ALL` = if `True` then all resources and datasets are updated, rather than just those that have changed
-4. `USE_LEGACY` = if `False` then new datasets are created/updated based on templates, rather than updating legacy datasets from HDX
+3. `REFRESH_ALL` = if [`all`] then all resources and datasets are updated, rather than just those that have changed. REFRESH_ALL can contain a list of entries i.e. ["foodsecurity"], in which case just those datasets listed are updated or None in which case only those datasets with new data are updated.
+4. `COUNTRIES` - if None then all countries are updated or a list of countries can be selected  ["PSE"] in which case just these countries are updated. Again this is mainly used for testing;
+5. `USE_LEGACY` - if `False` then new datasets are created/updated based on templates, rather than updating legacy datasets from HDX
+6. `HDX_SITE` - sets the target HDX instance either "prod" or "stage"
+
 
 ## New dataset and resource (spreadsheet) process
  
-The production of datasets and resources (Excel spreadsheets) from the Insecurity Insight API is driven by the [attributes.csv](src/hdx_scraper_insecurity_insight/metadata/attributes.csv) and [schema.csv](src/hdx_scraper_insecurity_insight/metadata/schema.csv) files.
-The `attributes.csv` file contains information like paths and URLs to the resource samples and the API and is generated manually. The `schema.csv` can be generated automatically from a sample (using `generate_api_transformation_schema.py`) of the API response 
-and a sample spreadsheet but then edited as any normal file, perhaps to add or update HXL tags. This is executed using:
+The production of datasets and resources (Excel spreadsheets) from the Insecurity Insight API is driven by a number of files in the the [metadata](src/hdx_scraper_insecurity_insight/metadata/) folder. 
 
+Metadata files are as follows:
+1. `attributes.csv` - 
+2. `schema.csv`
+3. `schema-overview.csv`
+4. `New-HDX-APIs-1-HDX-Home-Page.csv`
+5. `New-HDX-APIs-2-Topics.csv`
+6. `New-HDX-APIs-3-Country.csv`
+
+The `attributes.csv` file configures the datasets to be created, the `dataset_name` is used as a key to fetch mainly description text from the `New-HDX-APIs-*.csv` files. These are derived from a Google Sheet which Insecurity Insight created. It is here that corrections to dataset and resource text are made. Dates are injected into descriptions in a number of places using a crude templating system.
+
+The `schema` files contain HXL tags which were originally included in the spreadsheets but were
+removed because Insecurity Insight preferred that the Excel spreadsheet columns had appropriate
+data types. The HXL tags forced Excel to treat all columns as string type. They are only used in the `create_spreadsheet` function.
+
+
+When the original datasets were created from the API, the schema files were created using a script:
 ```
 ./generate_api_transformation_schema.py {dataset_name|all}
 ```
@@ -74,17 +91,10 @@ Entries in both `attributes.csv` and `schema.csv` are keyed by a `dataset_name`
 
 The countries datasets are specified in the [countries.csv](src/hdx_scraper_insecurity_insight/metadata/countries.csv) file
 
-During development various parts of the process can be tested independently from the commandline:
+Test coverage is good, and typically when new work is done further tests are added.
 
-```
-./create_spreadsheets.py {dataset_name|all} {iso_country_code|}
-```
+The `make run` command is used during development with appropriate parameters set by editing the code. Possibly a `click` or similar commandline interface could be added here.
 
-Once spreadsheets have been created the `create_datasets.py` command is run to create the datasets in HDX. A commandline argument (the dataset name) can be supplied with the word "all" instructing the script to create all the datasets defined in the `attributes.csv` file, an (uppercase) ISO country code can be used as a second optional argument with the dataset name `insecurity-insight-country-dataset` to produce country pages.
-
-```
-./create_datasets.py {dataset_name|all} {iso_country_code|}
-```
 
 ## Contributions
 
