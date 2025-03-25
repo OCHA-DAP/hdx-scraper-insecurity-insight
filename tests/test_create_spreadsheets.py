@@ -24,7 +24,7 @@ SAMPLE_RESPONSE = fetch_json_from_samples(DATASET_NAME)
 
 
 def test_create_spreadsheet():
-    expected_filename = "2020-2024 Conflict Related Sexual Violence Incident Data.xlsx"
+    expected_filename = "2020-2025 Conflict Related Sexual Violence Incident Data.xlsx"
     temp_directory = os.path.join(os.path.dirname(__file__), "temp")
 
     expected_file_path = os.path.join(temp_directory, expected_filename)
@@ -46,7 +46,7 @@ def test_create_spreadsheet():
 
 def test_create_spreadsheet_healthcare():
     healthcare_dataset = "insecurity-insight-healthcare-incidents"
-    expected_filename = "2020-2024 Attacks on Health Care Incident Data.xlsx"
+    expected_filename = "2020-2025 Attacks on Health Care Incident Data.xlsx"
     temp_directory = os.path.join(os.path.dirname(__file__), "temp")
 
     expected_file_path = os.path.join(temp_directory, expected_filename)
@@ -68,7 +68,7 @@ def test_create_spreadsheet_healthcare():
 
 def test_create_current_year_spreadsheet():
     dataset_name = "insecurity-insight-crsv-incidents-current-year"
-    expected_filename = "2024 Conflict Related Sexual Violence Incident Data.xlsx"
+    expected_filename = "2025 Conflict Related Sexual Violence Incident Data.xlsx"
     temp_directory = os.path.join(os.path.dirname(__file__), "temp")
 
     expected_file_path = os.path.join(temp_directory, expected_filename)
@@ -80,7 +80,7 @@ def test_create_current_year_spreadsheet():
 
     sheets_df = pandas.read_excel(expected_file_path)
 
-    assert len(sheets_df) == 18
+    assert len(sheets_df) == 3
 
     assert expected_filename in status
     assert os.path.exists(expected_file_path)
@@ -92,14 +92,14 @@ def test_date_range_from_json():
     start_year, end_year = date_range_from_json(SAMPLE_RESPONSE)
 
     assert start_year == "2020"
-    assert end_year == "2024"
+    assert end_year == "2025"
 
 
 def test_generate_spreadsheet_filename_two_year():
     attributes = read_attributes(DATASET_NAME)
     filename = generate_spreadsheet_filename("", attributes, SAMPLE_RESPONSE)
 
-    assert filename == "2020-2024 Conflict Related Sexual Violence Incident Data.xlsx"
+    assert filename == "2020-2025 Conflict Related Sexual Violence Incident Data.xlsx"
 
 
 def test_generate_spreadsheet_filename_one_year():

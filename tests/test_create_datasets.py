@@ -119,8 +119,8 @@ def test_get_date_and_country_ranges_from_resources():
         resource_names, use_sample=True
     )
 
-    assert dataset_date == "[2020 TO 2024-02-25]"
-    assert len(countries_group) == 80
+    assert dataset_date == "[2020 TO 2025-01-27]"
+    assert len(countries_group) == 97
 
 
 def test_get_date_range_from_api_response():
@@ -129,8 +129,8 @@ def test_get_date_range_from_api_response():
 
     start_date, end_date = get_date_range_from_api_response(api_response)
 
-    assert start_date == "2020-01-01"
-    assert end_date == "2024-02-25"
+    assert start_date == "2020-01-07"
+    assert end_date == "2025-01-27"
 
 
 def test_get_countries_group_from_api_response():
@@ -139,7 +139,7 @@ def test_get_countries_group_from_api_response():
 
     countries = get_countries_group_from_api_response(api_response)
 
-    assert len(countries) == 80
+    assert len(countries) == 97
     for country in countries:
         assert list(country.keys()) == ["name"]
         assert country["name"] == country["name"].lower()
