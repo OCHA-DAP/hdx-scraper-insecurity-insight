@@ -407,7 +407,7 @@ if __name__ == "__main__":
     REFRESH = ["foodsecurity"]  # ["all"]
     COUNTRIES = None  # ["PSE"]
     USE_LEGACY = True
-    HDX_SITE = "stage"
+    HDX_SITE = "prod"
     T0 = time.time()
     print_banner_to_log(LOGGER, "Grand Run")
     API_CACHE = fetch_and_cache_api_responses(use_sample=USE_SAMPLE)
