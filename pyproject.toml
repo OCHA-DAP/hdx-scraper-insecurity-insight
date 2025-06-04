@@ -1,38 +1,30 @@
-[project]
-name = "hdx_scraper_insecurity_insight"
-version = "2023.11.1"
-description = "HDX Scraper for Insecurity Insight Pipeline"
-readme = "README.md"
-requires-python = ">=3.7"
-authors = [
-  {email = "ian.hopkinson@un.org"},
-  {name = "Ian Hopkinson"}
-]
+#########################
+# Project Configuration #
+#########################
 
-dependencies = [
-    "pandas",
-    "hdx-python-api",
-    "hdx-python-country",
-    "pytest",
-    "pytest-cov",
-  "black==23.10.0",
-  "flake8>=6.1.0",
-  "pylint>=3.0.1"
-]
+# Project name and version needed to run tests
 
 [build-system]
-requires = ["setuptools >= 61.0.0"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
 
-[tool.setuptools.packages.find]
-where = ["src"]
+[project]
+name = "hdx-scraper-insecurity_insight"
+requires-python = ">=3.12"
+dependencies = [
+  "hdx-python-api",
+  "hdx-python-country",
+  "pandas",
+]
 
-[tool.black]
-line-length = 100
-target-version = ['py311']
-include = '\.pyi?$'
-extend-exclude = '''
-# A regex preceded with ^/ will apply only to files and directories
-# in the root of the project.
-^/foo.py  # exclude a file named foo.py in the root of the project (in addition to the defaults)
-'''
+dynamic = ["version"]
+
+[project.optional-dependencies]
+test = [
+  "pytest",
+  "pytest-cov"
+]
+dev = ["pre-commit"]
+
+[project.scripts]
+run = "hdx.scraper.insecurity_insight.__main__:main"

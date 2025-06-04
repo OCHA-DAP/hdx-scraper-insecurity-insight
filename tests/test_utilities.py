@@ -5,21 +5,21 @@ import csv
 import logging
 import os
 
-from hdx_scraper_insecurity_insight.utilities import (
+from hdx.scraper.insecurity_insight.utilities import (
+    censor_event_description,
+    censor_location,
     fetch_json,
     fetch_json_from_api,
     fetch_json_from_samples,
     filter_json_rows,
-    censor_location,
-    censor_event_description,
     list_entities,
     parse_commandline_arguments,
     print_banner_to_log,
     read_attributes,
-    read_insecurity_insight_attributes_pages,
-    read_insecurity_insight_resource_attributes,
     read_countries,
     read_field_mappings,
+    read_insecurity_insight_attributes_pages,
+    read_insecurity_insight_resource_attributes,
     read_schema,
     write_dictionary,
     write_schema,
@@ -114,7 +114,9 @@ def test_censor_location():
     sample_response = fetch_json_from_samples(dataset_name)
     censored_response = censor_location(["PSE"], sample_response)
 
-    censored_count = len([x for x in censored_response if x["Geo Precision"] == "censored"])
+    censored_count = len(
+        [x for x in censored_response if x["Geo Precision"] == "censored"]
+    )
     pse_count = len([x for x in censored_response if x["Country ISO"] == "PSE"])
 
     for i, record in enumerate(censored_response):
@@ -184,7 +186,9 @@ def test_read_insecurity_insight_attributes_pages():
         ii_attributes = read_insecurity_insight_attributes_pages(dataset_name)
         assert ii_attributes
         if ii_attributes:
-            print(f"{dataset_name},{ii_attributes['Page']},{ii_attributes['legacy_name']}")
+            print(
+                f"{dataset_name},{ii_attributes['Page']},{ii_attributes['legacy_name']}"
+            )
         else:
             print(dataset_name)
 
@@ -199,7 +203,9 @@ def test_read_insecurity_insight_attributes_pages_countries():
         ii_attributes = read_insecurity_insight_attributes_pages(dataset_name)
         assert ii_attributes
         if ii_attributes:
-            print(f"{dataset_name},{ii_attributes['Page']},{ii_attributes['legacy_name']}")
+            print(
+                f"{dataset_name},{ii_attributes['Page']},{ii_attributes['legacy_name']}"
+            )
         else:
             print(dataset_name)
 

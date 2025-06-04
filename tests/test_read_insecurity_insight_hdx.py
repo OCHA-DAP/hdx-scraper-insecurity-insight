@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-from hdx_scraper_insecurity_insight.read_insecurity_insight_hdx import (
+from hdx.scraper.insecurity_insight.read_insecurity_insight_hdx import (
     create_insecurity_insight_resource_list,
 )
 

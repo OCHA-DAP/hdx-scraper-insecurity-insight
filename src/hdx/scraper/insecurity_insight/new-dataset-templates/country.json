@@ -1,0 +1,42 @@
+{
+    "name": "insecurity-insight-country-dataset",
+    "title": "country: Attacks on Aid Operations, Explosive Weapons Incident Data, Health and Protection",
+    "private": false,
+    "caveats": "The incidents reported are not a complete nor a representative list of all incidents and have not been independently verified.",
+    "notes": "These datasets contain information on violent and threatening incidents affecting aid operations; aid access, and health care services impacted by explosive weapons; the provision of health care, and IDP and Refugee camps. Also included are datasets cited in the Safeguarding Health in Conflict Coalition (SHCC)'s annual reports.\r\n\r\nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org",
+    "dataset_source": "Insecurity Insight",
+    "dataset_date": "[2020-01-01T00:00:00 TO 2023-10-17T23:59:59]",
+    "data_update_frequency": "-2",
+    "groups": [
+        {
+            "name": "pse"
+        }
+    ],
+    "isopen": true,
+    "license_id": "cc-by-sa",
+    "maintainer": "972627a5-4f23-4922-8892-371ece6531b6",
+    "methodology": "Other",
+    "methodology_other": "Systematically collected from open source, public reports as well as verified submissions from our partner agencies.",
+    "owner_org": "hdx",
+    "subnational": 1,
+    "tags": [
+        {
+            "name": "conflict-violence"
+        },
+        {
+            "name": "facilities-infrastructure"
+        },
+        {
+            "name": "health"
+        },
+        {
+            "name": "health facilities"
+        },
+        {
+            "name": "hxl"
+        },
+        {
+            "name": "indicators"
+        }
+    ]
+}

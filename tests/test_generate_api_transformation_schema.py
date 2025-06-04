@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-from hdx_scraper_insecurity_insight.generate_api_transformation_schema import (
-    generate_schema,
+from hdx.scraper.insecurity_insight.generate_api_transformation_schema import (
     compare_api_to_samples,
+    generate_schema,
     print_country_codes_analysis,
 )
-from hdx_scraper_insecurity_insight.utilities import fetch_json_from_samples
+from hdx.scraper.insecurity_insight.utilities import fetch_json_from_samples
 
 
 def test_generate_schema():
@@ -38,7 +38,9 @@ def test_compare_api_to_samples_same():
     api_cache = {}
     api_cache[dataset_name] = fetch_json_from_samples(dataset_name)
 
-    api_changed, change_list = compare_api_to_samples(api_cache, dataset_names=[dataset_name])
+    api_changed, change_list = compare_api_to_samples(
+        api_cache, dataset_names=[dataset_name]
+    )
 
     assert not api_changed
     assert len(change_list) == 0
@@ -49,7 +51,9 @@ def test_compare_api_to_samples_changed():
     api_cache = {}
     api_cache[dataset_name] = []
 
-    api_changed, change_list = compare_api_to_samples(api_cache, dataset_names=[dataset_name])
+    api_changed, change_list = compare_api_to_samples(
+        api_cache, dataset_names=[dataset_name]
+    )
 
     assert api_changed
     assert len(change_list) == 1
@@ -58,7 +62,9 @@ def test_compare_api_to_samples_changed():
 def test_print_country_codes_analysis():
     dataset_name = "insecurity-insight-crsv-overview"
     api_response = fetch_json_from_samples(dataset_name)
-    api_countries_not_in_hdx, hdx_countries_not_in_api = print_country_codes_analysis(api_response)
+    api_countries_not_in_hdx, hdx_countries_not_in_api = print_country_codes_analysis(
+        api_response
+    )
 
     print(api_countries_not_in_hdx, flush=True)
 

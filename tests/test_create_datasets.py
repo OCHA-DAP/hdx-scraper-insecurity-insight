@@ -8,21 +8,20 @@ from unittest import mock
 
 import pandas
 
-from hdx_scraper_insecurity_insight.utilities import (
-    read_attributes,
-    fetch_json_from_samples,
-    fetch_json_from_api,
-    pick_date_and_iso_country_fields,
-)
-from hdx_scraper_insecurity_insight.create_datasets import (
+from hdx.scraper.insecurity_insight.create_datasets import (
+    create_datasets_in_hdx,
+    create_or_fetch_base_dataset,
     find_resource_filepath,
+    get_countries_group_from_api_response,
     get_date_and_country_ranges_from_resources,
     get_date_range_from_api_response,
-    get_countries_group_from_api_response,
-    get_legacy_dataset_name,
-    create_or_fetch_base_dataset,
-    create_datasets_in_hdx,
     get_date_range_from_resource_file,
+    get_legacy_dataset_name,
+)
+from hdx.scraper.insecurity_insight.utilities import (
+    fetch_json_from_samples,
+    pick_date_and_iso_country_fields,
+    read_attributes,
 )
 
 
@@ -73,7 +72,10 @@ def test_create_or_fetch_base_dataset_create_country_use_legacy():
     )
 
     assert not is_new
-    assert dataset["name"] == "myanmar-attacks-on-aid-operations-education-health-and-protection"
+    assert (
+        dataset["name"]
+        == "myanmar-attacks-on-aid-operations-education-health-and-protection"
+    )
     assert len(dataset.keys()) > 45
 
 
@@ -94,7 +96,10 @@ def test_find_resource_filename_single_year():
     resource_name = "insecurity-insight-healthcare-incidents"
     attributes = read_attributes(resource_name)
     filepath = find_resource_filepath(
-        resource_name, attributes, country_filter="MMR", spreadsheet_directory=spreadsheet_directory
+        resource_name,
+        attributes,
+        country_filter="MMR",
+        spreadsheet_directory=spreadsheet_directory,
     )
     filename = os.path.basename(filepath)
 
@@ -106,7 +111,10 @@ def test_find_resource_filename_current_year():
     resource_name = "insecurity-insight-healthcare-incidents-current-year"
     attributes = read_attributes(resource_name)
     filepath = find_resource_filepath(
-        resource_name, attributes, country_filter="", spreadsheet_directory=spreadsheet_directory
+        resource_name,
+        attributes,
+        country_filter="",
+        spreadsheet_directory=spreadsheet_directory,
     )
     filename = os.path.basename(filepath)
 
@@ -114,7 +122,10 @@ def test_find_resource_filename_current_year():
 
 
 def test_get_date_and_country_ranges_from_resources():
-    resource_names = ["insecurity-insight-crsv-incidents", "insecurity-insight-crsv-overview"]
+    resource_names = [
+        "insecurity-insight-crsv-incidents",
+        "insecurity-insight-crsv-overview",
+    ]
     dataset_date, countries_group = get_date_and_country_ranges_from_resources(
         resource_names, use_sample=True
     )
@@ -156,7 +167,9 @@ def test_get_legacy_dataset_name_non_country():
 def test_get_legacy_dataset_name_country():
     dataset_name = "insecurity-insight-country-dataset"
     country_filter = "COD"
-    legacy_dataset_name = get_legacy_dataset_name(dataset_name, country_filter=country_filter)
+    legacy_dataset_name = get_legacy_dataset_name(
+        dataset_name, country_filter=country_filter
+    )
 
     assert legacy_dataset_name == "attacks-on-ebola-response"
 
@@ -286,9 +299,18 @@ def test_create_datasets_in_hdx_country_use_legacy():
 
 def test_get_date_range_from_resource_file():
     test_filenames = [
-        ("2024 Conflict Related Sexual Violence Incident Data.xlsx", "2024-05-28T00:00:00"),
-        ("2020-2023 Conflict Related Sexual Violence Incident Data.xlsx", "2023-12-09T00:00:00"),
-        ("2023-MMR Attacks on Health Care Incident Data.xlsx", "2023-04-29T00:00:00+00:00"),
+        (
+            "2024 Conflict Related Sexual Violence Incident Data.xlsx",
+            "2024-05-28T00:00:00",
+        ),
+        (
+            "2020-2023 Conflict Related Sexual Violence Incident Data.xlsx",
+            "2023-12-09T00:00:00",
+        ),
+        (
+            "2023-MMR Attacks on Health Care Incident Data.xlsx",
+            "2023-04-29T00:00:00+00:00",
+        ),
     ]
     test_file_directory = os.path.join(os.path.dirname(__file__), "fixtures")
 
@@ -303,7 +325,9 @@ def test_for_intermediate_backfill():
     # This is a demonstration test, worth keeping if we wish to implement in future
     # Load up the food security spreadsheet
     resource_filepath = os.path.join(
-        os.path.dirname(__file__), "fixtures", "2020-2024-food-security-incident-data-backfill.xlsx"
+        os.path.dirname(__file__),
+        "fixtures",
+        "2020-2024-food-security-incident-data-backfill.xlsx",
     )
     sheets_df = pandas.read_excel(resource_filepath)
     # sheets_df.drop(sheets_df.head(1).index, inplace=True)
@@ -315,7 +339,9 @@ def test_for_intermediate_backfill():
 
     # Load the cached API response
     with open(
-        os.path.join(os.path.dirname(__file__), "fixtures", "foodSecurity-backfill.json"),
+        os.path.join(
+            os.path.dirname(__file__), "fixtures", "foodSecurity-backfill.json"
+        ),
         "r",
         encoding="UTF-8",
     ) as api_response_filehandle:

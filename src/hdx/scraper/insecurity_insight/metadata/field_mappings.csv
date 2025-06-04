@@ -1,0 +1,7 @@
+dataset_name,timestamp,upstream,field_name
+insecurity-insight-healthcare-incidents,2023-12-18T09:09:03.041399,"Health Transportation Stolen/Hijacked","Health Transportation Stolen/Highjacked"
+insecurity-insight-healthcare-incidents,2023-12-18T09:09:03.041399,"Health Workers Killed","Health Workers Killed.1"
+insecurity-insight-healthcare-incidents,2023-12-18T09:09:03.041399,"Health Workers Injured","Health Workers Injured.1"
+insecurity-insight-healthcare-incidents,2023-12-18T09:09:03.041399,"Health Workers Kidnapped","Health Workers Kidnapped.1"
+insecurity-insight-healthcare-incidents,2023-12-18T09:09:03.041399,"Health Workers Arrested","Health Workers Arrested.1"
+insecurity-insight-healthcare-incidents,2023-12-18T09:09:03.041399,"National Health Worker Working for Unspecified Health Provider ","National Health Worker Working for Unspecified Health Provider "

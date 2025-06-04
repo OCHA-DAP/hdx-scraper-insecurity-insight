@@ -1,0 +1,42 @@
+{
+    "name": "insecurity-insight-healthcare-dataset",
+    "title": "Attacks on Health Care Monthly News Brief Data",
+    "private": false,
+    "caveats": "Not representative or a comprehensive compilation of all events affecting the provision of healthcare. Data collection is ongoing and data may change as more information is made available.",
+    "notes": "This dataset contains agency- and open source events published in the Attacks on Health Care News Brief.  Categorized by country. \r\n\r\nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org\r\n\r\nFor data supporting the Safeguarding Health in Conflict Coalition (SHCC), please see: https://data.humdata.org/dataset/shcchealthcare-dataset",
+    "dataset_source": "Insecurity Insight",
+    "dataset_date": "[2020-01-01T00:00:00 TO 2023-10-17T23:59:59]",
+    "data_update_frequency": "30",
+    "groups": [
+        {
+            "name": "afg"
+        },
+        {
+            "name": "world"
+        }
+    ],
+    "isopen": true,
+    "license_id": "cc-by",
+    "maintainer": "972627a5-4f23-4922-8892-371ece6531b6",
+    "methodology": "Other",
+    "methodology_other": "Systematically collected from open source, public reports as well as verified submissions from our partner agencies.",
+    "owner_org": "hdx",
+    "subnational": 1,
+    "tags": [
+        {
+            "name": "hxl"
+        },
+        {
+            "name": "complex emergency-conflict-security"
+        },
+        {
+            "name": "disease"
+        },
+        {
+            "name": "health"
+        },
+        {
+            "name": "health facilities"
+        }
+    ]
+}
