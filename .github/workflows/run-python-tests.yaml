@@ -33,6 +33,11 @@ jobs:
     - name: Install Hatch
       uses: pypa/hatch@install
     - name: Test with hatch/pytest
+      env:
+        HDX_SITE: ${{ vars.HDX_SITE }}
+        HDX_KEY: ${{ secrets.HDX_BOT_SCRAPERS_API_TOKEN }}
+        PREPREFIX: ${{ vars.HDX_USER_AGENT_PREPREFIX }}
+        USER_AGENT: ${{ vars.USER_AGENT }}
       run: |
         hatch test
     - name: Check styling
