@@ -29,15 +29,6 @@ from hdx.scraper.insecurity_insight.utilities import (
 LOGGER = logging.getLogger(__name__)
 COUNTRY_DATASET_BASENAME = "insecurity-insight-country-dataset"
 API_DELAY = 5
-TOPICS = [
-    "crsv",
-    "education",
-    "explosive",
-    "healthcare",
-    "protection",
-    "aidworkerKIKA",
-    "foodsecurity",
-]
 
 
 def fetch_and_cache_api_responses(

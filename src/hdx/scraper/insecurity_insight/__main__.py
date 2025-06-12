@@ -27,18 +27,6 @@ _USER_AGENT_LOOKUP = "hdx-scraper-insecurity-insight"
 _SAVED_DATA_DIR = "saved_data"  # Keep in repo to avoid deletion in /tmp
 _UPDATED_BY_SCRIPT = "HDX Scraper: Insecurity Insight"
 
-COUNTRY_DATASET_BASENAME = "insecurity-insight-country-dataset"
-API_DELAY = 5
-TOPICS = [
-    "crsv",
-    "education",
-    "explosive",
-    "healthcare",
-    "protection",
-    "aidworkerKIKA",
-    "foodsecurity",
-]
-
 
 def main(
     save: bool = True,
