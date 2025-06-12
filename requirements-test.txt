@@ -31,7 +31,7 @@ click==8.2.1
     # via
     #   -c requirements.txt
     #   typer
-coverage==7.8.2
+coverage==7.9.0
     # via pytest-cov
 defopt==6.4.0
     # via
@@ -157,7 +157,7 @@ num2words==0.5.14
     # via
     #   -c requirements.txt
     #   quantulum3
-numpy==2.2.6
+numpy==2.3.0
     # via
     #   -c requirements.txt
     #   pandas
@@ -167,7 +167,7 @@ openpyxl==3.1.5
     #   hdx-python-utilities
 packaging==25.0
     # via pytest
-pandas==2.2.3
+pandas==2.3.0
     # via
     #   -c requirements.txt
     #   hdx-scraper-insecurity-insight (pyproject.toml)
@@ -176,7 +176,9 @@ petl==1.7.16
     #   -c requirements.txt
     #   frictionless
 pluggy==1.6.0
-    # via pytest
+    # via
+    #   pytest
+    #   pytest-cov
 ply==3.11
     # via
     #   -c requirements.txt
@@ -207,7 +209,7 @@ pytest==8.4.0
     # via
     #   hdx-scraper-insecurity-insight (pyproject.toml)
     #   pytest-cov
-pytest-cov==6.1.1
+pytest-cov==6.2.1
     # via hdx-scraper-insecurity-insight (pyproject.toml)
 python-dateutil==2.9.0.post0
     # via
@@ -247,7 +249,7 @@ referencing==0.36.2
     #   -c requirements.txt
     #   jsonschema
     #   jsonschema-specifications
-requests==2.32.3
+requests==2.32.4
     # via
     #   -c requirements.txt
     #   ckanapi
@@ -272,7 +274,7 @@ rpds-py==0.25.1
     #   -c requirements.txt
     #   jsonschema
     #   referencing
-ruamel-yaml==0.18.12
+ruamel-yaml==0.18.14
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
@@ -327,7 +329,7 @@ text-unidecode==1.3
     # via
     #   -c requirements.txt
     #   python-slugify
-typeguard==4.4.2
+typeguard==4.4.3
     # via
     #   -c requirements.txt
     #   inflect

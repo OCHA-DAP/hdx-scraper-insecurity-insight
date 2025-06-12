@@ -1,0 +1,13 @@
+# Collector specific configuration
+country_dataset_basename: "insecurity-insight-country-dataset"
+
+api_delay: 5
+
+topics:
+  - "crsv"
+  - "education"
+  - "explosive"
+  - "healthcare"
+  - "protection"
+  - "aidworkerKIKA"
+  - "foodsecurity"

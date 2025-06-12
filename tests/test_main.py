@@ -2,10 +2,8 @@
 # encoding: utf-8
 import pytest
 
-from hdx.scraper.insecurity_insight.__main__ import (
+from hdx.scraper.insecurity_insight.insecurity_insight import (
     decide_which_resources_have_fresh_data,
-    # refresh_spreadsheets_with_fresh_data,
-    # update_datasets_whose_resources_have_changed,
     fetch_and_cache_api_responses,
     fetch_and_cache_datasets,
     parse_dates_from_string,
