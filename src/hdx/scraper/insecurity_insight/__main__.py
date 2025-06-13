@@ -1,23 +1,22 @@
-#!/usr/bin/env python
-# encoding: utf-8
+#!/usr/bin/python
+"""
+Top level script. Calls other functions that generate datasets that this
+script then creates in HDX.
+
+"""
 
 import logging
 import time
 from os.path import expanduser, join
 
-# from hdx.api.configuration import Configuration
+from hdx.api.configuration import Configuration
 from hdx.facades.infer_arguments import facade
+from hdx.utilities.downloader import Download
 from hdx.utilities.easy_logging import setup_logging
-from hdx.utilities.path import script_dir_plus_file
+from hdx.utilities.path import script_dir_plus_file, temp_dir_batch
+from hdx.utilities.retriever import Retrieve
 
-from hdx.scraper.insecurity_insight.insecurity_insight import (
-    check_api_has_not_changed,
-    decide_which_resources_have_fresh_data,
-    fetch_and_cache_api_responses,
-    fetch_and_cache_datasets,
-    refresh_spreadsheets_with_fresh_data,
-    update_datasets_whose_resources_have_changed,
-)
+from hdx.scraper.insecurity_insight.insecurity_insight import InsecurityInsight
 from hdx.scraper.insecurity_insight.utilities import print_banner_to_log
 
 setup_logging()
@@ -41,41 +40,65 @@ def main(
     Returns:
         None
     """
-    # configuration = Configuration.read()
-    USE_SAMPLE = False
-    DRY_RUN = False
-    REFRESH = ["foodsecurity"]  # ["all"]
-    # COUNTRIES = None  # ["PSE"]
-    USE_LEGACY = True
-    HDX_SITE = "prod"
-    T0 = time.time()
-    print_banner_to_log(logger, "Grand Run")
-    API_CACHE = fetch_and_cache_api_responses(use_sample=USE_SAMPLE)
-    DATASET_CACHE = fetch_and_cache_datasets(use_legacy=USE_LEGACY, hdx_site=HDX_SITE)
-    HAS_CHANGED, CHANGED_LIST = check_api_has_not_changed(API_CACHE)
-    # Using refresh here allows a forced refresh for particular datasets
-    ITEMS_TO_UPDATE = decide_which_resources_have_fresh_data(
-        DATASET_CACHE, API_CACHE, refresh=REFRESH
-    )
-    refresh_spreadsheets_with_fresh_data(ITEMS_TO_UPDATE, API_CACHE)
-    MISSING_REPORT = update_datasets_whose_resources_have_changed(
-        ITEMS_TO_UPDATE,
-        API_CACHE,
-        DATASET_CACHE,
-        dry_run=DRY_RUN,
-        use_legacy=USE_LEGACY,
-        hdx_site=HDX_SITE,
-    )
+    configuration = Configuration.read()
+    with temp_dir_batch(folder=_USER_AGENT_LOOKUP) as info:
+        temp_dir = info["folder"]
+        with Download() as downloader:
+            retriever = Retrieve(
+                downloader=downloader,
+                fallback_dir=temp_dir,
+                saved_dir=_SAVED_DATA_DIR,
+                temp_dir=temp_dir,
+                save=save,
+                use_saved=use_saved,
+            )
 
-    logger.info(f"{len(ITEMS_TO_UPDATE)} items updated in API:")
-    for ITEM in ITEMS_TO_UPDATE:
-        logger.info(f"{ITEM[0]:<20.20}:{ITEM[2]}")
-    logger.info("")
-    logger.info("Datasets with missing resources:")
-    for MISSING in MISSING_REPORT:
-        logger.info(f"{MISSING[0]:<80.80}: {MISSING[1]}")
+            insecurity_insight = InsecurityInsight(configuration, retriever)
 
-    logger.info(f"Total run time: {time.time() - T0:0.0f} seconds")
+            USE_SAMPLE = False
+            DRY_RUN = False
+            REFRESH = ["foodsecurity"]  # ["all"]
+            # COUNTRIES = None  # ["PSE"]
+            USE_LEGACY = True
+            HDX_SITE = "dev"
+            T0 = time.time()
+            print_banner_to_log(logger, "Grand Run")
+            API_CACHE = insecurity_insight.fetch_and_cache_api_responses(
+                use_sample=USE_SAMPLE
+            )
+            DATASET_CACHE = insecurity_insight.fetch_and_cache_datasets(
+                use_legacy=USE_LEGACY, hdx_site=HDX_SITE
+            )
+            HAS_CHANGED, CHANGED_LIST = insecurity_insight.check_api_has_not_changed(
+                API_CACHE
+            )
+            # Using refresh here allows a forced refresh for particular datasets
+            ITEMS_TO_UPDATE = insecurity_insight.decide_which_resources_have_fresh_data(
+                DATASET_CACHE, API_CACHE, refresh=REFRESH
+            )
+            insecurity_insight.refresh_spreadsheets_with_fresh_data(
+                ITEMS_TO_UPDATE, API_CACHE
+            )
+            MISSING_REPORT = (
+                insecurity_insight.update_datasets_whose_resources_have_changed(
+                    ITEMS_TO_UPDATE,
+                    API_CACHE,
+                    DATASET_CACHE,
+                    dry_run=DRY_RUN,
+                    use_legacy=USE_LEGACY,
+                    hdx_site=HDX_SITE,
+                )
+            )
+
+            logger.info(f"{len(ITEMS_TO_UPDATE)} items updated in API:")
+            for ITEM in ITEMS_TO_UPDATE:
+                logger.info(f"{ITEM[0]:<20.20}:{ITEM[2]}")
+            logger.info("")
+            logger.info("Datasets with missing resources:")
+            for MISSING in MISSING_REPORT:
+                logger.info(f"{MISSING[0]:<80.80}: {MISSING[1]}")
+
+            logger.info(f"Total run time: {time.time() - T0:0.0f} seconds")
 
 
 if __name__ == "__main__":
