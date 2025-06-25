@@ -1,11 +1,7 @@
-license_id: cc-by-igo
 methodology: Other
-methodology_other: Systematically collected from open source using the SiND.
-caveats: ""
 dataset_source: Insecurity Insight
 package_creator: HDX Data Systems Team
 private: False
-maintainer: insecurityinsight
+maintainer: 972627a5-4f23-4922-8892-371ece6531b6
 owner_org: insecurity-insight
-data_update_frequency: -1
-notes: ""
+subnational: "1"
