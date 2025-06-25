@@ -6,7 +6,6 @@ script then creates in HDX.
 """
 
 import logging
-import time
 from os.path import expanduser, join
 
 from hdx.api.configuration import Configuration
@@ -24,6 +23,7 @@ logger = logging.getLogger(__name__)
 _USER_AGENT_LOOKUP = "hdx-scraper-insecurity-insight"
 _SAVED_DATA_DIR = "saved_data"  # Keep in repo to avoid deletion in /tmp
 _UPDATED_BY_SCRIPT = "HDX Scraper: Insecurity Insight"
+_REFRESH = None  # Set to list of topics to refresh
 
 
 def main(
@@ -53,23 +53,15 @@ def main(
             )
 
             insecurity_insight = InsecurityInsight(configuration, retriever)
-
-            DRY_RUN = False
-            REFRESH = ["foodSecurity"]
-            # COUNTRIES = None  # ["PSE"]
-            USE_LEGACY = True
-            HDX_SITE = "dev"
-            T0 = time.time()
-
-            api_cache = insecurity_insight.fetch_api_responses()
-            dataset_cache = insecurity_insight.fetch_datasets()
+            api_cache = insecurity_insight.fetch_api_responses(_REFRESH)
+            dataset_cache = insecurity_insight.fetch_datasets(_REFRESH)
             has_changed, changed_list = insecurity_insight.check_api_has_not_changed(
-                api_cache
+                api_cache, _REFRESH
             )
 
             # Using refresh here allows a forced refresh for particular datasets
             ITEMS_TO_UPDATE = insecurity_insight.decide_which_resources_have_fresh_data(
-                dataset_cache, api_cache, refresh=REFRESH
+                dataset_cache, api_cache
             )
             insecurity_insight.refresh_spreadsheets_with_fresh_data(
                 ITEMS_TO_UPDATE, api_cache
@@ -79,9 +71,6 @@ def main(
                     ITEMS_TO_UPDATE,
                     api_cache,
                     dataset_cache,
-                    dry_run=DRY_RUN,
-                    use_legacy=USE_LEGACY,
-                    hdx_site=HDX_SITE,
                 )
             )
 
@@ -92,8 +81,6 @@ def main(
             logger.info("Datasets with missing resources:")
             for MISSING in MISSING_REPORT:
                 logger.info(f"{MISSING[0]:<80.80}: {MISSING[1]}")
-
-            logger.info(f"Total run time: {time.time() - T0:0.0f} seconds")
 
 
 if __name__ == "__main__":
