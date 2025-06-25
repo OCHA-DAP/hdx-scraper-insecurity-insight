@@ -61,25 +61,24 @@ def main(
             HDX_SITE = "dev"
             T0 = time.time()
 
-            api_response = insecurity_insight.fetch_api_responses()
-            DATASET_CACHE = insecurity_insight.fetch_and_cache_datasets(
-                use_legacy=USE_LEGACY, hdx_site=HDX_SITE
-            )
+            api_cache = insecurity_insight.fetch_api_responses()
+            dataset_cache = insecurity_insight.fetch_datasets()
+
             HAS_CHANGED, CHANGED_LIST = insecurity_insight.check_api_has_not_changed(
-                API_CACHE
+                api_cache
             )
             # Using refresh here allows a forced refresh for particular datasets
             ITEMS_TO_UPDATE = insecurity_insight.decide_which_resources_have_fresh_data(
-                DATASET_CACHE, API_CACHE, refresh=REFRESH
+                dataset_cache, api_cache, refresh=REFRESH
             )
             insecurity_insight.refresh_spreadsheets_with_fresh_data(
-                ITEMS_TO_UPDATE, API_CACHE
+                ITEMS_TO_UPDATE, api_cache
             )
             MISSING_REPORT = (
                 insecurity_insight.update_datasets_whose_resources_have_changed(
                     ITEMS_TO_UPDATE,
-                    API_CACHE,
-                    DATASET_CACHE,
+                    api_cache,
+                    dataset_cache,
                     dry_run=DRY_RUN,
                     use_legacy=USE_LEGACY,
                     hdx_site=HDX_SITE,

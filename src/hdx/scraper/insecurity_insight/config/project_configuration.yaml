@@ -14,7 +14,7 @@ topics:
 
 datasets:
   aidworkerKIKA:
-    name: "insecurity-insight-aidworkerkika-dataset"
+    name: "sind-aid-worker-kka-dataset"
     title: "Global Aid Worker KIKA (Killed, Injured, Kidnapped or Arrested) Data"
     caveats: "Not representative or a comprehensive compilation of all events in which an aid worker was killed, kidnapped, or arrested. \r\nKey definitions\r\nAid worker: An individual employed by or attached to a humanitarian, UN, international, national, or government aid agency.\r\nKilled: Refers to a staff member being killed. Aid worker(s) killed while in captivity are coded as \u2018kidnapped\u2019.\r\nKidnapped: Refers to a staff member being kidnapped, missing or taken hostage.\r\nArrested: Refers to a staff member being arrested, charged, detained, fined or imprisoned.  \r\nData collection is ongoing and data may change as more information is made available."
     notes: "This dataset contains agency- and publicly-reported data for events in which an aid worker was killed, injured, kidnapped, or arrested. Categorized by country. Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
@@ -28,7 +28,7 @@ datasets:
       - "indicators"
 
   country:
-    name: "insecurity-insight-country-dataset"
+    name: "country-violence-against-civilians-and-vital-civilian-facilities"
     title: "country: Attacks on Aid Operations, Explosive Weapons Incident Data, Health and Protection"
     caveats: "The incidents reported are not a complete nor a representative list of all incidents and have not been independently verified."
     notes: "These datasets contain information on violent and threatening incidents affecting aid operations; aid access, and health care services impacted by explosive weapons; the provision of health care, and IDP and Refugee camps. Also included are datasets cited in the Safeguarding Health in Conflict Coalition (SHCC)'s annual reports.\r\n\r\nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org"
@@ -43,7 +43,7 @@ datasets:
       - "indicators"
 
   education:
-    name: "insecurity-insight-education-dataset"
+    name: "sind-education-in-danger-monthly-news-briefs-dataset"
     title: "Education in Danger Data"
     caveats: "Not representative or a comprehensive compilation of all events affecting the provision of education."
     notes: "This dataset contains agency- and open source events published in the Education in Danger Monthly News Brief. Categorized by country. Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
@@ -57,7 +57,7 @@ datasets:
       - "fatalities"
 
   explosiveWeapons:
-    name: "insecurity-insight-explosive-dataset"
+    name: "explosive-weapons-use-affecting-aid-access-education-and-healthcare-services"
     title: "Explosive Weapons Data by Insecurity Insight"
     caveats: "Not representative or a comprehensive compilation of all incidents in which aid access, education and healthcare services were impacted by explosive weapons use since 2020. "
     notes: "This dataset contains agency- and open source events in which aid access, education and healthcare services were impacted by explosive weapons.  Categorized by country. Insecurity Insight collaborates with the International Network on Explosive Weapons (INEW) in producing research and analysis on the harm and use of explosive weapons for the Explosive Weapons Monitor by documenting their effects on health care, education, and aid access. \r\n\r\nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org"
@@ -68,8 +68,8 @@ datasets:
       - "complex emergency-conflict-security"
       - "conflict-violence"
 
-  foodsecurity:
-    name: "insecurity-insight-foodsecurity-dataset"
+  foodSecurity:
+    name: "conflict-hunger-and-aid-security"
     title: "Conflict, Hunger and Aid Security"
     caveats: "Not representative or a comprehensive compilation of all events impacting food security. Data collection is ongoing and data may change as more information is made available."
     notes: "This page provides data on conflict events affecting food insecurity in the form of the Food Insecurity and Violent Conflict (FIVC) datasets. Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
@@ -82,7 +82,7 @@ datasets:
       - "OPT-Israel-hostilities"
 
   healthcare:
-    name: "insecurity-insight-healthcare-dataset"
+    name: "sind-safeguarding-healthcare-monthly-news-briefs-dataset"
     title: "Attacks on Health Care Monthly News Brief Data"
     caveats: "Not representative or a comprehensive compilation of all events affecting the provision of healthcare. Data collection is ongoing and data may change as more information is made available."
     notes: "This dataset contains agency- and open source events published in the Attacks on Health Care News Brief.  Categorized by country. \r\n\r\nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org\r\n\r\nFor data supporting the Safeguarding Health in Conflict Coalition (SHCC), please see: https://data.humdata.org/dataset/shcchealthcare-dataset"
@@ -96,7 +96,7 @@ datasets:
       - "health facilities"
 
   protection:
-    name: "insecurity-insight-protection-dataset"
+    name: "sind-protection-in-danger-monthly-news-briefs-dataset"
     title: "Protection in Danger Monthly News Brief Data"
     caveats: "Not representative or a comprehensive compilation of all events affecting the provision of healthcare. Data collection is ongoing and data may change as more information is made available."
     notes: "This dataset contains violent agency- and open source events affecting protection programmes published in the Protection in Danger Monthly News Brief. Categorized by country. \r\n\r\nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org"
@@ -111,7 +111,7 @@ datasets:
       - "refugees"
 
   sv:
-    name: "insecurity-insight-crsv-dataset"
+    name: "conflict-related-sexual-violence"
     title: "Conflict-Related Sexual Violence (CRSV) Data"
     caveats: ""
     notes: "This dataset contains publicly-reported cases of sexual violence by conflict actors, security personnel, and sexual violence violence that targets aid workers, educators, health workers and IDPS/refugees.\r\n\r\nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org"
@@ -120,3 +120,30 @@ datasets:
     methodology_other: "Systematically collected from open source, public reports as well as verified submissions from our partner agencies."
     tags:
       - "conflict-violence"
+
+country_datasets:
+  AFG: "afghanistan-violence-against-civilians-and-vital-civilian-facilities"
+  BFA: "burkina-faso-violence-against-civilians-and-vital-civilian-facilities"
+  BGD: "bangladesh-bgd-attacks-on-protection"
+  CAF: "car-violence-against-civilians-and-vital-civlian-facilities"
+  CMR: "cameroon-attacks-on-civilians-and-vital-civilian-facilities"
+  COD: "attacks-on-ebola-response"
+  ETH: "ethiopia-attacks-on-aid-operations-education-health-and-protection"
+  HTI: "haiti-attacks-on-aid-operations-education-health-and-protection"
+  IRQ: "iraq-violence-against-civilians-and-vital-civilian-facilities"
+  LBN: "aid-security-risk-in-lebanon"
+  LBY: "libya-violence-against-civilians-and-vital-civilian-facilities"
+  MEX: "mexico-violent-and-threatening-incidents-against-health-care"
+  MLI: "mali-violence-against-civilians-and-vital-civilian-facilities"
+  MMR: "myanmar-attacks-on-aid-operations-education-health-and-protection"
+  MOZ: "mozambique-attacks-on-aid-operations-education-health-and-protection"
+  NER: "niger-violence-against-cvilians-and-vital-civilian-facilities"
+  NGA: "nigeria-violence-agaiinst-civilians-and-vital-civilian-faciltties"
+  PAK: "pakistan-violence-against-civilians-and-vital-civilian-facilities"
+  PSE: "opt-violent-and-threatening-incidents-against-healthcare"
+  SDN: "sudan-violence-against-civilians-and-vital-civilian-facilities"
+  SOM: "somalia-violence-agaiinst-civilian-and-vital-civilian-facilitites"
+  SSD: "south-sudan-attacks-on-civilians-and-vital-civilian-facilities"
+  SYR: "syria-violent-and-threatening-incidents-against-healthcare"
+  UKR: "ukraine-data-on-attacks-on-aid-operations-education-health-and-protection"
+  YEM: "yemen-violence-aganist-civilian-and-vital-civilian-faciltities"

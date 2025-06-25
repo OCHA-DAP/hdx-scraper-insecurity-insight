@@ -6,11 +6,11 @@ import re
 from typing import Optional
 
 from hdx.api.configuration import Configuration
+from hdx.data.dataset import Dataset
 from hdx.utilities.retriever import Retrieve
 
 from hdx.scraper.insecurity_insight.create_datasets import (
     create_datasets_in_hdx,
-    create_or_fetch_base_dataset,
     get_countries_group_from_api_response,
     get_date_range_from_api_response,
 )
@@ -60,58 +60,31 @@ class InsecurityInsight:
         logger.info(f"Loaded {len(api_cache)} API responses to cache, expected 18")
         return api_cache
 
-    def fetch_and_cache_datasets(
-        self,
-        use_legacy: bool = False,
-        hdx_site: str = "stage",
-        refresh: Optional[list] = None,
-    ) -> dict:
-        if refresh is None:
-            refresh = ["all"]
+    def fetch_datasets(self, refresh: Optional[list] = None) -> dict:
         dataset_cache = {}
-        print_banner_to_log(logger, "Populate dataset cache")
-        dataset_list = list_entities(type_="dataset")
+        if refresh is None:
+            refresh = self._configuration["topics"]
+
         # load topic datasets
         n_topic_datasets = 0
-        for dataset in dataset_list:
-            refresh_flag = False
-            for item in refresh:
-                if item == "all":
-                    refresh_flag = True
-                    break
-                elif item in dataset:
-                    refresh_flag = True
-                    break
-            if not refresh_flag:
-                logger.info(f"Skipping {dataset} because refresh = {refresh}")
-                continue
-            print(dataset, flush=True)
-            if dataset == self._configuration["country_dataset_basename"]:
-                continue
-            dataset_cache[dataset], _ = create_or_fetch_base_dataset(
-                dataset, use_legacy=use_legacy, hdx_site=hdx_site
-            )
-            n_topic_datasets += 1
+        for topic in refresh:
+            dataset_name = self._configuration["datasets"][topic]["name"]
+            dataset = Dataset.read_from_hdx(dataset_name)
+            if dataset:
+                dataset_cache[topic] = dataset
+                n_topic_datasets += 1
 
         # Load country datasets
-        countries = read_countries()
         n_countries = 0
-        for country in countries.keys():
-            dataset_name = self._configuration["country_dataset_basename"].replace(
-                "country", country.lower()
-            )
-            dataset_cache[dataset_name], _ = create_or_fetch_base_dataset(
-                self._configuration["country_dataset_basename"],
-                country_filter=country,
-                use_legacy=use_legacy,
-                hdx_site=hdx_site,
-            )
-            n_countries += 1
+        for country, dataset_name in self._configuration["country_datasets"].items():
+            dataset = Dataset.read_from_hdx(dataset_name)
+            if dataset:
+                dataset_cache[country] = dataset
+                n_countries += 1
 
         logger.info(f"Loaded {len(dataset_cache)} datasets to cache")
-
-        logger.info(f"Found {n_topic_datasets}, expected 6 topic datasets")
-        logger.info(f"Found {n_countries}, expected 24 country datasets")
+        logger.info(f"Found {n_topic_datasets}, expected 7 topic datasets")
+        logger.info(f"Found {n_countries}, expected 25 country datasets")
         return dataset_cache
 
     def check_api_has_not_changed(
