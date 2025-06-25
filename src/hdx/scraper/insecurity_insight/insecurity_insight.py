@@ -3,10 +3,12 @@
 
 import logging
 import re
+from os.path import dirname, join
 from typing import Optional
 
 from hdx.api.configuration import Configuration
 from hdx.data.dataset import Dataset
+from hdx.utilities.loader import load_json
 from hdx.utilities.retriever import Retrieve
 
 from hdx.scraper.insecurity_insight.create_datasets import (
@@ -15,9 +17,6 @@ from hdx.scraper.insecurity_insight.create_datasets import (
     get_date_range_from_api_response,
 )
 from hdx.scraper.insecurity_insight.create_spreadsheets import create_spreadsheet
-from hdx.scraper.insecurity_insight.generate_api_transformation_schema import (
-    compare_api_to_samples,
-)
 from hdx.scraper.insecurity_insight.utilities import (
     censor_event_description,
     censor_location,
@@ -90,20 +89,40 @@ class InsecurityInsight:
     def check_api_has_not_changed(
         self, api_cache: dict, refresh: Optional[list] = None
     ) -> tuple[bool, list]:
-        dataset_names = None
-        if refresh is None or "all" in refresh:
-            pass
-        else:
-            dataset_names = []
-            for item in refresh:
-                dataset_names.append(f"insecurity-insight-{item}-incidents")
-        print(dataset_names, flush=True)
-        has_changed, changed_list = compare_api_to_samples(
-            api_cache, dataset_names=dataset_names
-        )
-        logger.info("\nChanged API endpoints:")
-        for dataset_name in changed_list:
-            logger.info(dataset_name)
+        if refresh is None:
+            refresh = self._configuration["topics"]
+
+        has_changed = False
+        changed_list = []
+        for topic in refresh:
+            for topic_type in ["incidents", "overview"]:
+                resource = f"{topic}-{topic_type}"
+                api_response = api_cache[resource]
+                if topic_type == "incidents":
+                    resource = f"{topic}"
+                samples_response = load_json(
+                    join(dirname(__file__), "api-samples", f"{resource}.json")
+                )
+
+                sample_keys = samples_response[0].keys()
+                if len(api_response) != 0:
+                    api_keys = api_response[0].keys()
+                else:
+                    api_keys = []
+
+                if sample_keys != api_keys:
+                    changed_list.append(resource)
+                    logger.info(f"**MISMATCH between API and sample for {resource}")
+                    logger.info("Keys in API data but not in sample:")
+                    logger.info(set(api_keys).difference(set(sample_keys)))
+                    logger.info("Keys in sample but not in API data:")
+                    logger.info(set(sample_keys).difference(api_keys))
+                    has_changed = True
+
+        if len(changed_list) > 0:
+            logger.error("Changed API endpoints:")
+            for resource in changed_list:
+                logger.error(resource)
 
         assert not has_changed, (
             "!!One or more of the Insecurity Insight endpoints has changed format"

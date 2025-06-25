@@ -63,10 +63,10 @@ def main(
 
             api_cache = insecurity_insight.fetch_api_responses()
             dataset_cache = insecurity_insight.fetch_datasets()
-
-            HAS_CHANGED, CHANGED_LIST = insecurity_insight.check_api_has_not_changed(
+            has_changed, changed_list = insecurity_insight.check_api_has_not_changed(
                 api_cache
             )
+
             # Using refresh here allows a forced refresh for particular datasets
             ITEMS_TO_UPDATE = insecurity_insight.decide_which_resources_have_fresh_data(
                 dataset_cache, api_cache, refresh=REFRESH
