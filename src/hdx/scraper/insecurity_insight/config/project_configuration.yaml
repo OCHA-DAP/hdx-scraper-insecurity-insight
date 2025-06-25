@@ -1,7 +1,7 @@
 # Collector specific configuration
-country_dataset_basename: "insecurity-insight-country-dataset"
+base_url: "https://sind-api.herokuapp.com/hdx/v1/"
 
-api_delay: 5
+country_dataset_basename: "insecurity-insight-country-dataset"
 
 topics:
   - "aidworkerKIKA"

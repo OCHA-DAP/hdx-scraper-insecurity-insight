@@ -17,7 +17,6 @@ from hdx.utilities.path import script_dir_plus_file, temp_dir_batch
 from hdx.utilities.retriever import Retrieve
 
 from hdx.scraper.insecurity_insight.insecurity_insight import InsecurityInsight
-from hdx.scraper.insecurity_insight.utilities import print_banner_to_log
 
 setup_logging()
 logger = logging.getLogger(__name__)
@@ -43,7 +42,7 @@ def main(
     configuration = Configuration.read()
     with temp_dir_batch(folder=_USER_AGENT_LOOKUP) as info:
         temp_dir = info["folder"]
-        with Download() as downloader:
+        with Download(rate_limit={"calls": 1, "period": 5}) as downloader:
             retriever = Retrieve(
                 downloader=downloader,
                 fallback_dir=temp_dir,
@@ -55,17 +54,14 @@ def main(
 
             insecurity_insight = InsecurityInsight(configuration, retriever)
 
-            USE_SAMPLE = False
             DRY_RUN = False
-            REFRESH = ["foodsecurity"]  # ["all"]
+            REFRESH = ["foodSecurity"]
             # COUNTRIES = None  # ["PSE"]
             USE_LEGACY = True
             HDX_SITE = "dev"
             T0 = time.time()
-            print_banner_to_log(logger, "Grand Run")
-            API_CACHE = insecurity_insight.fetch_and_cache_api_responses(
-                use_sample=USE_SAMPLE
-            )
+
+            api_response = insecurity_insight.fetch_api_responses()
             DATASET_CACHE = insecurity_insight.fetch_and_cache_datasets(
                 use_legacy=USE_LEGACY, hdx_site=HDX_SITE
             )

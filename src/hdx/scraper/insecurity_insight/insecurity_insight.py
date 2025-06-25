@@ -1,11 +1,8 @@
 #!/usr/bin/python
 """insecurity insight scraper"""
 
-import json
 import logging
-import os
 import re
-import time
 from typing import Optional
 
 from hdx.api.configuration import Configuration
@@ -22,7 +19,8 @@ from hdx.scraper.insecurity_insight.generate_api_transformation_schema import (
     compare_api_to_samples,
 )
 from hdx.scraper.insecurity_insight.utilities import (
-    fetch_json,
+    censor_event_description,
+    censor_location,
     list_entities,
     print_banner_to_log,
     read_attributes,
@@ -42,60 +40,22 @@ class InsecurityInsight:
         self._retriever = retriever
         self._temp_folder = retriever.temp_dir
 
-    def fetch_and_cache_api_responses(
-        self,
-        save_response: bool = False,
-        use_sample: bool = False,
-        refresh: Optional[list] = None,
-    ) -> dict:
-        if refresh is None:
-            refresh = ["all"]
+    def fetch_api_responses(self, refresh: Optional[list] = None) -> dict:
         api_cache = {}
-        print_banner_to_log(logger, "Populate API cache")
-
-        resource_list = list_entities(type_="resource")
-        for resource in resource_list:
-            t0 = time.time()
-            refresh_flag = False
-            for item in refresh:
-                if item == "all":
-                    refresh_flag = True
-                    break
-                elif item in resource:
-                    refresh_flag = True
-                    break
-            if not refresh_flag:
-                logger.info(f"Skipping {resource} because refresh = {refresh}")
-                continue
-
-            if not use_sample:
+        if refresh is None:
+            refresh = self._configuration["topics"]
+        for topic in refresh:
+            for topic_type in ["incidents", "incidents-current-year", "overview"]:
+                resource = f"{topic}-{topic_type}"
                 logger.info(f"Fetching data for {resource} from API")
-            else:
-                logger.info(f"Fetching data for {resource} from samples")
-            api_cache[resource] = fetch_json(resource, use_sample=use_sample)
 
-            if save_response:
-                attributes = read_attributes(resource)
-                with open(
-                    os.path.join(
-                        os.path.dirname(__file__),
-                        "api-samples",
-                        attributes["api_response_filename"].replace(
-                            ".json", "-tmp.json"
-                        ),
-                    ),
-                    "w",
-                    encoding="UTF-8",
-                ) as json_file_handle:
-                    json.dump(api_cache[resource], json_file_handle)
-            logger.info(
-                f"... took {time.time() - t0:0.0f} seconds for {len(api_cache[resource])} records"
-            )
-            if not use_sample:
-                logger.info(
-                    f"Delaying next call for {self._configuration['api_delay']} seconds\n"
-                )
-                time.sleep(self._configuration["api_delay"])
+                api_url = f"{self._configuration['base_url']}{topic}"
+                if topic_type == "overview":
+                    api_url = f"{api_url}Overview"
+                json_response = self._retriever.download_json(api_url)
+                censored_location_response = censor_location(["PSE"], json_response)
+                censored_response = censor_event_description(censored_location_response)
+                api_cache[resource] = censored_response
 
         logger.info(f"Loaded {len(api_cache)} API responses to cache, expected 18")
         return api_cache
