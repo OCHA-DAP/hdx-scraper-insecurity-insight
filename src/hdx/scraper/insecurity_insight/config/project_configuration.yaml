@@ -5,51 +5,27 @@ api_delay: 5
 
 topics:
   - "aidworkerKIKA"
-  - "crsv"
   - "education"
-  - "explosive"
-  - "foodsecurity"
+  - "explosiveWeapons"
+  - "foodSecurity"
   - "healthcare"
   - "protection"
+  - "sv"
 
 datasets:
   aidworkerKIKA:
     name: "insecurity-insight-aidworkerkika-dataset"
     title: "Global Aid Worker KIKA (Killed, Injured, Kidnapped or Arrested) Data"
-    caveats: "Not representative or a comprehensive compilation of all events in which an aid worker was killed, kidnapped, or arrested. \r\nKey definitions\r\nAid worker: An individual employed by or attached to a humanitarian, UN, international, national, or government aid agency.\r\nKilled: Refers to a staff member being killed. Aid worker(s) killed while in captivity are coded as \u2018kidnapped\u2019.\r\nKidnapped: Refers to a staff member being kidnapped, missing or taken hostage.\r\nArrested: Refers to a staff member being arrested, charged, detained, fined or imprisoned.  \r\nData collection is ongoing and data may change as more information is made available.",
-    notes: "This dataset contains agency- and publicly-reported data for events in which an aid worker was killed, injured, kidnapped, or arrested. Categorized by country. Please get in touch if you are interested in curated datasets: info@insecurityinsight.org",
-    data_update_frequency: "30",
-    license_id: "cc-by",
-    methodology_other: "Systematically collected from open source, public reports as well as verified submissions from our partner agencies.",
+    caveats: "Not representative or a comprehensive compilation of all events in which an aid worker was killed, kidnapped, or arrested. \r\nKey definitions\r\nAid worker: An individual employed by or attached to a humanitarian, UN, international, national, or government aid agency.\r\nKilled: Refers to a staff member being killed. Aid worker(s) killed while in captivity are coded as \u2018kidnapped\u2019.\r\nKidnapped: Refers to a staff member being kidnapped, missing or taken hostage.\r\nArrested: Refers to a staff member being arrested, charged, detained, fined or imprisoned.  \r\nData collection is ongoing and data may change as more information is made available."
+    notes: "This dataset contains agency- and publicly-reported data for events in which an aid worker was killed, injured, kidnapped, or arrested. Categorized by country. Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    data_update_frequency: "30"
+    license_id: "cc-by"
+    methodology_other: "Systematically collected from open source, public reports as well as verified submissions from our partner agencies."
     tags:
       - "aid worker security"
       - "aid workers"
       - "conflict-violence"
       - "indicators"
-
-  conflict-hunger-and-aid-security:
-    name: "insecurity-insight-foodsecurity-dataset"
-    title: "Conflict, Hunger and Aid Security"
-    caveats: "Not representative or a comprehensive compilation of all events impacting food security. Data collection is ongoing and data may change as more information is made available."
-    notes: "This page provides data on conflict events affecting food insecurity in the form of the Food Insecurity and Violent Conflict (FIVC) datasets. Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
-    data_update_frequency: "30"
-    license_id: "cc-by"
-    methodology_other: "Systematically collected from open source, public reports as well as verified submissions from our partner agencies.",
-    tags:
-      - "conflict-violence"
-      - "food security"
-      - "OPT-Israel-hostilities"
-
-  conflict-related-sexual-violence:
-    name: "insecurity-insight-crsv-dataset"
-    title: "Conflict-Related Sexual Violence (CRSV) Data"
-    caveats: ""
-    notes: "This dataset contains publicly-reported cases of sexual violence by conflict actors, security personnel, and sexual violence violence that targets aid workers, educators, health workers and IDPS/refugees.\r\n\r\nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org"
-    data_update_frequency: "30"
-    license_id: "cc-by"
-    methodology_other: "Systematically collected from open source, public reports as well as verified submissions from our partner agencies."
-    tags:
-      - "conflict-violence"
 
   country:
     name: "insecurity-insight-country-dataset"
@@ -57,8 +33,8 @@ datasets:
     caveats: "The incidents reported are not a complete nor a representative list of all incidents and have not been independently verified."
     notes: "These datasets contain information on violent and threatening incidents affecting aid operations; aid access, and health care services impacted by explosive weapons; the provision of health care, and IDP and Refugee camps. Also included are datasets cited in the Safeguarding Health in Conflict Coalition (SHCC)'s annual reports.\r\n\r\nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org"
     data_update_frequency: "-2"
-    license_id: "cc-by-sa",
-    methodology_other: "Systematically collected from open source, public reports as well as verified submissions from our partner agencies.",
+    license_id: "cc-by-sa"
+    methodology_other: "Systematically collected from open source, public reports as well as verified submissions from our partner agencies."
     tags":
       - "conflict-violence"
       - "facilities-infrastructure"
@@ -66,7 +42,7 @@ datasets:
       - "health facilities"
       - "indicators"
 
-  education-in-danger:
+  education:
     name: "insecurity-insight-education-dataset"
     title: "Education in Danger Data"
     caveats: "Not representative or a comprehensive compilation of all events affecting the provision of education."
@@ -80,7 +56,7 @@ datasets:
       - "education"
       - "fatalities"
 
-  explosive-weapons:
+  explosiveWeapons:
     name: "insecurity-insight-explosive-dataset"
     title: "Explosive Weapons Data by Insecurity Insight"
     caveats: "Not representative or a comprehensive compilation of all incidents in which aid access, education and healthcare services were impacted by explosive weapons use since 2020. "
@@ -91,6 +67,19 @@ datasets:
     tags:
       - "complex emergency-conflict-security"
       - "conflict-violence"
+
+  foodsecurity:
+    name: "insecurity-insight-foodsecurity-dataset"
+    title: "Conflict, Hunger and Aid Security"
+    caveats: "Not representative or a comprehensive compilation of all events impacting food security. Data collection is ongoing and data may change as more information is made available."
+    notes: "This page provides data on conflict events affecting food insecurity in the form of the Food Insecurity and Violent Conflict (FIVC) datasets. Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    data_update_frequency: "30"
+    license_id: "cc-by"
+    methodology_other: "Systematically collected from open source, public reports as well as verified submissions from our partner agencies."
+    tags:
+      - "conflict-violence"
+      - "food security"
+      - "OPT-Israel-hostilities"
 
   healthcare:
     name: "insecurity-insight-healthcare-dataset"
@@ -120,3 +109,14 @@ datasets:
       - "populated places-settlements"
       - "refugee crisis"
       - "refugees"
+
+  sv:
+    name: "insecurity-insight-crsv-dataset"
+    title: "Conflict-Related Sexual Violence (CRSV) Data"
+    caveats: ""
+    notes: "This dataset contains publicly-reported cases of sexual violence by conflict actors, security personnel, and sexual violence violence that targets aid workers, educators, health workers and IDPS/refugees.\r\n\r\nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    data_update_frequency: "30"
+    license_id: "cc-by"
+    methodology_other: "Systematically collected from open source, public reports as well as verified submissions from our partner agencies."
+    tags:
+      - "conflict-violence"
