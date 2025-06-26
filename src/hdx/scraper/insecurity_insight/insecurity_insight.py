@@ -2,7 +2,6 @@
 """insecurity insight scraper"""
 
 import logging
-import re
 from os.path import dirname, join
 from typing import Optional
 
@@ -14,13 +13,13 @@ from hdx.utilities.retriever import Retrieve
 from hdx.scraper.insecurity_insight.create_datasets import (
     create_datasets_in_hdx,
     get_countries_group_from_api_response,
-    get_date_range_from_api_response,
 )
 from hdx.scraper.insecurity_insight.create_spreadsheets import create_spreadsheet
 from hdx.scraper.insecurity_insight.utilities import (
     censor_event_description,
     censor_location,
     list_entities,
+    pick_date_and_iso_country_fields,
     print_banner_to_log,
     read_attributes,
     read_countries,
@@ -134,133 +133,35 @@ class InsecurityInsight:
         dataset_cache: dict,
         api_cache: dict,
         refresh: Optional[list] = None,
-        dataset_list: Optional[list[str]] = None,
-        resource_list: Optional[list[str]] = None,
-        topic_list: Optional[list[str]] = None,
+        force_refresh: Optional[bool] = False,
     ) -> list[str]:
-        """This function returns a list of tuples for datasets that need updating containing:
-        (topic, api start date, api end date)
-        The api start and end date are used to populate dataset_date later in the process.
-
-        Arguments:
-            dataset_cache {dict} -- _description_
-            api_cache {dict} -- _description_
-
-        Keyword Arguments:
-            refresh {bool} -- _description_ (default: {False})
-            dataset_list {Optional[list[str]]} -- _description_ (default: {None})
-            resource_list {Optional[list[str]]} -- _description_ (default: {None})
-            topic_list {Optional[list[str]]} -- _description_ (default: {None})
-
-        Returns:
-            list[str] -- _description_
-        """
-        print_banner_to_log(logger, "Identify updates")
         if refresh is None:
-            refresh = []
-        if len(refresh) != 0 and "all" in refresh:
-            logger.info("`refresh` is set to `all` all resources will be refreshed")
-
-        # Dates from dataset records
-        if dataset_list is None:
-            dataset_list = list_entities(type_="dataset")
-
-        dataset_end_date = {}
-        dataset_start_date = {}
-        for dataset in dataset_list:
-            if dataset == self._configuration["country_dataset_basename"]:
-                continue
-            try:
-                start_date, end_date = parse_dates_from_string(
-                    dataset_cache[dataset]["dataset_date"]
-                )
-                dataset_end_date[dataset] = end_date
-                dataset_start_date[dataset] = start_date
-            except KeyError:
-                dataset_end_date[dataset] = ""
-                dataset_start_date[dataset] = ""
-
-        # Dates from resources
-        if resource_list is None:
-            resource_list = list_entities(type_="resource")
-
-        resource_end_date = {}
-        resource_start_date = {}
-        for resource in resource_list:
-            if not resource.endswith("-incidents"):
-                continue
-
-            try:
-                start_date, end_date = get_date_range_from_api_response(
-                    api_cache[resource]
-                )
-                _, resource_end_date[resource] = parse_dates_from_string(end_date)
-                _, resource_start_date[resource] = parse_dates_from_string(start_date)
-            except KeyError:
-                resource_end_date[resource] = ""
-                resource_start_date[resource] = ""
-        # Compare
-        if topic_list is None:
-            topic_list = [
-                "crsv",
-                "education",
-                "explosive",
-                "healthcare",
-                "protection",
-                "aidworkerKIKA",
-                "foodsecurity",
-            ]
+            refresh = self._configuration["topics"]
 
         items_to_update = []
-        logger.info(
-            f"{'item':<15} {'API Start ':<10} {'API End':<10} "
-            f"{'Dataset Start':<15} {'Dataset End':<10} "
-        )
-        for item in topic_list:
-            resource_key = f"insecurity-insight-{item}-incidents"
-            dataset_key = f"insecurity-insight-{item}-dataset"
-            update_str = ""
-            try:
-                if resource_end_date[resource_key] > dataset_end_date[dataset_key]:
-                    update_str = update_str + "*>"
-                    items_to_update.append(
-                        (
-                            item,
-                            resource_start_date[resource_key],
-                            resource_end_date[resource_key],
-                        )
-                    )
-                elif (
-                    resource_start_date[resource_key] < dataset_start_date[dataset_key]
-                ):
-                    update_str = update_str + "*<"
-                    items_to_update.append(
-                        (
-                            item,
-                            resource_start_date[resource_key],
-                            resource_end_date[resource_key],
-                        )
-                    )
-                elif len(refresh) != 0 and "all" in refresh or item in refresh:
-                    update_str = update_str + "*"
-                    items_to_update.append(
-                        (
-                            item,
-                            resource_start_date[resource_key],
-                            resource_end_date[resource_key],
-                        )
-                    )
-            except KeyError:
-                pass
+        for topic in refresh:
+            dataset = dataset_cache[topic]
+            dataset_date = dataset.get_time_period(date_format="%Y-%m-%d")
+            dataset_start_date = dataset_date["startdate_str"]
+            dataset_end_date = dataset_date["enddate_str"]
 
-            logger.info(
-                f"{item:<15} "
-                f"{resource_start_date[resource_key]:<10} "
-                f"{resource_end_date[resource_key]:<10} "
-                f"{dataset_start_date[dataset_key]:<15} "
-                f"{dataset_end_date[dataset_key]:<10} "
-                f"{update_str}"
-            )
+            api_resource = api_cache[f"{topic}-incidents"]
+            dates = []
+            date_field, _ = pick_date_and_iso_country_fields(api_resource[0])
+            for row in api_resource:
+                dates.append(row[date_field])
+            api_start_date = None
+            api_end_date = None
+            if len(dates) != 0:
+                api_start_date = min(dates).replace("Z", "")[0:10]
+                api_end_date = max(dates).replace("Z", "")[0:10]
+
+            if api_end_date > dataset_end_date:
+                items_to_update.append(topic)
+            elif api_start_date < dataset_start_date:
+                items_to_update.append(topic)
+            elif force_refresh:
+                items_to_update.append(topic)
 
         return items_to_update
 
@@ -376,16 +277,3 @@ class InsecurityInsight:
                 missing_report.append([dataset["name"], n_missing_resources])
 
         return missing_report
-
-
-def parse_dates_from_string(date_str: str) -> tuple:
-    matched_strings = re.findall(r"(\d{4}-([0]\d|1[0-2])-([0-2]\d|3[01]))", date_str)
-    start_date = ""
-    end_date = ""
-    if len(matched_strings) == 1:
-        end_date = matched_strings[-1][0]
-    elif len(matched_strings) == 2:
-        start_date = matched_strings[0][0]
-        end_date = matched_strings[-1][0]
-
-    return start_date, end_date

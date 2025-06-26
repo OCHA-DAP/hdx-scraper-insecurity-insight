@@ -24,6 +24,7 @@ _USER_AGENT_LOOKUP = "hdx-scraper-insecurity-insight"
 _SAVED_DATA_DIR = "saved_data"  # Keep in repo to avoid deletion in /tmp
 _UPDATED_BY_SCRIPT = "HDX Scraper: Insecurity Insight"
 _REFRESH = None  # Set to list of topics to refresh
+_FORCE_REFRESH = False
 
 
 def main(
@@ -58,29 +59,29 @@ def main(
             has_changed, changed_list = insecurity_insight.check_api_has_not_changed(
                 api_cache, _REFRESH
             )
-
-            # Using refresh here allows a forced refresh for particular datasets
-            ITEMS_TO_UPDATE = insecurity_insight.decide_which_resources_have_fresh_data(
-                dataset_cache, api_cache
+            items_to_update = insecurity_insight.decide_which_resources_have_fresh_data(
+                dataset_cache, api_cache, _REFRESH, _FORCE_REFRESH
             )
             insecurity_insight.refresh_spreadsheets_with_fresh_data(
-                ITEMS_TO_UPDATE, api_cache
+                items_to_update, api_cache
             )
-            MISSING_REPORT = (
+            missing_report = (
                 insecurity_insight.update_datasets_whose_resources_have_changed(
-                    ITEMS_TO_UPDATE,
+                    items_to_update,
                     api_cache,
                     dataset_cache,
                 )
             )
 
-            logger.info(f"{len(ITEMS_TO_UPDATE)} items updated in API:")
-            for ITEM in ITEMS_TO_UPDATE:
+            logger.info(f"{len(items_to_update)} items updated in API:")
+            for ITEM in items_to_update:
                 logger.info(f"{ITEM[0]:<20.20}:{ITEM[2]}")
             logger.info("")
             logger.info("Datasets with missing resources:")
-            for MISSING in MISSING_REPORT:
-                logger.info(f"{MISSING[0]:<80.80}: {MISSING[1]}")
+            for missing in missing_report:
+                logger.info(f"{missing[0]:<80.80}: {missing[1]}")
+
+    logger.info("Finished processing")
 
 
 if __name__ == "__main__":

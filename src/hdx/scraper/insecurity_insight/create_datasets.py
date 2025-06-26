@@ -356,26 +356,6 @@ def get_date_and_country_ranges_from_resources(
     return dataset_date, countries_group
 
 
-def get_date_range_from_api_response(
-    api_response: list[dict], country_filter: str = ""
-) -> tuple[str, str]:
-    filtered_json = filter_json_rows(country_filter, "", api_response)
-    dates = []
-
-    date_field, _ = pick_date_and_iso_country_fields(api_response[0])
-
-    for row in filtered_json:
-        dates.append(row[date_field])
-
-    start_date = None
-    end_date = None
-    if len(dates) != 0:
-        start_date = min(dates).replace("Z", "")[0:10]
-        end_date = max(dates).replace("Z", "")[0:10]
-
-    return start_date, end_date
-
-
 def get_date_range_from_resource_file(resource_filepath: str) -> str:
     if "Overview" in resource_filepath:
         resource_filepath = resource_filepath.replace("Overview", "Incident")
