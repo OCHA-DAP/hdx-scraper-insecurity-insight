@@ -10,6 +10,7 @@ from os.path import expanduser, join
 
 from hdx.api.configuration import Configuration
 from hdx.facades.infer_arguments import facade
+from hdx.utilities.dateparse import now_utc
 from hdx.utilities.downloader import Download
 from hdx.utilities.easy_logging import setup_logging
 from hdx.utilities.path import script_dir_plus_file, temp_dir_batch
@@ -23,7 +24,7 @@ logger = logging.getLogger(__name__)
 _USER_AGENT_LOOKUP = "hdx-scraper-insecurity-insight"
 _SAVED_DATA_DIR = "saved_data"  # Keep in repo to avoid deletion in /tmp
 _UPDATED_BY_SCRIPT = "HDX Scraper: Insecurity Insight"
-_REFRESH = None  # Set to list of topics to refresh
+_TOPICS = None  # Set to list of topics to fetch
 _FORCE_REFRESH = False
 
 
@@ -52,30 +53,33 @@ def main(
                 save=save,
                 use_saved=use_saved,
             )
+            current_year = now_utc().year
 
             insecurity_insight = InsecurityInsight(configuration, retriever)
-            api_cache = insecurity_insight.fetch_api_responses(_REFRESH)
-            dataset_cache = insecurity_insight.fetch_datasets(_REFRESH)
+            api_cache = insecurity_insight.fetch_api_responses()
+            dataset_cache = insecurity_insight.fetch_datasets(_TOPICS)
             has_changed, changed_list = insecurity_insight.check_api_has_not_changed(
-                api_cache, _REFRESH
+                api_cache, _TOPICS
             )
-            items_to_update = insecurity_insight.decide_which_resources_have_fresh_data(
-                dataset_cache, api_cache, _REFRESH, _FORCE_REFRESH
+            topics_to_update = (
+                insecurity_insight.decide_which_resources_have_fresh_data(
+                    dataset_cache, api_cache, _TOPICS, _FORCE_REFRESH
+                )
             )
-            insecurity_insight.refresh_spreadsheets_with_fresh_data(
-                items_to_update, api_cache
+            file_paths = insecurity_insight.refresh_spreadsheets_with_fresh_data(
+                topics_to_update, api_cache, current_year
             )
             missing_report = (
                 insecurity_insight.update_datasets_whose_resources_have_changed(
-                    items_to_update,
+                    topics_to_update,
                     api_cache,
                     dataset_cache,
                 )
             )
 
-            logger.info(f"{len(items_to_update)} items updated in API:")
-            for ITEM in items_to_update:
-                logger.info(f"{ITEM[0]:<20.20}:{ITEM[2]}")
+            logger.info(f"{len(topics_to_update)} items updated in API:")
+            for topic in topics_to_update:
+                logger.info(f"{topic[0]:<20.20}:{topic[2]}")
             logger.info("")
             logger.info("Datasets with missing resources:")
             for missing in missing_report:

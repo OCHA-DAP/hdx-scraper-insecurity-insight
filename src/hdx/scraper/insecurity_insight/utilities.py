@@ -1,24 +1,17 @@
-#!/usr/bin/env python
-# encoding: utf-8
-
-"""
-Miscellaneous utilities, some borrowed from elsewhere
-Ian Hopkinson 2023-11.20
-"""
+#!/usr/bin/python
+"""insecurity insight utilities"""
 
 import csv
-import datetime
-import json
 import logging
 import os
-import sys
-import time
-from typing import Any
+from os.path import dirname, join
 
-from urllib3 import request
-from urllib3.util import Retry
+from hdx.utilities.dictandlist import read_list_from_csv
+from pandas import DataFrame
+from pandas.io.formats import excel
 
-SCHEMA_FILEPATH = os.path.join(os.path.dirname(__file__), "metadata", "schema.csv")
+logger = logging.getLogger(__name__)
+
 ATTRIBUTES_FILEPATH = os.path.join(
     os.path.dirname(__file__), "metadata", "attributes.csv"
 )
@@ -31,57 +24,6 @@ INSECURITY_INSIGHTS_FILEPATH_TOPICS = os.path.join(
 INSECURITY_INSIGHTS_FILEPATH_COUNTRIES = os.path.join(
     os.path.dirname(__file__), "metadata", "New-HDX-APIs-3-Country.csv"
 )
-
-
-def fetch_json(dataset_name: str, use_sample: bool = False):
-    if use_sample:
-        json_response = fetch_json_from_samples(dataset_name)
-    else:
-        json_response = fetch_json_from_api(dataset_name)
-
-    censored_location_response = censor_location("PSE", json_response)
-    censored_response = censor_event_description(censored_location_response)
-
-    return censored_response
-
-
-def fetch_json_from_api(dataset_name: str) -> list[dict]:
-    attributes = read_attributes(dataset_name)
-
-    response = request(
-        "GET", attributes["api_url"], timeout=60, retries=Retry(90, backoff_factor=1.0)
-    )
-
-    if response.status == 503:
-        logging.info(
-            f"Endpoint returned a 503 status for {dataset_name}, waiting 300 seconds to retry"
-        )
-        time.sleep(300)
-        response = request(
-            "GET",
-            attributes["api_url"],
-            timeout=60,
-            retries=Retry(90, backoff_factor=1.0),
-        )
-
-    json_response = response.json()
-
-    return json_response
-
-
-def fetch_json_from_samples(dataset_name: str) -> list[dict]:
-    attributes = read_attributes(dataset_name)
-    with open(
-        os.path.join(
-            os.path.dirname(__file__),
-            "api-samples",
-            attributes["api_response_filename"],
-        ),
-        "r",
-        encoding="UTF-8",
-    ) as api_response_filehandle:
-        json_response = json.load(api_response_filehandle)
-    return json_response
 
 
 def filter_json_rows(
@@ -235,89 +177,18 @@ def list_entities(type_: str = "dataset") -> list[str]:
     return entity_list
 
 
-def read_schema(dataset_name: str) -> tuple[dict, dict]:
-    hdx_row = {}
-    row_template = {}
-    if "overview" not in dataset_name:
-        schema_filepath = SCHEMA_FILEPATH
-    else:
-        schema_filepath = SCHEMA_FILEPATH.replace("schema.csv", "schema-overview.csv")
-    if os.path.exists(schema_filepath):
-        with open(schema_filepath, "r", encoding="UTF-8") as schema_filehandle:
-            schema_rows = csv.DictReader(schema_filehandle)
-
-            for row in schema_rows:
-                if row["dataset_name"] != dataset_name:
-                    continue
-                hdx_row[row["field_name"]] = row["terms"]
-                # This is where we would switch to using the API as the template
-                row_template[row["field_name"]] = row["upstream"]
-
-    return hdx_row, row_template
-
-
-def write_schema(dataset_name: str, output_rows: list[dict]) -> str:
-    hdx_row, _ = read_schema(dataset_name)
-    if not hdx_row:
-        status = write_dictionary(SCHEMA_FILEPATH, output_rows, append=True)
-    else:
-        status = (
-            f"Schema for {dataset_name} already in {SCHEMA_FILEPATH}, no update made"
-        )
-    return status
-
-
-def write_dictionary(
-    output_filepath: str, output_rows: list[dict[str, Any]], append: bool = True
-) -> str:
-    keys = list(output_rows[0].keys())
-    newfile = not os.path.isfile(output_filepath)
-
-    if not append and not newfile:
-        os.remove(output_filepath)
-        newfile = True
-
-    with open(output_filepath, "a", encoding="utf-8", errors="ignore") as output_file:
-        dict_writer = csv.DictWriter(
-            output_file,
-            keys,
-            lineterminator="\n",
-        )
-        if newfile:
-            dict_writer.writeheader()
-        dict_writer.writerows(output_rows)
-
-    status = _make_write_dictionary_status(append, output_filepath, newfile)
-
-    return status
-
-
-def _make_write_dictionary_status(append: bool, filepath: str, newfile: bool) -> str:
-    status = ""
-    if not append and not newfile:
-        status = (
-            f"Append is False, and {filepath} exists therefore file is being deleted"
-        )
-    elif not newfile and append:
-        status = (
-            f"Append is True, and {filepath} exists therefore data is being appended"
-        )
-    else:
-        status = f"New file {filepath} is being created"
-    return status
-
-
-def parse_commandline_arguments() -> tuple[str, str]:
-    dataset_name = "insecurity-insight-aidworkerKIKA-overview"
-    country_code = ""
-    if len(sys.argv) == 2:
-        dataset_name = sys.argv[1]
-        country_code = ""
-    elif len(sys.argv) == 3:
-        dataset_name = sys.argv[1]
-        country_code = sys.argv[2]
-
-    return dataset_name, country_code
+def read_schema(dataset_name: str) -> list[dict]:
+    dataset_name = dataset_name.replace("-current-year", "")
+    row_template = []
+    schema_filepath = join(dirname(__file__), "config", "schema.csv")
+    schema_rows = read_list_from_csv(schema_filepath, headers=1, dict_form=True)
+    for row in schema_rows:
+        if row["dataset_name"] != dataset_name:
+            continue
+        row["field_number"] = int(row["field_number"])
+        row_template.append(row)
+    row_template = sorted(row_template, key=lambda x: x["field_number"])
+    return row_template
 
 
 def pick_date_and_iso_country_fields(row_dictionary: dict) -> tuple[str, str]:
@@ -334,41 +205,68 @@ def pick_date_and_iso_country_fields(row_dictionary: dict) -> tuple[str, str]:
     return date_field, iso_country_field
 
 
-def print_banner_to_log(logger: logging.Logger, name: str):
-    title = f"Insecurity Insight - {name}"
-    timestamp = f"Invoked at: {datetime.datetime.now().isoformat()}"
-    width = max(len(title), len(timestamp))
-    logger.info((width + 4) * "*")
-    logger.info(f"* {title:<{width}} *")
-    logger.info(f"* {timestamp:<{width}} *")
-    logger.info((width + 4) * "*")
+def create_spreadsheet(
+    topic: str,
+    topic_type: str,
+    proper_name: str,
+    api_response: list[dict],
+    output_dir: str,
+    year_filter: str = "",
+    country_filter: str = None,
+) -> None | str:
+    filtered_rows = filter_json_rows(country_filter, year_filter, api_response)
+    if len(filtered_rows) == 0:
+        logger.info(
+            f"API reponse for `{topic}-{topic_type}` with country_filter {country_filter} contained no data"
+        )
+        return None
 
+    # get columns in correct order and with correct type
+    field_templates = read_schema(f"{topic}-{topic_type}")
+    field_order = [field_template["field_name"] for field_template in field_templates]
+    field_types = {
+        field_template["field_name"]: field_template["field_type"]
+        for field_template in field_templates
+    }
 
-def read_field_mappings() -> dict:
-    field_mappings = {}
-    with open(
-        os.path.join(os.path.dirname(__file__), "metadata", "field_mappings.csv"),
-        "r",
-        encoding="UTF-8",
-    ) as field_mappings_filehandle:
-        field_mapping_rows = csv.DictReader(field_mappings_filehandle)
-        for row in field_mapping_rows:
-            if row["dataset_name"] not in field_mappings:
-                field_mappings[row["dataset_name"]] = {}
-            field_mappings[row["dataset_name"]][row["field_name"]] = row["upstream"]
+    output_dataframe = DataFrame.from_dict(filtered_rows)
+    output_dataframe = output_dataframe[field_order]
+    output_dataframe.replace("", None, inplace=True)
+    output_dataframe = output_dataframe.astype(field_types, errors="ignore")
+    for key, value in field_types.items():
+        if value == "datetime64[ns, UTC]":
+            output_dataframe[key] = output_dataframe[key].dt.date
 
-    return field_mappings
+    # Generate filename
+    date_field, _ = pick_date_and_iso_country_fields(api_response[0])
+    start_year = min([x[date_field] for x in api_response])[0:4]
+    end_year = max([x[date_field] for x in api_response])[0:4]
+    country_iso = ""
+    if (country_filter is not None) and (len(country_filter) != 0):
+        country_iso = f"-{country_filter}"
 
+    if topic_type == "incidents":
+        filename = (
+            f"{start_year}-{end_year}{country_iso} {proper_name} Incident Data.xlsx"
+        )
+    elif topic_type == "incidents-current-year":
+        filename = f"{start_year} {proper_name} Incident Data.xlsx"
+    elif topic_type == "overview":
+        filename = (
+            f"{start_year}-{end_year}{country_iso} {proper_name} Overview Data.xlsx"
+        )
 
-def read_countries() -> dict:
-    countries = {}
-    with open(
-        os.path.join(os.path.dirname(__file__), "metadata", "countries.csv"),
-        "r",
-        encoding="UTF-8",
-    ) as countries_filehandle:
-        countries_rows = csv.DictReader(countries_filehandle)
-        for row in countries_rows:
-            countries[row["country_iso3"]] = row["legacy_dataset_name"]
+    if start_year == end_year:
+        filename = filename.replace(f"-{end_year}", "")
 
-    return countries
+    # We can make the output an Excel table:
+    # https://stackoverflow.com/questions/58326392/how-to-create-excel-table-with-pandas-to-excel
+    excel.ExcelFormatter.header_style = None
+
+    output_filepath = os.path.join(output_dir, filename)
+    output_dataframe.to_excel(
+        output_filepath,
+        index=False,
+    )
+
+    return output_filepath

@@ -1,0 +1,274 @@
+dataset_name,field_name,field_number,field_type
+aidworkerKIKA-incidents,Date,0,"datetime64[ns, UTC]"
+aidworkerKIKA-incidents,Event Description,1,str
+aidworkerKIKA-incidents,Country,2,str
+aidworkerKIKA-incidents,Country ISO,3,str
+aidworkerKIKA-incidents,Admin 1,4,str
+aidworkerKIKA-incidents,Latitude,5,float64
+aidworkerKIKA-incidents,Longitude,6,float64
+aidworkerKIKA-incidents,Geo Precision,7,str
+aidworkerKIKA-incidents,Location of Incident,8,str
+aidworkerKIKA-incidents,Reported Perpetrator,9,str
+aidworkerKIKA-incidents,Reported Perpetrator Name,10,str
+aidworkerKIKA-incidents,Weapon Carried/Used,11,str
+aidworkerKIKA-incidents,Organisation Affected,12,str
+aidworkerKIKA-incidents,Programme Focus,13,str
+aidworkerKIKA-incidents,Aid Workers Killed,14,int64
+aidworkerKIKA-incidents,Aid Workers Injured,15,int64
+aidworkerKIKA-incidents,Aid Workers Kidnapped,16,int64
+aidworkerKIKA-incidents,Aid Workers Arrested,17,int64
+aidworkerKIKA-incidents,Known Kidnapping or Arrest Outcome,18,str
+aidworkerKIKA-incidents,Aid Workers Killed in Captivity,19,int64
+aidworkerKIKA-incidents,International Aid Workers Killed,20,int64
+aidworkerKIKA-incidents,International Aid Workers Killed in Captivity,21,int64
+aidworkerKIKA-incidents,National Aid Workers Killed,22,int64
+aidworkerKIKA-incidents,National Aid Workers Killed in Captivity,23,int64
+aidworkerKIKA-incidents,Female Aid Workers Killed,24,int64
+aidworkerKIKA-incidents,Female Aid Workers Killed in Captivity,25,int64
+aidworkerKIKA-incidents,Male Aid Workers Killed,26,int64
+aidworkerKIKA-incidents,Male Aid Workers Killed in Captivity,27,int64
+aidworkerKIKA-incidents,International Aid Workers Injured,28,int64
+aidworkerKIKA-incidents,National Aid Workers Injured,29,int64
+aidworkerKIKA-incidents,Female Aid Workers Injured,30,int64
+aidworkerKIKA-incidents,Male Aid Workers Injured,31,int64
+aidworkerKIKA-incidents,International Aid Workers Kidnapped,32,int64
+aidworkerKIKA-incidents,National Aid Workers Kidnapped,33,int64
+aidworkerKIKA-incidents,Female Aid Workers Kidnapped,34,int64
+aidworkerKIKA-incidents,Male Aid Workers Kidnapped,35,int64
+aidworkerKIKA-incidents,International Aid Workers Arrested,36,int64
+aidworkerKIKA-incidents,National Aid Workers Arrested,37,int64
+aidworkerKIKA-incidents,Female Aid Workers Arrested,38,int64
+aidworkerKIKA-incidents,Male Aid Workers Arrested,39,int64
+aidworkerKIKA-incidents,SiND Event ID,40,str
+aidworkerKIKA-overview,Country,0,str
+aidworkerKIKA-overview,Year,1,str
+aidworkerKIKA-overview,Country ISO,2,str
+aidworkerKIKA-overview,Number Of Events,3,str
+aidworkerKIKA-overview,Total Aid Workers KIKA Victims,4,int64
+aidworkerKIKA-overview,Total Aid Workers Killed,5,int64
+aidworkerKIKA-overview,Total Aid Workers Injured,6,int64
+aidworkerKIKA-overview,Total Aid Workers Kidnapped,7,int64
+aidworkerKIKA-overview,Total Aid Workers Arrested,8,int64
+aidworkerKIKA-overview,Total Aid Workers Killed In Captivity,9,int64
+aidworkerKIKA-overview,Total Aid Workers Maltreated In Captivity,10,int64
+sv-incidents,Date,0,"datetime64[ns, UTC]"
+sv-incidents,Event Description,1,str
+sv-incidents,Country,2,str
+sv-incidents,Country ISO,3,str
+sv-incidents,Admin 1,4,str
+sv-incidents,Latitude,5,float64
+sv-incidents,Longitude,6,float64
+sv-incidents,Geo Precision,7,str
+sv-incidents,Location Where Sexual Violence Was Committed,8,str
+sv-incidents,Reported Perpetrator,9,str
+sv-incidents,Reported Perpetrator Name,10,str
+sv-incidents,Single And Group Perpetrators,11,str
+sv-incidents,Weapon Carried/Used,12,str
+sv-incidents,Survivor or Victim,13,str
+sv-incidents,Survivor Or Victim Sex,14,str
+sv-incidents,Adult or Minor ,15,str
+sv-incidents,Type of SV,16,str
+sv-incidents,SV Context,17,str
+sv-incidents,Classification,18,str
+sv-incidents,Number of Reported Victims,19,int64
+sv-incidents,Reported Deaths Following the Sexual Violence,20,str
+sv-incidents,SIND Event ID,21,str
+sv-overview,Country,0,str
+sv-overview,Year,1,str
+sv-overview,Country ISO,2,str
+sv-overview,Recorded SV Events,3,str
+sv-overview,CRSV events,4,str
+sv-overview,SV by Security Personnel,5,str
+sv-overview,Events Affecting Minors,6,int64
+sv-overview,Events Affecting Aid Workers,7,int64
+sv-overview,Events Affecting Health Workers,8,int64
+sv-overview,Events Affecting Educators,9,int64
+education-incidents,Date,0,"datetime64[ns, UTC]"
+education-incidents,Event Description,1,str
+education-incidents,Country,2,str
+education-incidents,Country ISO,3,str
+education-incidents,Admin 1,4,str
+education-incidents,Latitude,5,float64
+education-incidents,Longitude,6,float64
+education-incidents,Geo Precision,7,str
+education-incidents,Location of event,8,str
+education-incidents,Reported Perpetrator,9,str
+education-incidents,Reported Perpetrator Name,10,str
+education-incidents,Weapon Carried/Used,11,str
+education-incidents,Type of education facility,12,str
+education-incidents,Attacks on Schools,13,int64
+education-incidents,Attacks on Universities,14,int64
+education-incidents,Military Occupation of Education facility,15,int64
+education-incidents,Arson attack on education facility,16,int64
+education-incidents,Forced Entry into education facility,17,int64
+education-incidents,Damage/Destruction To Ed facility Event,18,int64
+education-incidents,Attacks on Students and Teachers,19,str
+education-incidents,Educators Killed,20,int64
+education-incidents,Educators Injured,21,int64
+education-incidents,Educators Kidnapped,22,int64
+education-incidents,Educators Arrested,23,int64
+education-incidents,Known Educators Kidnap Or Arrest Outcome,24,str
+education-incidents,Students Attacked in School,25,int64
+education-incidents,Students Killed,26,int64
+education-incidents,Students Injured,27,int64
+education-incidents,Students Kidnapped,28,int64
+education-incidents,Known Student Kidnap Or Arrest Outcome,29,str
+education-incidents,Students Arrested,30,int64
+education-incidents,Sexual Violence Affecting School Age Children,31,int64
+education-incidents,SiND Event ID,32,str
+education-overview,Country,0,str
+education-overview,Year,1,str
+education-overview,Country ISO,2,str
+education-overview,Number Of Events,3,str
+education-overview,Educators Killed,4,int64
+education-overview,Educators Injured,5,int64
+education-overview,Educators Kidnapped,6,int64
+education-overview,Educators Arrested,7,int64
+education-overview,Attacks on Schools,8,str
+education-overview,Attacks On Universities,9,str
+education-overview,Military Occupation of Schools,10,str
+education-overview,Forced Entry into Schools,11,str
+education-overview,Damage/Destruction To School Event,12,str
+education-overview,Attacks on Students and Teachers,13,int64
+education-overview,Students Attacked in School,14,int64
+education-overview,Students Killed,15,int64
+education-overview,Students Injured,16,int64
+education-overview,Students Kidnapped,17,int64
+explosiveWeapons-incidents,Date,0,"datetime64[ns, UTC]"
+explosiveWeapons-incidents,Event Description,1,str
+explosiveWeapons-incidents,Country,2,str
+explosiveWeapons-incidents,Country ISO,3,str
+explosiveWeapons-incidents,Admin 1,4,str
+explosiveWeapons-incidents,Latitude,5,float64
+explosiveWeapons-incidents,Longitude,6,float64
+explosiveWeapons-incidents,Geo Precision,7,str
+explosiveWeapons-incidents,Sector Affected,8,str
+explosiveWeapons-incidents,Provider,9,str
+explosiveWeapons-incidents,Launch Type,10,str
+explosiveWeapons-incidents,Explosive Weapon Type,11,str
+explosiveWeapons-incidents,Reported Perpetrator,12,str
+explosiveWeapons-incidents,Reported Perpetrator Name,13,str
+explosiveWeapons-incidents,Affected,14,str
+explosiveWeapons-incidents,Aid Workers Killed,15,int64
+explosiveWeapons-incidents,Health Workers Killed,16,int64
+explosiveWeapons-incidents,Aid Health Workers Killed,17,int64
+explosiveWeapons-incidents,Educators Killed,18,int64
+explosiveWeapons-incidents,Students Killed,19,int64
+explosiveWeapons-incidents,Food Security,20,int64
+explosiveWeapons-incidents,SiND Event ID,21,str
+explosiveWeapons-overview,Country,0,str
+explosiveWeapons-overview,Year,1,str
+explosiveWeapons-overview,Country ISO,2,str
+explosiveWeapons-overview,Number Of Events,3,str
+explosiveWeapons-overview,Health Affected,4,int64
+explosiveWeapons-overview,Education Affected,5,int64
+explosiveWeapons-overview,Aid Operations Affected,6,int64
+explosiveWeapons-overview,Protection Affected,7,int64
+explosiveWeapons-overview,Air-Delivered Incident,8,str
+explosiveWeapons-overview,Ground-Launched Incident,9,str
+explosiveWeapons-overview,Directly-Emplaced Incident,10,str
+explosiveWeapons-overview,Food Security,11,str
+foodSecurity-incidents,Date,0,"datetime64[ns, UTC]"
+foodSecurity-incidents,Event Description,1,str
+foodSecurity-incidents,Country,2,str
+foodSecurity-incidents,Country ISO,3,str
+foodSecurity-incidents,Admin 1,4,str
+foodSecurity-incidents,Latitude,5,float64
+foodSecurity-incidents,Longitude,6,float64
+foodSecurity-incidents,Geo Precision,7,str
+foodSecurity-incidents,Location of Incident,8,str
+foodSecurity-incidents,Reported Perpetrator,9,str
+foodSecurity-incidents,Reported Perpetrator Name,10,str
+foodSecurity-incidents,Weapon Carried/Used,11,str
+foodSecurity-incidents,Infrastructure Affected,12,str
+foodSecurity-incidents,SiND Event ID,13,str
+foodSecurity-incidents,FoodSecurity,14,str
+foodSecurity-overview,Country,0,str
+foodSecurity-overview,Year,1,str
+foodSecurity-overview,Country ISO,2,str
+foodSecurity-overview,Number Of Events,3,str
+healthcare-incidents,Date,0,"datetime64[ns, UTC]"
+healthcare-incidents,Event Description,1,str
+healthcare-incidents,Country,2,str
+healthcare-incidents,Country ISO,3,str
+healthcare-incidents,Admin 1,4,str
+healthcare-incidents,Latitude,5,float64
+healthcare-incidents,Longitude,6,float64
+healthcare-incidents,Geo Precision,7,str
+healthcare-incidents,Reported Perpetrator,8,str
+healthcare-incidents,Reported Perpetrator Name,9,str
+healthcare-incidents,Weapon Carried/Used,10,str
+healthcare-incidents,Location of Incident,11,str
+healthcare-incidents,Number of Attacks on Health Facilities Reporting Destruction,12,int64
+healthcare-incidents,Number of Attacks on Health Facilities Reporting Damaged,13,int64
+healthcare-incidents,Forceful Entry into Health Facility,14,int64
+healthcare-incidents,Occupation of Health Facility,15,int64
+healthcare-incidents,Vicinity of Health Facility Affected,16,int64
+healthcare-incidents,Health Transportation Destroyed,17,int64
+healthcare-incidents,Health Transportation Damaged,18,int64
+healthcare-incidents,Health Transportation Stolen/Hijacked,19,int64
+healthcare-incidents,Looting/Theft/Robbery/Burglary of Health Supplies,20,int64
+healthcare-incidents,Access Denied or Obstructed,21,int64
+healthcare-incidents,Health Workers Killed,22,int64
+healthcare-incidents,Health Workers Injured,23,int64
+healthcare-incidents,Health Workers Kidnapped,24,int64
+healthcare-incidents,Health Workers Arrested,25,int64
+healthcare-incidents,Known Kidnapping or Arrest Outcome,26,str
+healthcare-incidents,Health Workers Threatened,27,int64
+healthcare-incidents,Health Workers Assaulted,28,int64
+healthcare-incidents,Health Workers Sexually Assaulted,29,int64
+healthcare-incidents,Conflict-Related Violence,30,str
+healthcare-incidents,Political-Related Violence,31,str
+healthcare-incidents,COVID-19-Related Violence,32,str
+healthcare-incidents,Ebola-Related Violence,33,str
+healthcare-incidents,Vaccination-Related Violence,34,str
+healthcare-incidents,SiND Event ID,35,str
+healthcare-overview,Country,0,str
+healthcare-overview,Year,1,str
+healthcare-overview,Country ISO,2,str
+healthcare-overview,Number Of Events,3,str
+healthcare-overview,Number of Attacks on Health Facilities Reporting Damege or Dest,4,str
+healthcare-overview,Health Workers Killed,5,int64
+healthcare-overview,Health Workers Injured,6,int64
+healthcare-overview,Health Workers Kidnapped,7,int64
+healthcare-overview,Health Workers Arrested,8,int64
+protection-incidents,Date,0,"datetime64[ns, UTC]"
+protection-incidents,Event Description,1,str
+protection-incidents,Country,2,str
+protection-incidents,Country ISO,3,str
+protection-incidents,Admin 1,4,str
+protection-incidents,Latitude,5,float64
+protection-incidents,Longitude,6,float64
+protection-incidents,Geo Precision,7,str
+protection-incidents,Camp Name,8,str
+protection-incidents,Reported Perpetrator,9,str
+protection-incidents,Reported Perpetrator Name,10,str
+protection-incidents,Weapon Carried/Used,11,str
+protection-incidents,Protection Event Context,12,str
+protection-incidents,Victim of Violence,13,str
+protection-incidents,Survivor or Victim Sex,14,str
+protection-incidents,Survivor or Victim Minor,15,str
+protection-incidents,Number of Attacks on Camps Reporting Destruction,16,int64
+protection-incidents,Number of Attacks on Camps Reporting Damaged,17,int64
+protection-incidents,Camp Resident Killed,18,int64
+protection-incidents,Camp Resident Injured,19,int64
+protection-incidents,Camp Residents Kidnapped,20,int64
+protection-incidents,Camp Residents Arrested,21,int64
+protection-incidents,Camp Residents Targeted with CRSV,22,int64
+protection-incidents,Service Provider Killed,23,int64
+protection-incidents,Service Provider Kidnapped,24,int64
+protection-incidents,Service Provider Arrested,25,int64
+protection-incidents,Service Provider Targeted with CRSV,26,str
+protection-incidents,SiND ID,27,str
+protection-overview,Country,0,str
+protection-overview,Year,1,str
+protection-overview,Country ISO,2,str
+protection-overview,Number Of Events,3,str
+protection-overview,Number of incidents involving state perpetrators,4,str
+protection-overview,Number of incidents involving non-state perpetrators,5,str
+protection-overview,Number of events involving shelling/airstrikes,6,str
+protection-overview,Number of events involving firearms,7,str
+protection-overview,Number of events involving arson,8,str
+protection-overview,Total number of camp infastructure damaged/destroyed,9,str
+protection-overview,Total number of camp residents killed,10,int64
+protection-overview,Total number of service providers killed,11,int64

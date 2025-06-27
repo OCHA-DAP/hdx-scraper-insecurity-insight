@@ -14,15 +14,12 @@ from hdx.scraper.insecurity_insight.create_datasets import (
     create_datasets_in_hdx,
     get_countries_group_from_api_response,
 )
-from hdx.scraper.insecurity_insight.create_spreadsheets import create_spreadsheet
 from hdx.scraper.insecurity_insight.utilities import (
     censor_event_description,
     censor_location,
+    create_spreadsheet,
     list_entities,
     pick_date_and_iso_country_fields,
-    print_banner_to_log,
-    read_attributes,
-    read_countries,
 )
 
 logger = logging.getLogger(__name__)
@@ -38,11 +35,10 @@ class InsecurityInsight:
         self._retriever = retriever
         self._temp_folder = retriever.temp_dir
 
-    def fetch_api_responses(self, refresh: Optional[list] = None) -> dict:
+    def fetch_api_responses(self) -> dict:
         api_cache = {}
-        if refresh is None:
-            refresh = self._configuration["topics"]
-        for topic in refresh:
+        topics = self._configuration["topics"]
+        for topic in topics:
             for topic_type in ["incidents", "incidents-current-year", "overview"]:
                 resource = f"{topic}-{topic_type}"
                 logger.info(f"Fetching data for {resource} from API")
@@ -58,14 +54,14 @@ class InsecurityInsight:
         logger.info(f"Loaded {len(api_cache)} API responses to cache, expected 18")
         return api_cache
 
-    def fetch_datasets(self, refresh: Optional[list] = None) -> dict:
+    def fetch_datasets(self, topics: Optional[list] = None) -> dict:
         dataset_cache = {}
-        if refresh is None:
-            refresh = self._configuration["topics"]
+        if topics is None:
+            topics = self._configuration["topics"]
 
         # load topic datasets
         n_topic_datasets = 0
-        for topic in refresh:
+        for topic in topics:
             dataset_name = self._configuration["datasets"][topic]["name"]
             dataset = Dataset.read_from_hdx(dataset_name)
             if dataset:
@@ -86,14 +82,14 @@ class InsecurityInsight:
         return dataset_cache
 
     def check_api_has_not_changed(
-        self, api_cache: dict, refresh: Optional[list] = None
+        self, api_cache: dict, topics: Optional[list] = None
     ) -> tuple[bool, list]:
-        if refresh is None:
-            refresh = self._configuration["topics"]
+        if topics is None:
+            topics = self._configuration["topics"]
 
         has_changed = False
         changed_list = []
-        for topic in refresh:
+        for topic in topics:
             for topic_type in ["incidents", "overview"]:
                 resource = f"{topic}-{topic_type}"
                 api_response = api_cache[resource]
@@ -132,14 +128,14 @@ class InsecurityInsight:
         self,
         dataset_cache: dict,
         api_cache: dict,
-        refresh: Optional[list] = None,
+        topics: Optional[list] = None,
         force_refresh: Optional[bool] = False,
     ) -> list[str]:
-        if refresh is None:
-            refresh = self._configuration["topics"]
+        if topics is None:
+            topics = self._configuration["topics"]
 
-        items_to_update = []
-        for topic in refresh:
+        topics_to_update = []
+        for topic in topics:
             dataset = dataset_cache[topic]
             dataset_date = dataset.get_time_period(date_format="%Y-%m-%d")
             dataset_start_date = dataset_date["startdate_str"]
@@ -157,61 +153,54 @@ class InsecurityInsight:
                 api_end_date = max(dates).replace("Z", "")[0:10]
 
             if api_end_date > dataset_end_date:
-                items_to_update.append(topic)
+                topics_to_update.append(topic)
             elif api_start_date < dataset_start_date:
-                items_to_update.append(topic)
+                topics_to_update.append(topic)
             elif force_refresh:
-                items_to_update.append(topic)
+                topics_to_update.append(topic)
 
-        return items_to_update
+        return topics_to_update
 
     def refresh_spreadsheets_with_fresh_data(
-        self, items_to_update: list[str], api_cache: dict
-    ):
-        print_banner_to_log(logger, "Refresh spreadsheets")
-        if len(items_to_update) == 0:
+        self, topics_to_update: list[str], api_cache: dict, current_year: int
+    ) -> dict:
+        file_paths = {}
+        if len(topics_to_update) == 0:
             logger.info("No spreadsheets need to be updated")
-            return
+            return file_paths
 
-        resources = list_entities(type_="resource")
-
-        logger.info(
-            f"Refreshing topic spreadsheets for {','.join([x[0] for x in items_to_update])}"
-        )
-        for item in items_to_update:
-            for resource in resources:
-                if item[0] in resource:
-                    # This is where we would create a year spreadsheet
-                    try:
-                        status = create_spreadsheet(
-                            resource, api_response=api_cache[resource]
-                        )
-                    except KeyError:
-                        pass
-
-                    logger.info(status)
+        logger.info("Refreshing topic spreadsheets")
+        for topic in topics_to_update:
+            for topic_type in ["incidents", "incidents-current-year", "overview"]:
+                year_filter = ""
+                if topic_type == "incidents-current-year":
+                    year_filter = str(current_year)
+                file_path = create_spreadsheet(
+                    topic=topic,
+                    topic_type=topic_type,
+                    proper_name=self._configuration["topics"][topic],
+                    api_response=api_cache[f"{topic}-{topic_type}"],
+                    output_dir=self._retriever.temp_dir,
+                    year_filter=year_filter,
+                )
+                file_paths[f"{topic}-{topic_type}"] = file_path
 
         logger.info("Refreshing all country spreadsheets")
-        # logger.info("**ONLY DOING ONE COUNTRY FOR TEST**")
-        countries = read_countries()
-        country_attributes = read_attributes(
-            self._configuration["country_dataset_basename"]
-        )
-        resource_names = country_attributes["resource"]
+        countries = self._configuration["country_datasets"]
         for country in countries:
-            logger.info(f"Processing for {country}")
-            for resource in resource_names:
-                try:
-                    status = create_spreadsheet(
-                        resource,
+            for topic in self._configuration["topics"]:
+                for topic_type in ["incidents", "overview"]:
+                    file_path = create_spreadsheet(
+                        topic=topic,
+                        topic_type=topic_type,
+                        proper_name=self._configuration["topics"][topic],
+                        api_response=api_cache[f"{topic}-{topic_type}"],
+                        output_dir=self._retriever.temp_dir,
                         country_filter=country,
-                        api_response=api_cache[resource],
                     )
-                except KeyError:
-                    pass
-                logger.info(status)
+                    file_paths[f"{country}-{topic}-{topic_type}"] = file_path
 
-            # break  # just do one spreadsheet for testing
+        return file_paths
 
     def update_datasets_whose_resources_have_changed(
         self,
@@ -222,7 +211,6 @@ class InsecurityInsight:
         use_legacy: bool = True,
         hdx_site: str = None,
     ) -> list[list]:
-        print_banner_to_log(logger, "Update datasets")
         if len(items_to_update) == 0:
             logger.info("No datasets need to be updated")
             return []
@@ -251,7 +239,7 @@ class InsecurityInsight:
 
         # If any data has updated we update all of the country datasets
         # logger.info("**ONLY DOING ONE COUNTRY FOR TEST**")
-        countries = read_countries()
+        countries = self._configuration["country_datasets"]
         # Make a default dataset_date in case a country dataset has no data
         start_date = min([x[1] for x in items_to_update])
         end_date = max([x[2] for x in items_to_update])

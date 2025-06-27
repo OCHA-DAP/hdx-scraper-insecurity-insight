@@ -4,13 +4,13 @@ base_url: "https://sind-api.herokuapp.com/hdx/v1/"
 country_dataset_basename: "insecurity-insight-country-dataset"
 
 topics:
-  - "aidworkerKIKA"
-  - "education"
-  - "explosiveWeapons"
-  - "foodSecurity"
-  - "healthcare"
-  - "protection"
-  - "sv"
+  aidworkerKIKA: "Aid Worker KIKA"
+  education: "Education in Danger"
+  explosiveWeapons: "Explosive Weapons"
+  foodSecurity: "Food Security"
+  healthcare: "Attacks on Health Care"
+  protection: "Protection in Danger"
+  sv: "Conflict Related Sexual Violence"
 
 datasets:
   aidworkerKIKA:
