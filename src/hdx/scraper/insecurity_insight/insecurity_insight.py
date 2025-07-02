@@ -206,13 +206,13 @@ class InsecurityInsight:
 
         # update topic datasets
         for topic in topics_to_update:
-            countries = get_countries_from_api_response(
-                api_cache[f"{topic}-incidents"]
-            )
+            countries = get_countries_from_api_response(api_cache[f"{topic}-incidents"])
             start_date, end_date = get_dates_from_api_response(
                 api_cache[f"{topic}-incidents"]
             )
-            topic_file_paths = {key: value for key, value in file_paths.items() if key.startswith(topic)}
+            topic_file_paths = {
+                key: value for key, value in file_paths.items() if key.startswith(topic)
+            }
             dataset = create_dataset(
                 topic=topic,
                 dataset_template=self._configuration["datasets"]["topic"],
@@ -227,7 +227,11 @@ class InsecurityInsight:
         # update all country datasets
         countries = self._configuration["country_datasets"]
         for country in countries:
-            country_file_paths = {key: value for key, value in file_paths.items() if key.startswith(country)}
+            country_file_paths = {
+                key: value
+                for key, value in file_paths.items()
+                if key.startswith(country)
+            }
             start_dates = []
             end_dates = []
             for topic in self._configuration["topics"]:

@@ -308,7 +308,6 @@ def create_dataset(
     end_date: str,
     dataset_cache: dict = None,
 ) -> Dataset:
-
     if dataset_cache is None:
         dataset, _ = create_or_fetch_base_dataset(
             dataset_name,
