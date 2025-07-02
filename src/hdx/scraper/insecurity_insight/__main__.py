@@ -25,7 +25,7 @@ _USER_AGENT_LOOKUP = "hdx-scraper-insecurity-insight"
 _SAVED_DATA_DIR = "saved_data"  # Keep in repo to avoid deletion in /tmp
 _UPDATED_BY_SCRIPT = "HDX Scraper: Insecurity Insight"
 _TOPICS = None  # Set to list of topics to fetch
-_FORCE_REFRESH = False
+_FORCE_REFRESH = True
 
 
 def main(
@@ -66,24 +66,24 @@ def main(
                     dataset_cache, api_cache, _TOPICS, _FORCE_REFRESH
                 )
             )
+            logger.info(f"{len(topics_to_update)} items updated in API")
             file_paths = insecurity_insight.refresh_spreadsheets_with_fresh_data(
                 topics_to_update, api_cache, current_year
             )
-            missing_report = (
-                insecurity_insight.update_datasets_whose_resources_have_changed(
-                    topics_to_update,
-                    api_cache,
-                    dataset_cache,
-                )
+            datasets = insecurity_insight.update_datasets(
+                topics_to_update,
+                api_cache,
+                dataset_cache,
+                file_paths,
             )
-
-            logger.info(f"{len(topics_to_update)} items updated in API:")
-            for topic in topics_to_update:
-                logger.info(f"{topic[0]:<20.20}:{topic[2]}")
-            logger.info("")
-            logger.info("Datasets with missing resources:")
-            for missing in missing_report:
-                logger.info(f"{missing[0]:<80.80}: {missing[1]}")
+            for dataset in datasets:
+                dataset.create_in_hdx(
+                    remove_additional_resources=False,
+                    match_resource_order=False,
+                    hxl_update=False,
+                    updated_by_script=_UPDATED_BY_SCRIPT,
+                    batch=info["batch"],
+                )
 
     logger.info("Finished processing")
 

@@ -10,16 +10,13 @@ from hdx.data.dataset import Dataset
 from hdx.utilities.loader import load_json
 from hdx.utilities.retriever import Retrieve
 
-from hdx.scraper.insecurity_insight.create_datasets import (
-    create_datasets_in_hdx,
-    get_countries_group_from_api_response,
-)
 from hdx.scraper.insecurity_insight.utilities import (
     censor_event_description,
     censor_location,
+    create_dataset,
     create_spreadsheet,
-    list_entities,
-    pick_date_and_iso_country_fields,
+    get_countries_from_api_response,
+    get_dates_from_api_response,
 )
 
 logger = logging.getLogger(__name__)
@@ -70,7 +67,8 @@ class InsecurityInsight:
 
         # Load country datasets
         n_countries = 0
-        for country, dataset_name in self._configuration["country_datasets"].items():
+        for country, dataset_info in self._configuration["country_datasets"].items():
+            dataset_name = dataset_info["name"]
             dataset = Dataset.read_from_hdx(dataset_name)
             if dataset:
                 dataset_cache[country] = dataset
@@ -142,15 +140,7 @@ class InsecurityInsight:
             dataset_end_date = dataset_date["enddate_str"]
 
             api_resource = api_cache[f"{topic}-incidents"]
-            dates = []
-            date_field, _ = pick_date_and_iso_country_fields(api_resource[0])
-            for row in api_resource:
-                dates.append(row[date_field])
-            api_start_date = None
-            api_end_date = None
-            if len(dates) != 0:
-                api_start_date = min(dates).replace("Z", "")[0:10]
-                api_end_date = max(dates).replace("Z", "")[0:10]
+            api_start_date, api_end_date = get_dates_from_api_response(api_resource)
 
             if api_end_date > dataset_end_date:
                 topics_to_update.append(topic)
@@ -189,79 +179,72 @@ class InsecurityInsight:
         countries = self._configuration["country_datasets"]
         for country in countries:
             for topic in self._configuration["topics"]:
-                for topic_type in ["incidents", "overview"]:
-                    file_path = create_spreadsheet(
-                        topic=topic,
-                        topic_type=topic_type,
-                        proper_name=self._configuration["topics"][topic],
-                        api_response=api_cache[f"{topic}-{topic_type}"],
-                        output_dir=self._retriever.temp_dir,
-                        country_filter=country,
-                    )
-                    file_paths[f"{country}-{topic}-{topic_type}"] = file_path
+                file_path = create_spreadsheet(
+                    topic=topic,
+                    topic_type="incidents",
+                    proper_name=self._configuration["topics"][topic],
+                    api_response=api_cache[f"{topic}-incidents"],
+                    output_dir=self._retriever.temp_dir,
+                    country_filter=country,
+                )
+                file_paths[f"{country}-{topic}-incidents"] = file_path
 
         return file_paths
 
-    def update_datasets_whose_resources_have_changed(
+    def update_datasets(
         self,
-        items_to_update: list[str],
+        topics_to_update: list[str],
         api_cache: dict,
         dataset_cache: dict,
-        dry_run: bool = False,
-        use_legacy: bool = True,
-        hdx_site: str = None,
-    ) -> list[list]:
-        if len(items_to_update) == 0:
+        file_paths: dict,
+    ) -> list:
+        if len(topics_to_update) == 0:
             logger.info("No datasets need to be updated")
             return []
 
-        missing_report = []
-        datasets = list_entities(type_="dataset")
-        n_missing_resources = 0
-        for item in items_to_update:
-            for dataset_name in datasets:
-                if item[0] in dataset_name:
-                    countries_group = get_countries_group_from_api_response(
-                        api_cache[f"insecurity-insight-{item[0]}-incidents"]
-                    )
-                    dataset_date = f"[{item[1]} TO {item[2]}]"
-                    dataset, n_missing_resources = create_datasets_in_hdx(
-                        dataset_name,
-                        dataset_cache=dataset_cache,
-                        dataset_date=dataset_date,
-                        countries_group=countries_group,
-                        dry_run=dry_run,
-                        use_legacy=use_legacy,
-                        hdx_site=hdx_site,
-                    )
-                if n_missing_resources != 0:
-                    missing_report.append([dataset["name"], n_missing_resources])
+        datasets_to_update = []
 
-        # If any data has updated we update all of the country datasets
-        # logger.info("**ONLY DOING ONE COUNTRY FOR TEST**")
-        countries = self._configuration["country_datasets"]
-        # Make a default dataset_date in case a country dataset has no data
-        start_date = min([x[1] for x in items_to_update])
-        end_date = max([x[2] for x in items_to_update])
-        dataset_date = f"[{start_date} TO {end_date}]"
-        for country in countries:
-            countries_group = [{"name": country.lower()}]
-
-            # start_date, end_date = get_date_range_from_api_response(
-            #     api_cache[f"insecurity-insight-{item[0]}-incidents"], country_filter=country
-            # )
-            # if start_date is not None and end_date is not None:
-            #     dataset_date = f"[{start_date} TO {end_date}]"
-            dataset, n_missing_resources = create_datasets_in_hdx(
-                self._configuration["country_dataset_basename"],
-                country_filter=country,
-                dataset_cache=dataset_cache,
-                dataset_date=dataset_date,
-                countries_group=countries_group,
-                dry_run=dry_run,
-                hdx_site=hdx_site,
+        # update topic datasets
+        for topic in topics_to_update:
+            countries = get_countries_from_api_response(
+                api_cache[f"{topic}-incidents"]
             )
-            if n_missing_resources != 0:
-                missing_report.append([dataset["name"], n_missing_resources])
+            start_date, end_date = get_dates_from_api_response(
+                api_cache[f"{topic}-incidents"]
+            )
+            topic_file_paths = {key: value for key, value in file_paths.items() if key.startswith(topic)}
+            dataset = create_dataset(
+                topic=topic,
+                dataset_template=self._configuration["datasets"]["topic"],
+                countries=countries,
+                file_paths=topic_file_paths,
+                start_date=start_date,
+                end_date=end_date,
+                dataset_cache=dataset_cache,
+            )
+            datasets_to_update.append(dataset)
 
-        return missing_report
+        # update all country datasets
+        countries = self._configuration["country_datasets"]
+        for country in countries:
+            country_file_paths = {key: value for key, value in file_paths.items() if key.startswith(country)}
+            start_dates = []
+            end_dates = []
+            for topic in self._configuration["topics"]:
+                start_date, end_date = get_dates_from_api_response(
+                    api_cache[f"{topic}-incidents"]
+                )
+                start_dates.append(start_date)
+                end_dates.append(end_date)
+            dataset = create_dataset(
+                topic="all",
+                dataset_template=self._configuration["datasets"]["country"],
+                countries=country,
+                file_paths=country_file_paths,
+                start_date=min(start_dates),
+                end_date=min(end_dates),
+                dataset_cache=dataset_cache,
+            )
+            datasets_to_update.append(dataset)
+
+        return datasets_to_update

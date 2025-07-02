@@ -6,6 +6,7 @@ import logging
 import os
 from os.path import dirname, join
 
+from hdx.data.dataset import Dataset
 from hdx.utilities.dictandlist import read_list_from_csv
 from pandas import DataFrame
 from pandas.io.formats import excel
@@ -270,3 +271,160 @@ def create_spreadsheet(
     )
 
     return output_filepath
+
+
+def get_countries_from_api_response(api_response: list[dict]) -> list[dict]:
+    countries = []
+    _, iso_country_field = pick_date_and_iso_country_fields(api_response[0])
+
+    for row in api_response:
+        if row[iso_country_field] != "":
+            countries.append(row[iso_country_field].lower())
+
+    # Possibly we want to run a counter here to work out the significant countries in the dataset
+    countries = list(set(countries))
+    return countries
+
+
+def get_dates_from_api_response(api_response: list[dict]) -> tuple[str, str]:
+    dates = []
+    date_field, _ = pick_date_and_iso_country_fields(api_response[0])
+    for row in api_response:
+        dates.append(row[date_field])
+    api_start_date = None
+    api_end_date = None
+    if len(dates) != 0:
+        api_start_date = min(dates).replace("Z", "")[0:10]
+        api_end_date = max(dates).replace("Z", "")[0:10]
+    return api_start_date, api_end_date
+
+
+def create_dataset(
+    topic: str,
+    dataset_template: dict,
+    countries: list,
+    file_paths: dict,
+    start_date: str,
+    end_date: str,
+    dataset_cache: dict = None,
+) -> Dataset:
+
+    if dataset_cache is None:
+        dataset, _ = create_or_fetch_base_dataset(
+            dataset_name,
+            country_filter=country_filter,
+            use_legacy=use_legacy,
+            hdx_site=hdx_site,
+        )
+    else:
+        if country_filter is not None and country_filter != "":
+            dataset_name = dataset_name.replace("country", country_filter.lower())
+        dataset = dataset_cache[dataset_name]
+
+    if country_filter is not None and country_filter != "":
+        dataset_name = dataset_name.replace("country", country_filter.lower())
+    # This is where we get title, description and potentially name
+    # from New-HDX-APIs-1-HDX-Home-Page.csv
+    ii_metadata = read_insecurity_insight_attributes_pages(dataset_name)
+    dataset["title"] = ii_metadata["Page"]
+    dataset["description"] = ii_metadata["Page description"]
+    dataset["name"] = ii_metadata["legacy_name"]
+
+    # We should fetch resoure names from insecurity insight metadata here
+    # resource_names = dataset_attributes["resource"]
+    ii_resource_attributes = read_insecurity_insight_resource_attributes(dataset_name)
+    resource_names = [x["ih_name"] for x in ii_resource_attributes]
+    resource_descriptions = {
+        x["ih_name"]: x["Description"] for x in ii_resource_attributes
+    }
+    # This is a bit nasty since it reads the API for every resource in a dataset
+    # but we only do it if the dataset_date is not set
+    if dataset_date is None or countries_group is None:
+        dataset_date, countries_group = get_date_and_country_ranges_from_resources(
+            resource_names, country_filter=country_filter
+        )
+
+    dataset["dataset_date"] = dataset_date
+    dataset["groups"] = countries_group
+    # Set organisation and maintainer in code because it is easier to update later.
+    dataset.set_maintainer(
+        "878dc76d-d357-4dce-8562-59f6421714e1"
+    )  # From Insecurity Insight 878dc76d-d357-4dce-8562-59f6421714e1
+    dataset.set_organization(
+        "648d346e-3995-44cc-a559-29f8192a3010"
+    )  # Insecurity Insight 648d346e-3995-44cc-a559-29f8192a3010
+
+    resource_list = []
+
+    n_missing_resources = 0
+    logger.info("Resources:")
+    for resource_name in resource_names:
+        attributes = read_attributes(resource_name)
+        # This skips the current year spreadsheet resources which have no dataset_name (yet)
+        if not attributes:
+            continue
+        resource_filepath = find_resource_filepath(
+            resource_name, attributes, country_filter=country_filter
+        )
+
+        if resource_filepath is None:
+            n_missing_resources += 1
+            continue
+
+        # Update resource_description
+        resource_description = resource_descriptions[resource_name]
+        if "[current year]" in resource_description:
+            current_year = datetime.datetime.now().isoformat()[0:4]
+            date_regex = re.findall(r"\d{4}-\d{2}-\d{2}", dataset_date)
+            if len(date_regex) != 2:
+                logger.warning(
+                    f"Dataset_date '{dataset_date}' is an unexpected format, "
+                    "using current date for most recent"
+                )
+            resource_description = resource_description.replace(
+                "[current year]", current_year
+            )
+
+        # This is where we would get start and end dates for an actual dataset
+        if "[to date]" in resource_description:
+            _, end_date = get_date_range_from_resource_file(resource_filepath)
+            end_date_dt = datetime.datetime.fromisoformat(end_date)
+            end_date_human = end_date_dt.strftime("%d %B %Y")
+
+            resource_description = resource_description.replace(
+                "[to date]", end_date_human
+            )
+            print(resource_description, flush=True)
+
+        resource = Resource(
+            {
+                "name": os.path.basename(resource_filepath),
+                "description": resource_description,
+                "format": attributes.get("file_format", "XLSX"),
+            }
+        )
+        resource.set_file_to_upload(resource_filepath)
+        resource_list.append(resource)
+
+    resource_list_names = [x["name"] for x in resource_list]
+
+    dataset.add_update_resources(resource_list)
+
+    dataset_name = dataset["name"]
+    dataset.create_in_hdx(hxl_update=False)
+    # Reorder resources so that the datasets from the API come first - code from hdx-cli-toolkit
+    revised_dataset = Dataset.read_from_hdx(dataset_name)
+    resources_check = revised_dataset.get_resources()
+
+    reordered_resource_ids = [
+        x["id"] for x in resources_check if x["name"] in resource_list_names
+    ]
+    reordered_resource_ids.extend(
+        [x["id"] for x in resources_check if x["name"] not in resource_list_names]
+    )
+
+    revised_dataset.reorder_resources(
+        hxl_update=False, resource_ids=reordered_resource_ids
+    )
+
+    return dataset
