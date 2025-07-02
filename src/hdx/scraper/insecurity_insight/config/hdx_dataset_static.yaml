@@ -5,3 +5,4 @@ private: False
 maintainer: 972627a5-4f23-4922-8892-371ece6531b6
 owner_org: insecurity-insight
 subnational: "1"
+data_update_frequency: "-2"
