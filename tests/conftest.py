@@ -44,9 +44,25 @@ def configuration(config_dir):
             {"name": tag}
             # Change tags below to match those needed in tests
             for tag in (
+                "aid worker security",
+                "aid workers",
+                "complex emergency-conflict-security",
+                "conflict-violence",
+                "damage assessment",
+                "disease",
+                "education",
+                "education facilities-schools",
                 "facilities-infrastructure",
+                "fatalities",
+                "food security",
+                "health",
+                "health facilities",
+                "indicators",
+                "internally displaced persons-idp",
+                "OPT-Israel-hostilities",
                 "populated places-settlements",
-                "population",
+                "refugee crisis",
+                "refugees",
             )
         ],
         "id": "b891512e-9516-4bf5-962a-7a289772a2a1",
