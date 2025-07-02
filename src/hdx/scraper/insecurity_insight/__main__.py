@@ -73,10 +73,14 @@ def main(
             datasets = insecurity_insight.update_datasets(
                 topics_to_update,
                 api_cache,
-                dataset_cache,
                 file_paths,
             )
             for dataset in datasets:
+                dataset.update_from_yaml(
+                    script_dir_plus_file(
+                        join("config", "hdx_dataset_static.yaml"), main
+                    )
+                )
                 dataset.create_in_hdx(
                     remove_additional_resources=False,
                     match_resource_order=False,
@@ -84,6 +88,7 @@ def main(
                     updated_by_script=_UPDATED_BY_SCRIPT,
                     batch=info["batch"],
                 )
+                insecurity_insight.reorder_resources(dataset)
 
     logger.info("Finished processing")
 

@@ -7,6 +7,7 @@ from typing import Optional
 
 from hdx.api.configuration import Configuration
 from hdx.data.dataset import Dataset
+from hdx.utilities.dictandlist import merge_two_dictionaries
 from hdx.utilities.loader import load_json
 from hdx.utilities.retriever import Retrieve
 
@@ -36,7 +37,7 @@ class InsecurityInsight:
         api_cache = {}
         topics = self._configuration["topics"]
         for topic in topics:
-            for topic_type in ["incidents", "incidents-current-year", "overview"]:
+            for topic_type in self._configuration["topic_types"]:
                 resource = f"{topic}-{topic_type}"
                 logger.info(f"Fetching data for {resource} from API")
 
@@ -68,6 +69,8 @@ class InsecurityInsight:
         # Load country datasets
         n_countries = 0
         for country, dataset_info in self._configuration["country_datasets"].items():
+            if country == "all":
+                continue
             dataset_name = dataset_info["name"]
             dataset = Dataset.read_from_hdx(dataset_name)
             if dataset:
@@ -88,7 +91,9 @@ class InsecurityInsight:
         has_changed = False
         changed_list = []
         for topic in topics:
-            for topic_type in ["incidents", "overview"]:
+            for topic_type in self._configuration["topic_types"]:
+                if "current-year" in topic_type:
+                    continue
                 resource = f"{topic}-{topic_type}"
                 api_response = api_cache[resource]
                 if topic_type == "incidents":
@@ -161,7 +166,7 @@ class InsecurityInsight:
 
         logger.info("Refreshing topic spreadsheets")
         for topic in topics_to_update:
-            for topic_type in ["incidents", "incidents-current-year", "overview"]:
+            for topic_type in self._configuration["topic_types"]:
                 year_filter = ""
                 if topic_type == "incidents-current-year":
                     year_filter = str(current_year)
@@ -178,6 +183,8 @@ class InsecurityInsight:
         logger.info("Refreshing all country spreadsheets")
         countries = self._configuration["country_datasets"]
         for country in countries:
+            if country == "all":
+                continue
             for topic in self._configuration["topics"]:
                 file_path = create_spreadsheet(
                     topic=topic,
@@ -195,60 +202,74 @@ class InsecurityInsight:
         self,
         topics_to_update: list[str],
         api_cache: dict,
-        dataset_cache: dict,
         file_paths: dict,
     ) -> list:
+        datasets_to_update = []
+
         if len(topics_to_update) == 0:
             logger.info("No datasets need to be updated")
-            return []
-
-        datasets_to_update = []
+            return datasets_to_update
 
         # update topic datasets
         for topic in topics_to_update:
             countries = get_countries_from_api_response(api_cache[f"{topic}-incidents"])
-            start_date, end_date = get_dates_from_api_response(
-                api_cache[f"{topic}-incidents"]
-            )
             topic_file_paths = {
                 key: value for key, value in file_paths.items() if key.startswith(topic)
             }
             dataset = create_dataset(
                 topic=topic,
-                dataset_template=self._configuration["datasets"]["topic"],
+                dataset_template=self._configuration["datasets"][topic],
                 countries=countries,
                 file_paths=topic_file_paths,
-                start_date=start_date,
-                end_date=end_date,
-                dataset_cache=dataset_cache,
+                api_cache=api_cache,
             )
             datasets_to_update.append(dataset)
 
         # update all country datasets
-        countries = self._configuration["country_datasets"]
-        for country in countries:
+        country_datasets = self._configuration["country_datasets"]
+        template = self._configuration["country_datasets"]["all"]
+        for country, dataset_template in country_datasets.items():
+            if country == "all":
+                continue
+            topics = dataset_template["topics"]
+            dataset_template = merge_two_dictionaries(dataset_template, template)
+            tags = []
+            for topic in topics:
+                tag_list = dataset_template["tags"][topic]
+                tags.extend(tag_list)
+            dataset_template["tags"] = sorted(list(set(tags)))
             country_file_paths = {
                 key: value
                 for key, value in file_paths.items()
                 if key.startswith(country)
             }
-            start_dates = []
-            end_dates = []
-            for topic in self._configuration["topics"]:
-                start_date, end_date = get_dates_from_api_response(
-                    api_cache[f"{topic}-incidents"]
-                )
-                start_dates.append(start_date)
-                end_dates.append(end_date)
             dataset = create_dataset(
                 topic="all",
-                dataset_template=self._configuration["datasets"]["country"],
-                countries=country,
+                dataset_template=dataset_template,
+                countries=[country],
                 file_paths=country_file_paths,
-                start_date=min(start_dates),
-                end_date=min(end_dates),
-                dataset_cache=dataset_cache,
+                api_cache=api_cache,
             )
             datasets_to_update.append(dataset)
 
         return datasets_to_update
+
+    def reorder_resources(self, dataset: Dataset) -> None:
+        # Reorder resources so that the datasets from the API come first
+        resource_list_names = [x["name"] for x in dataset.get_resources()]
+
+        dataset_name = dataset["name"]
+        revised_dataset = Dataset.read_from_hdx(dataset_name)
+        resources_check = revised_dataset.get_resources()
+
+        reordered_resource_ids = [
+            x["id"] for x in resources_check if x["name"] in resource_list_names
+        ]
+        reordered_resource_ids.extend(
+            [x["id"] for x in resources_check if x["name"] not in resource_list_names]
+        )
+
+        revised_dataset.reorder_resources(
+            hxl_update=False, resource_ids=reordered_resource_ids
+        )
+        return
