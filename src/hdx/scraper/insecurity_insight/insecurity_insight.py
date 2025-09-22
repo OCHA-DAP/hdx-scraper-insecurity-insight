@@ -213,6 +213,7 @@ class InsecurityInsight:
         topics_to_update: list[str],
         api_cache: dict,
         file_paths: dict,
+        countries_to_update: Optional[list] = None,
     ) -> list:
         datasets_to_update = []
 
@@ -240,6 +241,8 @@ class InsecurityInsight:
         template = self._configuration["country_datasets"]["all"]
         for country, dataset_template in country_datasets.items():
             if country == "all":
+                continue
+            if countries_to_update is not None and country not in countries_to_update:
                 continue
             topics = dataset_template["topics"]
             dataset_template = merge_two_dictionaries(dataset_template, template)
