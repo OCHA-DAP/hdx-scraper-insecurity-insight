@@ -154,9 +154,9 @@ def create_spreadsheet(
             output_dataframe[key] = output_dataframe[key].dt.date
 
     # Generate filename
-    date_field, _ = pick_date_and_iso_country_fields(api_response[0])
-    start_year = min([x[date_field] for x in api_response])[0:4]
-    end_year = max([x[date_field] for x in api_response])[0:4]
+    date_field, _ = pick_date_and_iso_country_fields(filtered_rows[0])
+    start_year = min([x[date_field] for x in filtered_rows])[0:4]
+    end_year = max([x[date_field] for x in filtered_rows])[0:4]
     country_iso = ""
     if (country_filter is not None) and (len(country_filter) != 0):
         country_iso = f"-{country_filter}"
