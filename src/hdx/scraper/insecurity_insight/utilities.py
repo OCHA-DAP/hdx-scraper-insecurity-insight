@@ -286,9 +286,9 @@ def create_dataset(
             {
                 "name": resource_name,
                 "description": resource_description,
-                "format": "XLSX",
             }
         )
+        resource.set_format("xlsx")
         resource.set_file_to_upload(file_path)
         resource_list.append(resource)
 

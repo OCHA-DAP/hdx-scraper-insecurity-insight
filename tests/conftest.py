@@ -3,6 +3,7 @@ from os.path import join
 import pytest
 from hdx.api.configuration import Configuration
 from hdx.api.locations import Locations
+from hdx.data.dataset import Dataset
 from hdx.data.vocabulary import Vocabulary
 from hdx.location.country import Country
 from hdx.utilities.useragent import UserAgent
@@ -23,6 +24,21 @@ def config_dir(fixtures_dir):
     return join("src", "hdx", "scraper", "insecurity_insight", "config")
 
 
+@pytest.fixture(scope="function")
+def read_dataset(monkeypatch):
+    def read_from_hdx(dataset_name):
+        return Dataset.load_from_json(
+            join(
+                "tests",
+                "fixtures",
+                "input",
+                f"dataset-{dataset_name}.json",
+            )
+        )
+
+    monkeypatch.setattr(Dataset, "read_from_hdx", staticmethod(read_from_hdx))
+
+
 @pytest.fixture(scope="session")
 def configuration(config_dir):
     UserAgent.set_global("test")
@@ -34,8 +50,81 @@ def configuration(config_dir):
     # Change locations below to match those needed in tests
     Locations.set_validlocations(
         [
-            {"name": "cub", "title": "Cuba"},
-            {"name": "world", "title": "World"},
+            {"name": "afg"},
+            {"name": "ago"},
+            {"name": "aze"},
+            {"name": "bdi"},
+            {"name": "ben"},
+            {"name": "bfa"},
+            {"name": "bgd"},
+            {"name": "bih"},
+            {"name": "bol"},
+            {"name": "bra"},
+            {"name": "caf"},
+            {"name": "chl"},
+            {"name": "civ"},
+            {"name": "cmr"},
+            {"name": "cod"},
+            {"name": "col"},
+            {"name": "dom"},
+            {"name": "ecu"},
+            {"name": "egy"},
+            {"name": "esp"},
+            {"name": "eth"},
+            {"name": "fra"},
+            {"name": "gnb"},
+            {"name": "gnq"},
+            {"name": "grc"},
+            {"name": "gtm"},
+            {"name": "hnd"},
+            {"name": "hti"},
+            {"name": "ind"},
+            {"name": "irn"},
+            {"name": "irq"},
+            {"name": "isr"},
+            {"name": "ita"},
+            {"name": "jor"},
+            {"name": "ken"},
+            {"name": "kgz"},
+            {"name": "khm"},
+            {"name": "lao"},
+            {"name": "lbn"},
+            {"name": "lby"},
+            {"name": "lso"},
+            {"name": "mdg"},
+            {"name": "mex"},
+            {"name": "mli"},
+            {"name": "mmr"},
+            {"name": "moz"},
+            {"name": "ner"},
+            {"name": "nga"},
+            {"name": "nic"},
+            {"name": "pak"},
+            {"name": "per"},
+            {"name": "phl"},
+            {"name": "png"},
+            {"name": "pse"},
+            {"name": "rwa"},
+            {"name": "sdn"},
+            {"name": "sen"},
+            {"name": "slb"},
+            {"name": "slv"},
+            {"name": "som"},
+            {"name": "ssd"},
+            {"name": "sur"},
+            {"name": "syr"},
+            {"name": "tcd"},
+            {"name": "tls"},
+            {"name": "tun"},
+            {"name": "tur"},
+            {"name": "tza"},
+            {"name": "uga"},
+            {"name": "ukr"},
+            {"name": "usa"},
+            {"name": "ven"},
+            {"name": "yem"},
+            {"name": "zaf"},
+            {"name": "zwe"},
         ]
     )
     Country.countriesdata(False)
