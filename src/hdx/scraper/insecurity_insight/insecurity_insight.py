@@ -7,6 +7,7 @@ from typing import Optional
 
 from hdx.api.configuration import Configuration
 from hdx.data.dataset import Dataset
+from hdx.utilities.base_downloader import DownloadError
 from hdx.utilities.dictandlist import merge_two_dictionaries
 from hdx.utilities.loader import load_json
 from hdx.utilities.retriever import Retrieve
@@ -44,7 +45,11 @@ class InsecurityInsight:
                 api_url = f"{self._configuration['base_url']}{topic}"
                 if topic_type == "overview":
                     api_url = f"{api_url}Overview"
-                json_response = self._retriever.download_json(api_url)
+                try:
+                    json_response = self._retriever.download_json(api_url)
+                except DownloadError:
+                    logger.error(f"Failed to download response for {resource}")
+                    continue
                 censored_location_response = censor_location(["PSE"], json_response)
                 censored_response = censor_event_description(censored_location_response)
                 api_cache[resource] = censored_response
