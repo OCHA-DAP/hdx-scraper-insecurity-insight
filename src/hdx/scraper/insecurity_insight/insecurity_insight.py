@@ -162,7 +162,11 @@ class InsecurityInsight:
         return topics_to_update
 
     def refresh_spreadsheets_with_fresh_data(
-        self, topics_to_update: list[str], api_cache: dict, current_year: int
+        self,
+        topics_to_update: list[str],
+        api_cache: dict,
+        current_year: int,
+        countries: Optional[list] = None,
     ) -> dict:
         file_paths = {}
         if len(topics_to_update) == 0:
@@ -186,7 +190,8 @@ class InsecurityInsight:
                 file_paths[f"{topic}-{topic_type}"] = file_path
 
         logger.info("Refreshing all country spreadsheets")
-        countries = self._configuration["country_datasets"]
+        if countries is None:
+            countries = self._configuration["country_datasets"]
         for country in countries:
             if country == "all":
                 continue
