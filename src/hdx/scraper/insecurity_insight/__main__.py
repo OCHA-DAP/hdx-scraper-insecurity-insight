@@ -25,17 +25,17 @@ _USER_AGENT_LOOKUP = "hdx-scraper-insecurity-insight"
 _SAVED_DATA_DIR = "saved_data"  # Keep in repo to avoid deletion in /tmp
 _UPDATED_BY_SCRIPT = "HDX Scraper: Insecurity Insight"
 _TOPICS = None  # Set to list of topics to fetch
-_FORCE_REFRESH = True
+_FORCE_REFRESH = False
 
 
 def main(
-    save: bool = True,
+    save: bool = False,
     use_saved: bool = False,
 ) -> None:
     """Generate datasets and create them in HDX
 
     Args:
-        save (bool): Save downloaded data. Defaults to True.
+        save (bool): Save downloaded data. Defaults to False.
         use_saved (bool): Use saved data. Defaults to False.
 
     Returns:
@@ -96,7 +96,6 @@ def main(
 if __name__ == "__main__":
     facade(
         main,
-        hdx_site="dev",
         user_agent_config_yaml=join(expanduser("~"), ".useragents.yaml"),
         user_agent_lookup=_USER_AGENT_LOOKUP,
         project_config_yaml=script_dir_plus_file(
