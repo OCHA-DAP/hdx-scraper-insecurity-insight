@@ -100,7 +100,10 @@ class InsecurityInsight:
                 if "current-year" in topic_type:
                     continue
                 resource = f"{topic}-{topic_type}"
-                api_response = api_cache[resource]
+                api_response = api_cache.get(resource, {})
+                if len(api_response) == 0:
+                    logger.error(f"Cannot compare {resource}")
+                    continue
                 if topic_type == "incidents":
                     resource = f"{topic}"
                 samples_response = load_json(
