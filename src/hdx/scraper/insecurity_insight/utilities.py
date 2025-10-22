@@ -2,13 +2,13 @@
 """insecurity insight utilities"""
 
 import logging
-from os.path import basename, dirname, join
+from os.path import basename, join
 from typing import Optional
 
 from hdx.data.dataset import Dataset
 from hdx.data.resource import Resource
 from hdx.utilities.dateparse import parse_date
-from hdx.utilities.dictandlist import dict_of_dicts_add, read_list_from_csv
+from hdx.utilities.dictandlist import dict_of_dicts_add
 from pandas import DataFrame
 from pandas.io.formats import excel
 
@@ -93,20 +93,6 @@ def censor_event_description(api_response: list[dict]) -> list[dict]:
     return censored_rows
 
 
-def read_schema(dataset_name: str) -> list[dict]:
-    dataset_name = dataset_name.replace("-current-year", "")
-    row_template = []
-    schema_filepath = join(dirname(__file__), "config", "schema.csv")
-    schema_rows = read_list_from_csv(schema_filepath, headers=1, dict_form=True)
-    for row in schema_rows:
-        if row["dataset_name"] != dataset_name:
-            continue
-        row["field_number"] = int(row["field_number"])
-        row_template.append(row)
-    row_template = sorted(row_template, key=lambda x: x["field_number"])
-    return row_template
-
-
 def pick_date_and_iso_country_fields(row_dictionary: dict) -> tuple[str, str]:
     iso_country_field = "Country ISO"
     if iso_country_field not in row_dictionary.keys():
@@ -137,17 +123,27 @@ def create_spreadsheet(
         )
         return None
 
-    # get columns in correct order and with correct type
-    field_templates = read_schema(f"{topic}-{topic_type}")
-    field_order = [field_template["field_name"] for field_template in field_templates]
-    field_types = {
-        field_template["field_name"]: field_template["field_type"]
-        for field_template in field_templates
-    }
-
-    output_dataframe = DataFrame.from_dict(filtered_rows)
-    output_dataframe = output_dataframe[field_order]
-    output_dataframe.replace("", None, inplace=True)
+    # get columns with correct type
+    output_dataframe = DataFrame.from_dict(filtered_rows, dtype="str")
+    field_types = {}
+    for column in output_dataframe.columns:
+        if column.lower() in ["latitude", "longitude"]:
+            field_type = "float64"
+        elif column.lower().startswith("date"):
+            field_type = "datetime64[ns, UTC]"
+        elif column.lower() == "sind event id":
+            field_type = "str"
+        else:
+            values = output_dataframe[column]
+            is_numeric = values.str.isnumeric()
+            if is_numeric.all():
+                field_type = "Int64"
+            else:
+                field_type = "str"
+        field_types[column] = field_type
+    for key, value in field_types.items():
+        if value == "str":
+            output_dataframe[key] = output_dataframe[key].replace("", None)
     output_dataframe = output_dataframe.astype(field_types, errors="ignore")
     for key, value in field_types.items():
         if value == "datetime64[ns, UTC]":

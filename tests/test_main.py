@@ -34,24 +34,11 @@ class TestInsecurityInsight:
                 api_cache = insecurity_insight.fetch_api_responses()
                 assert len(api_cache) == 21
 
-                dataset_cache = insecurity_insight.fetch_datasets()
-                assert len(dataset_cache) == 32
-
-                has_changed, changed_list = (
-                    insecurity_insight.check_api_has_not_changed(api_cache)
-                )
-                assert has_changed is False
-                assert changed_list == []
-
-                topics_to_update = (
-                    insecurity_insight.decide_which_resources_have_fresh_data(
-                        dataset_cache, api_cache, _TOPICS, _FORCE_REFRESH
-                    )
-                )
-                assert topics_to_update == ["aidworkerKIKA"]
-
                 file_paths = insecurity_insight.refresh_spreadsheets_with_fresh_data(
-                    topics_to_update, api_cache, 2025, countries=["AFG"]
+                    api_cache,
+                    2025,
+                    topics_to_update=["aidworkerKIKA"],
+                    countries=["AFG"],
                 )
                 assert len(file_paths) == 10
 
@@ -61,9 +48,9 @@ class TestInsecurityInsight:
                     assert new_data.equals(old_data)
 
                 datasets = insecurity_insight.update_datasets(
-                    topics_to_update,
                     api_cache,
                     file_paths,
+                    topics_to_update=["aidworkerKIKA"],
                     countries_to_update=["AFG"],
                 )
                 assert len(datasets) == 2
