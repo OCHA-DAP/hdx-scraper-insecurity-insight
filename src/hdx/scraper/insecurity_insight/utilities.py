@@ -138,6 +138,7 @@ def create_spreadsheet(
         return None
 
     # get columns in correct order and with correct type
+    # TODO: remove dependency on schema
     field_templates = read_schema(f"{topic}-{topic_type}")
     field_order = [field_template["field_name"] for field_template in field_templates]
     field_types = {

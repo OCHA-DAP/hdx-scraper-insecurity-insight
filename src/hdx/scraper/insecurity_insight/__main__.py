@@ -57,23 +57,13 @@ def main(
 
             insecurity_insight = InsecurityInsight(configuration, retriever)
             api_cache = insecurity_insight.fetch_api_responses()
-            dataset_cache = insecurity_insight.fetch_datasets(_TOPICS)
-            has_changed, changed_list = insecurity_insight.check_api_has_not_changed(
-                api_cache, _TOPICS
-            )
-            topics_to_update = (
-                insecurity_insight.decide_which_resources_have_fresh_data(
-                    dataset_cache, api_cache, _TOPICS, _FORCE_REFRESH
-                )
-            )
-            logger.info(f"{len(topics_to_update)} items updated in API")
             file_paths = insecurity_insight.refresh_spreadsheets_with_fresh_data(
-                topics_to_update, api_cache, current_year
+                api_cache, current_year, topics_to_update=_TOPICS
             )
             datasets = insecurity_insight.update_datasets(
-                topics_to_update,
                 api_cache,
                 file_paths,
+                topics_to_update=_TOPICS,
             )
             for dataset in datasets:
                 dataset.update_from_yaml(
@@ -88,6 +78,7 @@ def main(
                     updated_by_script=_UPDATED_BY_SCRIPT,
                     batch=info["batch"],
                 )
+                insecurity_insight.remove_old_resources(dataset)
                 insecurity_insight.reorder_resources(dataset)
 
     logger.info("Finished processing")
