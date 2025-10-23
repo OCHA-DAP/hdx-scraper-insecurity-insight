@@ -165,7 +165,8 @@ def check_api_has_not_changed(api_cache: dict, refresh: Optional[list] = None) -
     for dataset_name in changed_list:
         LOGGER.info(dataset_name)
 
-    assert not has_changed, "!!One or more of the Insecurity Insight endpoints has changed format"
+    if has_changed:
+        LOGGER.info("!!One or more of the Insecurity Insight endpoints has changed format")
     return has_changed, changed_list
 
 
