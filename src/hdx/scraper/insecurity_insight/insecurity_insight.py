@@ -178,11 +178,25 @@ class InsecurityInsight:
         datasets_to_update = []
 
         # update topic datasets
+        # TODO: account for SV, CRSV, SVPV all going in same dataset
         for topic in topics_to_update:
-            countries = get_countries_from_api_response(api_cache[f"{topic}-incidents"])
-            topic_file_paths = {
-                key: value for key, value in file_paths.items() if key.startswith(topic)
-            }
+            if topic == "sv":
+                countries = []
+                for subtopic in self._configuration["subtopics"]:
+                    subcountries = get_countries_from_api_response(
+                        api_cache[f"{subtopic}-incidents"]
+                    )
+                    countries.extend(subcountries)
+                topic_file_paths = {}
+            else:
+                countries = get_countries_from_api_response(
+                    api_cache[f"{topic}-incidents"]
+                )
+                topic_file_paths = {
+                    key: value
+                    for key, value in file_paths.items()
+                    if key.startswith(topic)
+                }
             dataset = create_dataset(
                 topic=topic,
                 dataset_template=self._configuration["datasets"][topic],

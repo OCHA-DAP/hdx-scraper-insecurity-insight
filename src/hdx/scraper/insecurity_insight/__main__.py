@@ -64,6 +64,7 @@ def main(
 
             file_paths = insecurity_insight.refresh_spreadsheets(
                 api_cache, current_year, topics_to_update
+            )
             datasets = insecurity_insight.update_datasets(
                 api_cache, file_paths, topics_to_update=topics_to_update
             )
