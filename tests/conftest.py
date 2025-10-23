@@ -108,6 +108,7 @@ def configuration(config_dir):
             {"name": "sdn"},
             {"name": "sen"},
             {"name": "slb"},
+            {"name": "sle"},
             {"name": "slv"},
             {"name": "som"},
             {"name": "ssd"},
