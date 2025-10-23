@@ -334,7 +334,7 @@ def refresh_spreadsheets_with_fresh_data(items_to_update: list[str], api_cache: 
                     resource, country_filter=country, api_response=api_cache[resource]
                 )
             except KeyError:
-                pass
+                continue
             LOGGER.info(status)
 
         # break  # just do one spreadsheet for testing
