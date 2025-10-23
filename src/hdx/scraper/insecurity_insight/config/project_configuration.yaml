@@ -10,7 +10,11 @@ topics:
   foodSecurity: "Food Security"
   healthcare: "Attacks on Health Care"
   protection: "Protection in Danger"
-  sv: "Conflict Related Sexual Violence"
+  sv: "Conflict-Related (CRSV) or Political-Related Sexual Violence"
+
+subtopics:
+  crsv: "sv"
+  svPoliticalViolence: "sv"
 
 topic_types:
   - "incidents"
@@ -119,9 +123,9 @@ datasets:
 
   sv:
     name: "conflict-related-sexual-violence"
-    title: "Conflict-Related Sexual Violence (CRSV) Data"
+    title: "Conflict-Related (CRSV) or Political-Related Sexual Violence Data"
     caveats: "The incidents reported are not a complete nor a representative list of all incidents and have not been independently verified."
-    notes: "This dataset contains publicly-reported cases of [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings) by conflict actors, security personnel, and sexual violence violence that targets aid workers, educators, health workers and IDPS/refugees.  \n  \nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    notes: "This dataset contains publicly-reported cases of conflict-related and political [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings) by conflict actors, security personnel, and sexual violence violence that targets aid workers, educators, health workers and IDPS/refugees.  \n  \nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org"
     license_id: "cc-by"
     methodology_other: "Systematically collected from open source, public reports as well as verified submissions from our partner agencies."
     tags:

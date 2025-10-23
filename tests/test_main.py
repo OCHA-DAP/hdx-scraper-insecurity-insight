@@ -32,7 +32,7 @@ class TestInsecurityInsight:
                 insecurity_insight = InsecurityInsight(configuration, retriever)
 
                 api_cache = insecurity_insight.fetch_api_responses()
-                assert len(api_cache) == 21
+                assert len(api_cache) == 23
 
                 file_paths = insecurity_insight.refresh_spreadsheets_with_fresh_data(
                     api_cache,

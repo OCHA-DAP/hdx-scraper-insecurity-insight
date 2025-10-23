@@ -149,7 +149,7 @@ rfc3986==2.0.0
     # via frictionless
 rich==14.2.0
     # via typer
-rpds-py==0.27.1
+rpds-py==0.28.0
     # via
     #   jsonschema
     #   referencing
