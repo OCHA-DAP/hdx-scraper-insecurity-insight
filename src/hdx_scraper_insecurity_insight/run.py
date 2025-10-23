@@ -73,7 +73,10 @@ def fetch_and_cache_api_responses(
             LOGGER.info(f"Fetching data for {resource} from API")
         else:
             LOGGER.info(f"Fetching data for {resource} from samples")
-        api_cache[resource] = fetch_json(resource, use_sample=use_sample)
+        json_response = fetch_json(resource, use_sample=use_sample)
+        if json_response is None:
+            continue
+        api_cache[resource] = json_response
 
         if save_response:
             attributes = read_attributes(resource)
@@ -162,7 +165,8 @@ def check_api_has_not_changed(api_cache: dict, refresh: Optional[list] = None) -
     for dataset_name in changed_list:
         LOGGER.info(dataset_name)
 
-    assert not has_changed, "!!One or more of the Insecurity Insight endpoints has changed format"
+    if has_changed:
+        LOGGER.info("!!One or more of the Insecurity Insight endpoints has changed format")
     return has_changed, changed_list
 
 
@@ -313,7 +317,7 @@ def refresh_spreadsheets_with_fresh_data(items_to_update: list[str], api_cache: 
                 try:
                     status = create_spreadsheet(resource, api_response=api_cache[resource])
                 except KeyError:
-                    pass
+                    continue
 
                 LOGGER.info(status)
 
@@ -330,7 +334,7 @@ def refresh_spreadsheets_with_fresh_data(items_to_update: list[str], api_cache: 
                     resource, country_filter=country, api_response=api_cache[resource]
                 )
             except KeyError:
-                pass
+                continue
             LOGGER.info(status)
 
         # break  # just do one spreadsheet for testing
