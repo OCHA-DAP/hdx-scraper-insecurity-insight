@@ -53,7 +53,7 @@ class TestInsecurityInsight:
                     topics_to_update=["aidworkerKIKA"],
                     countries=["AFG"],
                 )
-                assert len(file_paths) == 10
+                assert len(file_paths) == 9
 
                 for _, file_name in file_paths.items():
                     new_data = read_excel(file_name)

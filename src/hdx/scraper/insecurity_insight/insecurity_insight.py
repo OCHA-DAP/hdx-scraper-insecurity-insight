@@ -131,7 +131,8 @@ class InsecurityInsight:
                     output_dir=self._retriever.temp_dir,
                     year_filter=year_filter,
                 )
-                file_paths[f"{topic}-{topic_type}"] = file_path
+                if file_path is not None:
+                    file_paths[f"{topic}-{topic_type}"] = file_path
 
         logger.info("Refreshing all country spreadsheets")
         if countries is None:
@@ -156,7 +157,8 @@ class InsecurityInsight:
                     output_dir=self._retriever.temp_dir,
                     country_filter=country,
                 )
-                file_paths[f"{country}-{topic}-incidents"] = file_path
+                if file_path is not None:
+                    file_paths[f"{country}-{topic}-incidents"] = file_path
 
         return file_paths
 
