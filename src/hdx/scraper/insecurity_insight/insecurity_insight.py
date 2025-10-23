@@ -123,10 +123,13 @@ class InsecurityInsight:
                 if len(api_response) == 0:
                     logger.info(f"No API response for {topic}-{topic_type}")
                     continue
+                proper_name = self._configuration["topics"].get(topic)
+                if not proper_name:
+                    proper_name = self._configuration["subtopics"].get(topic)
                 file_path = create_spreadsheet(
                     topic=topic,
                     topic_type=topic_type,
-                    proper_name=self._configuration["topics"][topic],
+                    proper_name=proper_name,
                     api_response=api_response,
                     output_dir=self._retriever.temp_dir,
                     year_filter=year_filter,
@@ -149,10 +152,13 @@ class InsecurityInsight:
                         f"No API response for {topic}-{topic_type} for {country}"
                     )
                     continue
+                proper_name = self._configuration["topics"].get(topic)
+                if not proper_name:
+                    proper_name = self._configuration["subtopics"].get(topic)
                 file_path = create_spreadsheet(
                     topic=topic,
                     topic_type="incidents",
-                    proper_name=self._configuration["topics"][topic],
+                    proper_name=proper_name,
                     api_response=api_response,
                     output_dir=self._retriever.temp_dir,
                     country_filter=country,

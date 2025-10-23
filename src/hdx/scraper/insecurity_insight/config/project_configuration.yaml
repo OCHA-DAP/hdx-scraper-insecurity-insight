@@ -13,8 +13,8 @@ topics:
   sv: "Conflict-Related (CRSV) or Political-Related Sexual Violence"
 
 subtopics:
-  crsv: "sv"
-  svPoliticalViolence: "sv"
+  crsv: "Conflict-Related Sexual Violence (CRSV)"
+  svPoliticalViolence: "Political-Related Sexual Violence"
 
 topic_types:
   - "incidents"
