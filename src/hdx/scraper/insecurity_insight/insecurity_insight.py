@@ -16,6 +16,7 @@ from hdx.scraper.insecurity_insight.utilities import (
     create_dataset,
     create_spreadsheet,
     get_countries_from_api_response,
+    get_dates_from_api_response,
 )
 
 logger = logging.getLogger(__name__)
@@ -26,23 +27,14 @@ class InsecurityInsight:
         self,
         configuration: Configuration,
         retriever: Retrieve,
-        topics: Optional[List[str]] = None,
     ):
         self._configuration = configuration
         self._retriever = retriever
         self._temp_folder = retriever.temp_dir
-        if topics is None:
-            topics = list(configuration["topics"].keys())
-        self._topics = topics
-        if "sv" in topics:
-            subtopics = list(self._configuration["subtopics"].keys())
-        else:
-            subtopics = []
-        self._subtopics = subtopics
 
     def fetch_api_responses(self) -> Dict:
         api_cache = {}
-        for topic in self._topics + self._subtopics:
+        for topic in self._configuration["topics"] | self._configuration["subtopics"]:
             for topic_type in self._configuration["topic_types"]:
                 resource = f"{topic}-{topic_type}"
                 logger.info(f"Fetching data for {resource} from API")
@@ -52,7 +44,7 @@ class InsecurityInsight:
                     api_url = f"{api_url}Overview"
                 try:
                     json_response = self._retriever.download_json(api_url)
-                except DownloadError:
+                except (DownloadError, FileNotFoundError):
                     logger.error(f"Failed to download response for {resource}")
                     continue
                 censored_location_response = censor_location(["PSE"], json_response)
@@ -62,15 +54,67 @@ class InsecurityInsight:
         logger.info(f"Loaded {len(api_cache)} API responses to cache")
         return api_cache
 
+    def check_for_updates(
+        self,
+        api_cache: Dict,
+        force_refresh: Optional[bool] = False,
+    ) -> List[str]:
+        topics_to_update = []
+        for topic in self._configuration["topics"]:
+            if force_refresh:
+                topics_to_update.append(topic)
+                continue
+            dataset_name = self._configuration["datasets"][topic]["name"]
+            dataset = Dataset.read_from_hdx(dataset_name)
+            if not dataset:
+                topics_to_update.append(topic)
+                continue
+            dataset_date = dataset.get_time_period(date_format="%Y-%m-%d")
+            dataset_start_date = dataset_date["startdate_str"]
+            dataset_end_date = dataset_date["enddate_str"]
+
+            api_resource = api_cache.get(f"{topic}-incidents", [])
+            api_start_dates = []
+            api_end_dates = []
+            if len(api_resource) > 0:
+                api_start_date, api_end_date = get_dates_from_api_response(api_resource)
+                api_start_dates.append(api_start_date)
+                api_end_dates.append(api_end_date)
+            if topic == "sv":
+                for subtopic in self._configuration["subtopics"]:
+                    sub_start_date, sub_end_date = get_dates_from_api_response(
+                        api_cache[f"{subtopic}-incidents"]
+                    )
+                    api_start_dates.append(sub_start_date)
+                    api_end_dates.append(sub_end_date)
+            api_start_date = min(api_start_dates)
+            api_end_date = max(api_end_dates)
+
+            if api_end_date > dataset_end_date:
+                topics_to_update.append(topic)
+            elif api_start_date < dataset_start_date:
+                topics_to_update.append(topic)
+
+        return topics_to_update
+
     def refresh_spreadsheets(
         self,
         api_cache: Dict,
         current_year: int,
+        topics_to_update: Optional[List] = None,
         countries: Optional[List] = None,
     ) -> Dict:
-        logger.info("Refreshing topic spreadsheets")
         file_paths = {}
-        for topic in self._topics + self._subtopics:
+        if len(topics_to_update) == 0:
+            logger.info("No spreadsheets need to be updated")
+            return file_paths
+
+        if "sv" in topics_to_update:
+            topics_to_update = topics_to_update + list(
+                self._configuration["subtopics"].keys()
+            )
+        logger.info("Refreshing topic spreadsheets")
+        for topic in topics_to_update:
             for topic_type in self._configuration["topic_types"]:
                 year_filter = ""
                 if topic_type == "incidents-current-year":
@@ -95,12 +139,20 @@ class InsecurityInsight:
         for country in countries:
             if country == "all":
                 continue
-            for topic in self._topics + self._subtopics:
+            for topic in (
+                self._configuration["topics"] | self._configuration["subtopics"]
+            ):
+                api_response = api_cache.get(f"{topic}-{topic_type}", [])
+                if len(api_response) == 0:
+                    logger.info(
+                        f"No API response for {topic}-{topic_type} for {country}"
+                    )
+                    continue
                 file_path = create_spreadsheet(
                     topic=topic,
                     topic_type="incidents",
                     proper_name=self._configuration["topics"][topic],
-                    api_response=api_cache[f"{topic}-incidents"],
+                    api_response=api_response,
                     output_dir=self._retriever.temp_dir,
                     country_filter=country,
                 )
@@ -112,12 +164,13 @@ class InsecurityInsight:
         self,
         api_cache: Dict,
         file_paths: Dict,
+        topics_to_update: Optional[List] = None,
         countries_to_update: Optional[List] = None,
     ) -> List[Dataset]:
         datasets_to_update = []
 
         # update topic datasets
-        for topic in self._topics:
+        for topic in topics_to_update:
             countries = get_countries_from_api_response(api_cache[f"{topic}-incidents"])
             topic_file_paths = {
                 key: value for key, value in file_paths.items() if key.startswith(topic)

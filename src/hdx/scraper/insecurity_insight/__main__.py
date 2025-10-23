@@ -55,10 +55,15 @@ def main(
             )
             current_year = now_utc().year
 
-            insecurity_insight = InsecurityInsight(configuration, retriever, _TOPICS)
+            insecurity_insight = InsecurityInsight(configuration, retriever)
             api_cache = insecurity_insight.fetch_api_responses()
+            topics_to_update = insecurity_insight.check_for_updates(
+                api_cache, _TOPICS, _FORCE_REFRESH
+            )
+            logger.info(f"{len(topics_to_update)} items updated in API")
+
             file_paths = insecurity_insight.refresh_spreadsheets(
-                api_cache, current_year
+                api_cache, current_year, topics_to_update
             )
             datasets = insecurity_insight.update_datasets(api_cache, file_paths)
             for dataset in datasets:

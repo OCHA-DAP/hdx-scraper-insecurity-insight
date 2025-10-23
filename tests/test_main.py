@@ -34,7 +34,20 @@ class TestInsecurityInsight:
                 api_cache = insecurity_insight.fetch_api_responses()
                 assert len(api_cache) == 23
 
-                file_paths = insecurity_insight.refresh_spreadsheets_with_fresh_data(
+                topics_to_update = insecurity_insight.check_for_updates(
+                    api_cache, _TOPICS
+                )
+                assert topics_to_update == [
+                    "aidworkerKIKA",
+                    "education",
+                    "explosiveWeapons",
+                    "foodSecurity",
+                    "healthcare",
+                    "protection",
+                    "sv",
+                ]
+
+                file_paths = insecurity_insight.refresh_spreadsheets(
                     api_cache,
                     2025,
                     topics_to_update=["aidworkerKIKA"],
