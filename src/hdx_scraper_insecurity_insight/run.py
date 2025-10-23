@@ -73,7 +73,10 @@ def fetch_and_cache_api_responses(
             LOGGER.info(f"Fetching data for {resource} from API")
         else:
             LOGGER.info(f"Fetching data for {resource} from samples")
-        api_cache[resource] = fetch_json(resource, use_sample=use_sample)
+        json_response = fetch_json(resource, use_sample=use_sample)
+        if json_response is None:
+            continue
+        api_cache[resource] = json_response
 
         if save_response:
             attributes = read_attributes(resource)

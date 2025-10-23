@@ -38,18 +38,25 @@ def fetch_json(dataset_name: str, use_sample: bool = False):
     else:
         json_response = fetch_json_from_api(dataset_name)
 
+    if json_response is None:
+        return None
+
     censored_location_response = censor_location("PSE", json_response)
     censored_response = censor_event_description(censored_location_response)
 
     return censored_response
 
 
-def fetch_json_from_api(dataset_name: str) -> list[dict]:
+def fetch_json_from_api(dataset_name: str) -> list[dict] | None:
     attributes = read_attributes(dataset_name)
 
     response = request(
         "GET", attributes["api_url"], timeout=60, retries=Retry(90, backoff_factor=1.0)
     )
+
+    if response.status == 404:
+        logging.info(f"Endpoint returned a 404 status for {dataset_name}")
+        return None
 
     if response.status == 503:
         logging.info(
