@@ -80,6 +80,7 @@ def main(
                     updated_by_script=_UPDATED_BY_SCRIPT,
                     batch=info["batch"],
                 )
+                insecurity_insight.remove_old_resources(dataset, current_year)
                 insecurity_insight.reorder_resources(dataset)
 
     logger.info("Finished processing")

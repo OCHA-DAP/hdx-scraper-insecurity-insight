@@ -223,10 +223,23 @@ class InsecurityInsight:
 
         return datasets_to_update
 
+    def remove_old_resources(self, dataset: Dataset, current_year: int) -> None:
+        # Remove resources from old API uploads
+        resource_list_names = [x["name"] for x in dataset.get_resources()]
+        dataset_name = dataset["name"]
+        revised_dataset = Dataset.read_from_hdx(dataset_name)
+        resources_check = revised_dataset.get_resources()
+        resources_to_delete = []
+        for resource in resources_check:
+            # TODO: update logic to detect resources that were from the API but are out of date
+            pass
+        for resource in resources_to_delete:
+            resource.delete_from_hdx()
+        return
+
     def reorder_resources(self, dataset: Dataset) -> None:
         # Reorder resources so that the datasets from the API come first
         resource_list_names = [x["name"] for x in dataset.get_resources()]
-
         dataset_name = dataset["name"]
         revised_dataset = Dataset.read_from_hdx(dataset_name)
         resources_check = revised_dataset.get_resources()
