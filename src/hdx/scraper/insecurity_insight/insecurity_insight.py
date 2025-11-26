@@ -42,8 +42,18 @@ class InsecurityInsight:
                 api_url = f"{self._configuration['base_url']}{topic}"
                 if topic_type == "overview":
                     api_url = f"{api_url}Overview"
+                elif topic == "sv":
+                    api_url = (
+                        f"{self._configuration['base_url']}CRSV",
+                        f"{self._configuration['base_url']}SVPoliticalViolence",
+                    )
                 try:
-                    json_response = self._retriever.download_json(api_url)
+                    if isinstance(api_url, str):
+                        json_response = self._retriever.download_json(api_url)
+                    else:
+                        json_response1 = self._retriever.download_json(api_url[0])
+                        json_response2 = self._retriever.download_json(api_url[1])
+                        json_response = json_response1 + json_response2
                 except DownloadError:
                     logger.error(f"Failed to download response for {resource}")
                     continue
@@ -62,6 +72,8 @@ class InsecurityInsight:
         countries: Optional[List] = None,
     ) -> dict:
         file_paths = {}
+        if topics_to_update is None:
+            topics_to_update = self._configuration["topics"]
         if len(topics_to_update) == 0:
             logger.info("No spreadsheets need to be updated")
             return file_paths
@@ -110,6 +122,8 @@ class InsecurityInsight:
     ) -> List[Dataset]:
         datasets_to_update = []
 
+        if topics_to_update is None:
+            topics_to_update = self._configuration["topics"]
         if len(topics_to_update) == 0:
             logger.info("No datasets need to be updated")
             return datasets_to_update

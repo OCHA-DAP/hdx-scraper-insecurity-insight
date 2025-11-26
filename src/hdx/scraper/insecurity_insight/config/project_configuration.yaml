@@ -119,7 +119,7 @@ datasets:
 
   sv:
     name: "conflict-related-sexual-violence"
-    title: "Conflict-Related Sexual Violence (CRSV) Data"
+    title: "Conflict-Related Sexual Violence (sv) Data"
     caveats: "The incidents reported are not a complete nor a representative list of all incidents and have not been independently verified."
     notes: "This dataset contains publicly-reported cases of [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings) by conflict actors, security personnel, and sexual violence violence that targets aid workers, educators, health workers and IDPS/refugees.  \n  \nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org"
     license_id: "cc-by"
@@ -216,7 +216,7 @@ country_datasets:
   COD:
     name: "attacks-on-ebola-response"
     title: "Democratic Republic of the Congo (COD): Attacks on Aid Operations, Education, Health Care and IDP/Refugee Camps, and Conflict-related Sexual Violence Incident Data"
-    notes: "These datasets contain information on reported incidents of violence and threats affecting aid operations and workers, education, health care services and refugee and IDP camps in the [DRC](https://insecurityinsight.org/country-pages/democratic-republic-of-the-congo). They also provide information on incidents of conflict related sexual violence (CRSV). Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.  \n  \nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    notes: "These datasets contain information on reported incidents of violence and threats affecting aid operations and workers, education, health care services and refugee and IDP camps in the [DRC](https://insecurityinsight.org/country-pages/democratic-republic-of-the-congo). They also provide information on incidents of conflict related sexual violence (sv). Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.  \n  \nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org"
     topics:
       - "aidworkerKIKA"
       - "education"
@@ -225,8 +225,8 @@ country_datasets:
       - "sv"
   ETH:
     name: "ethiopia-attacks-on-aid-operations-education-health-and-protection"
-    title: "Ethiopia (ETH): Attacks on Aid Operations, Education, Health Care and IDP/Refugee Camps, and Conflict-related Sexual Violence (CRSV) and Explosive Weapons Incident Data"
-    notes: "These datasets contain information on reported incidents of violence and threats affecting aid operations and workers, education, health care services and refugee and IDP camps in [Ethiopia](https://insecurityinsight.org/country-pages/ethiopia). They also provide information on incidents of conflict related sexual violence (CRSV) and explosive weapons use affecting aid access, education and health care services. Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.  \n  \nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    title: "Ethiopia (ETH): Attacks on Aid Operations, Education, Health Care and IDP/Refugee Camps, and Conflict-related Sexual Violence (sv) and Explosive Weapons Incident Data"
+    notes: "These datasets contain information on reported incidents of violence and threats affecting aid operations and workers, education, health care services and refugee and IDP camps in [Ethiopia](https://insecurityinsight.org/country-pages/ethiopia). They also provide information on incidents of conflict related sexual violence (sv) and explosive weapons use affecting aid access, education and health care services. Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.  \n  \nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org"
     topics:
       - "aidworkerKIKA"
       - "education"
@@ -306,8 +306,8 @@ country_datasets:
       - "healthcare"
   NGA:
     name: "nigeria-violence-agaiinst-civilians-and-vital-civilian-faciltties"
-    title: "Nigeria (NGA): Attacks on Aid Operations, Education, Health Care and IDP/Refugee Camps, and Conflict-related Sexual Violence (CRSV) Incident Data"
-    notes: "These datasets contain information on reported incidents of violence and threats affecting aid operations and workers, education, health care services and refugee and IDP camps in [Nigeria](https://insecurityinsight.org/country-pages/nigeria). They also provide information on incidents of conflict related sexual violence (CRSV). Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.  \n  \nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    title: "Nigeria (NGA): Attacks on Aid Operations, Education, Health Care and IDP/Refugee Camps, and Conflict-related Sexual Violence (sv) Incident Data"
+    notes: "These datasets contain information on reported incidents of violence and threats affecting aid operations and workers, education, health care services and refugee and IDP camps in [Nigeria](https://insecurityinsight.org/country-pages/nigeria). They also provide information on incidents of conflict related sexual violence (sv). Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.  \n  \nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org"
     topics:
       - "aidworkerKIKA"
       - "education"
@@ -323,8 +323,8 @@ country_datasets:
       - "healthcare"
   PSE:
     name: "opt-violent-and-threatening-incidents-against-healthcare"
-    title: "State of Palestine (PSE): Attacks on Aid Operations, Education, Health Care and IDP/Refugee Camps, and Conflict-related Sexual Violence (CRSV) and Explosive Weapons Incident Data"
-    notes: "These datasets contain information on reported incidents of violence and threats affecting aid operations and workers, education, health care services and refugee and IDP camps in the [oPt](https://insecurityinsight.org/country-pages/occupied-palestinian-territory-opt). They also provide information on incidents of conflict related sexual violence (CRSV) and explosive weapons use affecting aid access, education and health care services. Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.  \n  \nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    title: "State of Palestine (PSE): Attacks on Aid Operations, Education, Health Care and IDP/Refugee Camps, and Conflict-related Sexual Violence (sv) and Explosive Weapons Incident Data"
+    notes: "These datasets contain information on reported incidents of violence and threats affecting aid operations and workers, education, health care services and refugee and IDP camps in the [oPt](https://insecurityinsight.org/country-pages/occupied-palestinian-territory-opt). They also provide information on incidents of conflict related sexual violence (sv) and explosive weapons use affecting aid access, education and health care services. Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.  \n  \nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org"
     topics:
       - "aidworkerKIKA"
       - "explosiveWeapons"
@@ -334,8 +334,8 @@ country_datasets:
       - "sv"
   SDN:
     name: "sudan-violence-against-civilians-and-vital-civilian-facilities"
-    title: "Sudan (SDN): Attacks on Aid Operations, Education, Health Care and IDP/Refugee Camps, and Conflict-related Sexual Violence (CRSV) and Explosive Weapons Incident Data"
-    notes: "These datasets contain information on reported incidents of violence and threats affecting aid operations and workers, education, health care services and refugee and IDP camps in [Sudan](https://insecurityinsight.org/country-pages/sudan).They also provide information on incidents of conflict related sexual violence (CRSV) and explosive weapons use affecting aid access, education and health care services. Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.  \n  \nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    title: "Sudan (SDN): Attacks on Aid Operations, Education, Health Care and IDP/Refugee Camps, and Conflict-related Sexual Violence (sv) and Explosive Weapons Incident Data"
+    notes: "These datasets contain information on reported incidents of violence and threats affecting aid operations and workers, education, health care services and refugee and IDP camps in [Sudan](https://insecurityinsight.org/country-pages/sudan).They also provide information on incidents of conflict related sexual violence (sv) and explosive weapons use affecting aid access, education and health care services. Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.  \n  \nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org"
     topics:
       - "aidworkerKIKA"
       - "education"
@@ -353,8 +353,8 @@ country_datasets:
       - "healthcare"
   SSD:
     name: "south-sudan-attacks-on-civilians-and-vital-civilian-facilities"
-    title: "South Sudan (SSD): Attacks on Aid Operations, Education, Health Care and IDP/Refugee Camps, and Conflict-related Sexual Violence (CRSV) Incident Data"
-    notes: "These datasets contain information on reported incidents of violence and threats affecting aid operations and workers, education, health care services and refugee and IDP camps in [South Sudan](https://insecurityinsight.org/country-pages/south-sudan). They also provide information on incidents of conflict related sexual violence (CRSV). Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.  \n  \nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    title: "South Sudan (SSD): Attacks on Aid Operations, Education, Health Care and IDP/Refugee Camps, and Conflict-related Sexual Violence (sv) Incident Data"
+    notes: "These datasets contain information on reported incidents of violence and threats affecting aid operations and workers, education, health care services and refugee and IDP camps in [South Sudan](https://insecurityinsight.org/country-pages/south-sudan). They also provide information on incidents of conflict related sexual violence (sv). Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.  \n  \nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org"
     topics:
       - "aidworkerKIKA"
       - "education"
@@ -374,8 +374,8 @@ country_datasets:
       - "protection"
   UKR:
     name: "ukraine-data-on-attacks-on-aid-operations-education-health-and-protection"
-    title: "Ukraine (UKR): Attacks on Aid Operations, Education, Health Care, and Conflict-related Sexual Violence (CRSV) and Explosive Weapons Incident Data"
-    notes: "These datasets contain information on reported incidents of violence and threats affecting aid operations and workers, education, health care services and refugee and IDP camps in [Ukraine](https://insecurityinsight.org/country-pages/ukraine).They also provide information on incidents of conflict related sexual violence (CRSV) and explosive weapons use affecting aid access, education and health care services. Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.  \n  \nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    title: "Ukraine (UKR): Attacks on Aid Operations, Education, Health Care, and Conflict-related Sexual Violence (sv) and Explosive Weapons Incident Data"
+    notes: "These datasets contain information on reported incidents of violence and threats affecting aid operations and workers, education, health care services and refugee and IDP camps in [Ukraine](https://insecurityinsight.org/country-pages/ukraine).They also provide information on incidents of conflict related sexual violence (sv) and explosive weapons use affecting aid access, education and health care services. Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.  \n  \nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org"
     topics:
       - "aidworkerKIKA"
       - "education"
