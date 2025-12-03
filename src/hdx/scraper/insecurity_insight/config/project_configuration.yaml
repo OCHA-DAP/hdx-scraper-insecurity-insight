@@ -141,13 +141,14 @@ country_datasets:
     license_id: "cc-by-sa"
     methodology_other: "Systematically collected from open source, public reports as well as verified submissions from our partner agencies."
     resource_descriptions:
-      aidworkerKIKA: "Dataset covering {start_date} to {end_date} on aid workers [killed, injured, kidnapped, or arrested (KIKA)](https://insecurityinsight.org/projects/aid-in-danger/aid-security-digests) based on agency- and open source events."
-      education: "Dataset covering {start_date} to {end_date} on [attacks on education](https://insecurityinsight.org/projects/education-in-danger/education-in-danger-monthly-news-brief) based on agency- and open source events."
-      explosiveWeapons: "Dataset covering {start_date} to {end_date} on incidents in which aid access, education and healthcare services were impacted by [explosive weapons](https://insecurityinsight.org/projects/explosive-weapons) based on agency- and open source events."
-      foodSecurity: "Dataset covering {start_date} to {end_date} on incidents with clearly foreseeable impacts on or links to [food security](https://insecurityinsight.org/conflict-and-hunger) based on agency- and open source events."
-      healthcare: "Dataset covering {start_date} to {end_date} on [attacks on health care](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief) based on agency- and open source events."
-      protection: "Dataset covering {start_date} to {end_date} on threats and violence at [IDP/Refugee Camps](https://insecurityinsight.org/projects/ensuring-protection/protection-in-danger-monthly-news-brief-2) based on agency- and open source events."
-      sv: "Dataset covering {start_date} to {end_date} on publicly-reported incidents of [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings) perpetrated by conflict actors, security personnel, and sexual violence that targets aid workers, educators, health workers and IDPs/refugees."
+      aidworkerKIKA: "Resource covering {start_date} to {end_date} on aid workers [killed, injured, kidnapped, or arrested (KIKA)](https://insecurityinsight.org/projects/aid-in-danger/aid-security-digests) based on agency- and open source events."
+      education: "Resource covering {start_date} to {end_date} on [attacks on education](https://insecurityinsight.org/projects/education-in-danger/education-in-danger-monthly-news-brief) based on agency- and open source events."
+      explosiveWeapons: "Resource covering {start_date} to {end_date} on incidents in which aid access, education and healthcare services were impacted by [explosive weapons](https://insecurityinsight.org/projects/explosive-weapons) based on agency- and open source events."
+      foodSecurity: "Resource covering {start_date} to {end_date} on incidents with clearly foreseeable impacts on or links to [food security](https://insecurityinsight.org/conflict-and-hunger) based on agency- and open source events."
+      healthcare: "Resource covering {start_date} to {end_date} on [attacks on health care](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief) based on agency- and open source events."
+      protection: "Resource covering {start_date} to {end_date} on threats and violence at [IDP/Refugee Camps](https://insecurityinsight.org/projects/ensuring-protection/protection-in-danger-monthly-news-brief-2) based on agency- and open source events."
+      CRSV: "Resource covering {start_date} to {end_date} on publicly-reported incidents of [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings) perpetrated by conflict actors (CRSV)."
+      SVPoliticalViolence: "Resource covering {start_date} to {end_date} on incidents of [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings) perpetrated by police or state security personnel as part of political violence."
     tags:
       aidworkerKIKA:
         - "aid worker security"
@@ -176,8 +177,12 @@ country_datasets:
         - "populated places-settlements"
         - "refugee crisis"
         - "refugees"
-      sv:
+      CRSV:
         - "conflict-violence"
+        - "gender-based violence-gbv"
+      SVPoliticalViolence:
+        - "conflict-violence"
+        - "gender-based violence-gbv"
 
   AFG:
     name: "afghanistan-violence-against-civilians-and-vital-civilian-facilities"
@@ -188,6 +193,7 @@ country_datasets:
       - "education"
       - "explosiveWeapons"
       - "healthcare"
+      - "SVPoliticalViolence"
   BFA:
     name: "burkina-faso-violence-against-civilians-and-vital-civilian-facilities"
     title: "Burkina Faso (BFA): Attacks on Aid Operations, Education and Health Care"
@@ -217,6 +223,7 @@ country_datasets:
       - "aidworkerKIKA"
       - "education"
       - "healthcare"
+      - "CRSV"
   COD:
     name: "attacks-on-ebola-response"
     title: "Democratic Republic of the Congo (COD): Attacks on Aid Operations, Education, Health Care and IDP/Refugee Camps, and Conflict-related Sexual Violence Incident Data"
@@ -226,7 +233,8 @@ country_datasets:
       - "education"
       - "healthcare"
       - "protection"
-      - "sv"
+      - "CRSV"
+      - "SVPoliticalViolence"
   ETH:
     name: "ethiopia-attacks-on-aid-operations-education-health-and-protection"
     title: "Ethiopia (ETH): Attacks on Aid Operations, Education, Health Care and IDP/Refugee Camps, and Conflict-related Sexual Violence (sv) and Explosive Weapons Incident Data"
@@ -237,7 +245,7 @@ country_datasets:
       - "explosiveWeapons"
       - "healthcare"
       - "protection"
-      - "sv"
+      - "CRSV"
   HTI:
     name: "haiti-attacks-on-aid-operations-education-health-and-protection"
     title: "Haiti (HTI): Attacks on Aid Operations and Health Care"

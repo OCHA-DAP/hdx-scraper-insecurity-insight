@@ -141,11 +141,7 @@ class DatasetGenerator:
             if countries_to_update is not None and country not in countries_to_update:
                 continue
             dataset_template = merge_two_dictionaries(dataset_template, template)
-            tags = []
-            for topic in dataset_template["topics"]:
-                tag_list = dataset_template["tags"][topic]
-                tags.extend(tag_list)
-            dataset_template["tags"] = sorted(list(set(tags)))
+            tags = set()
             country_resources_info = {}
             for file_type, file_path in self._file_paths.items():
                 if not file_type.startswith(country):
@@ -153,12 +149,15 @@ class DatasetGenerator:
                 _, topic, topic_type = file_type.split("-")
                 if topic not in dataset_template["topics"]:
                     continue
+                tag_list = dataset_template["tags"][topic]
+                tags.update(tag_list)
                 resource_description = dataset_template["resource_descriptions"][topic]
                 topic_dates = self.get_start_end_dates(
                     f"{topic}-{topic_type}", [country.lower()]
                 )
                 country_resources_info[file_type] = file_path, resource_description, topic_dates
 
+            dataset_template["tags"] = sorted(tags)
             dataset = self.create_dataset(
                 dataset_template=dataset_template,
                 countries=[country],
