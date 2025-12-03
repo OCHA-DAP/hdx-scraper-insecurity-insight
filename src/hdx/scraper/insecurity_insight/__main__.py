@@ -18,6 +18,7 @@ from hdx.utilities.path import script_dir_plus_file, temp_dir_batch
 from hdx.utilities.retriever import Retrieve
 
 from hdx.scraper.insecurity_insight._version import __version__
+from hdx.scraper.insecurity_insight.dataset_generator import DatasetGenerator
 from hdx.scraper.insecurity_insight.insecurity_insight import InsecurityInsight
 
 setup_logging()
@@ -26,8 +27,6 @@ logger = logging.getLogger(__name__)
 _LOOKUP = "hdx-scraper-insecurity-insight"
 _SAVED_DATA_DIR = "saved_data"  # Keep in repo to avoid deletion in /tmp
 _UPDATED_BY_SCRIPT = "HDX Scraper: Insecurity Insight"
-_TOPICS = None  # Set to list of topics to fetch
-_FORCE_REFRESH = False
 
 
 def main(
@@ -62,13 +61,10 @@ def main(
             insecurity_insight = InsecurityInsight(configuration, retriever)
             api_cache = insecurity_insight.fetch_api_responses()
             file_paths = insecurity_insight.refresh_spreadsheets_with_fresh_data(
-                api_cache, current_year, topics_to_update=_TOPICS
+                current_year
             )
-            datasets = insecurity_insight.update_datasets(
-                api_cache,
-                file_paths,
-                topics_to_update=_TOPICS,
-            )
+            dataset_generator = DatasetGenerator(configuration, api_cache, file_paths)
+            datasets = dataset_generator.get_datasets()
             for dataset in datasets:
                 dataset.update_from_yaml(
                     script_dir_plus_file(
@@ -82,7 +78,7 @@ def main(
                     updated_by_script=_UPDATED_BY_SCRIPT,
                     batch=info["batch"],
                 )
-                insecurity_insight.reorder_resources(dataset)
+                dataset_generator.reorder_resources(dataset)
 
     logger.info("Finished processing")
 
