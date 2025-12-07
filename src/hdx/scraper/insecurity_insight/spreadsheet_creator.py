@@ -2,68 +2,30 @@
 """insecurity insight scraper"""
 
 import logging
+from datetime import date
+from os.path import join
 
 from hdx.api.configuration import Configuration
-from hdx.utilities.base_downloader import DownloadError
 from hdx.utilities.retriever import Retrieve
+from pandas import DataFrame
+from pandas.io.formats import excel
 
-from hdx.scraper.insecurity_insight.censoring import (
-    censor_event_description,
-    censor_location,
-)
-from hdx.scraper.insecurity_insight.utilities import (
-    create_spreadsheet,
-    pick_date_and_iso_country_fields,
-)
+from hdx.scraper.insecurity_insight.utilities import pick_date_and_iso_country_fields
 
 logger = logging.getLogger(__name__)
 
 
-class InsecurityInsight:
+class SpreadsheetCreator:
     def __init__(
         self,
         configuration: Configuration,
         retriever: Retrieve,
+        api_cache: dict,
     ):
         self._configuration = configuration
-        self._retriever = retriever
         self._temp_folder = retriever.temp_dir
-        self._api_cache = {}
+        self._api_cache = api_cache
         self._file_paths = {}
-
-    def fetch_api_responses(self) -> dict:
-        def add_cache(topic, topic_type, api_url):
-            resource = f"{topic}-{topic_type}"
-            logger.info(f"Fetching data for {resource} from API")
-
-            if topic_type == "overview":
-                api_url = f"{api_url}Overview"
-            try:
-                json_response = self._retriever.download_json(api_url)
-            except DownloadError:
-                logger.error(f"Failed to download response for {resource}")
-                return
-
-            censored_location_response = censor_location(["PSE"], json_response)
-            censored_response = censor_event_description(censored_location_response)
-            self._api_cache[resource] = censored_response
-
-        for topic_type in self._configuration["topic_types"]:
-            for maintopic, value in self._configuration["topics"].items():
-                if isinstance(value, str) or topic_type == "overview":
-                    api_url = f"{self._configuration['base_url']}{maintopic}"
-                    add_cache(maintopic, topic_type, api_url)
-                    continue
-                for topic in value:
-                    if topic == "overview":
-                        continue
-                    api_url = f"{self._configuration['base_url']}{topic}"
-                    add_cache(topic, topic_type, api_url)
-
-        logger.info(
-            f"Loaded {len(self._api_cache)} API responses to cache, expected 32"
-        )
-        return self._api_cache
 
     def filter_json_rows(
         self, topic: str, topic_type: str, country_filter: str, year_filter: str
@@ -109,13 +71,69 @@ class InsecurityInsight:
             )
             file_path = None
         else:
-            file_path = create_spreadsheet(
-                filtered_rows=filtered_rows,
-                topic_type=topic_type,
-                proper_name=proper_name,
-                output_dir=self._retriever.temp_dir,
-                country_filter=country_filter,
+            # get columns with correct type
+            output_dataframe = DataFrame.from_dict(filtered_rows, dtype="str")
+            field_types = {}
+            for column in output_dataframe.columns:
+                if column.lower() in ["latitude", "longitude"]:
+                    field_type = "float64"
+                elif column.lower().startswith("date"):
+                    field_type = "datetime64[ns, UTC]"
+                elif column.lower() == "sind event id":
+                    field_type = "str"
+                else:
+                    values = output_dataframe[column]
+                    is_numeric = values.str.isnumeric()
+                    if is_numeric.all():
+                        field_type = "Int64"
+                    else:
+                        field_type = "str"
+                field_types[column] = field_type
+            for key, value in field_types.items():
+                if value == "str":
+                    output_dataframe[key] = output_dataframe[key].replace("", None)
+            output_dataframe = output_dataframe.astype(field_types, errors="ignore")
+            for key, value in field_types.items():
+                if value == "datetime64[ns, UTC]":
+                    output_dataframe[key] = output_dataframe[key].dt.date
+
+            # Generate filename
+            date_field, _ = pick_date_and_iso_country_fields(filtered_rows[0])
+            min_date = output_dataframe[date_field].min()
+            max_date = output_dataframe[date_field].max()
+            if isinstance(min_date, date):
+                start_year = min_date.year
+                end_year = max_date.year
+            else:
+                start_year = int(min_date)
+                end_year = int(max_date)
+
+            country_iso = ""
+            if (country_filter is not None) and (len(country_filter) != 0):
+                country_iso = f"-{country_filter}"
+
+            if topic_type == "incidents":
+                filename = f"{start_year}-{end_year}{country_iso} {proper_name} Incident Data.xlsx"
+            elif topic_type == "incidents-current-year":
+                filename = f"{start_year} {proper_name} Incident Data.xlsx"
+            elif topic_type == "overview":
+                filename = f"{start_year}-{end_year}{country_iso} {proper_name} Overview Data.xlsx"
+            else:
+                raise (ValueError(f"Unknown topic type {topic_type}!"))
+            if start_year == end_year:
+                filename = filename.replace(f"-{end_year}", "")
+
+            # Despite the warning, this is the accepted way to remove the default bold header
+            excel.ExcelFormatter.header_style = None
+
+            # We can make the output an Excel table:
+            # https://stackoverflow.com/questions/58326392/how-to-create-excel-table-with-pandas-to-excel
+            file_path = join(self._temp_folder, filename)
+            output_dataframe.to_excel(
+                file_path,
+                index=False,
             )
+
         if country_filter:
             self._file_paths[f"{country_filter}-{topic}-{topic_type}"] = file_path
         else:

@@ -5,9 +5,12 @@ from typing import Tuple
 from hdx.api.configuration import Configuration
 from hdx.data.dataset import Dataset
 from hdx.data.resource import Resource
-from hdx.utilities.dateparse import parse_date, default_date, default_enddate, \
-    parse_date_range
-from hdx.utilities.dictandlist import dict_of_dicts_add, merge_two_dictionaries
+from hdx.utilities.dateparse import (
+    default_date,
+    default_enddate,
+    parse_date,
+)
+from hdx.utilities.dictandlist import merge_two_dictionaries
 
 from hdx.scraper.insecurity_insight.utilities import (
     get_countries_from_api_response,
@@ -94,8 +97,11 @@ class DatasetGenerator:
 
     def get_topic_datasets(self):
         datasets_to_update = []
+
         # update topic datasets
-        def update_topic_resource_info(dataset_template, topic_resources_info, topic, all_countries):
+        def update_topic_resource_info(
+            dataset_template, topic_resources_info, topic, all_countries
+        ):
             for file_type, file_path in self._file_paths.items():
                 if not file_type.startswith(topic) or not file_path:
                     continue
@@ -113,20 +119,34 @@ class DatasetGenerator:
                 if not start_date:
                     continue
                 all_countries.update(countries)
-                topic_resources_info[file_type] = file_path, resource_description, start_date, end_date
+                topic_resources_info[file_type] = (
+                    file_path,
+                    resource_description,
+                    start_date,
+                    end_date,
+                )
 
         for maintopic, value in self._configuration["topics"].items():
             dataset_template = self._configuration["datasets"][maintopic]
             topic_resources_info = {}
             all_countries = set()
             if isinstance(value, str):
-                update_topic_resource_info(dataset_template, topic_resources_info, maintopic, all_countries)
+                update_topic_resource_info(
+                    dataset_template, topic_resources_info, maintopic, all_countries
+                )
             else:
                 for subtopic in value:
                     if subtopic == "overview":
-                        update_topic_resource_info(dataset_template, topic_resources_info, maintopic, all_countries)
+                        update_topic_resource_info(
+                            dataset_template,
+                            topic_resources_info,
+                            maintopic,
+                            all_countries,
+                        )
                         continue
-                    update_topic_resource_info(dataset_template, topic_resources_info, subtopic, all_countries)
+                    update_topic_resource_info(
+                        dataset_template, topic_resources_info, subtopic, all_countries
+                    )
 
             dataset = self.create_dataset(
                 dataset_template=self._configuration["datasets"][maintopic],
@@ -164,7 +184,12 @@ class DatasetGenerator:
                 )
                 if not start_date:
                     continue
-                country_resources_info[file_type] = file_path, resource_description, start_date, end_date
+                country_resources_info[file_type] = (
+                    file_path,
+                    resource_description,
+                    start_date,
+                    end_date,
+                )
 
             dataset_template["tags"] = sorted(tags)
             dataset = self.create_dataset(
@@ -174,7 +199,6 @@ class DatasetGenerator:
             )
             datasets_to_update.append(dataset)
         return datasets_to_update
-
 
     def get_datasets(
         self,

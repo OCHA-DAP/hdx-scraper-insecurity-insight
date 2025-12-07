@@ -18,8 +18,9 @@ from hdx.utilities.path import script_dir_plus_file, temp_dir_batch
 from hdx.utilities.retriever import Retrieve
 
 from hdx.scraper.insecurity_insight._version import __version__
+from hdx.scraper.insecurity_insight.api_reader import APIReader
 from hdx.scraper.insecurity_insight.dataset_generator import DatasetGenerator
-from hdx.scraper.insecurity_insight.insecurity_insight import InsecurityInsight
+from hdx.scraper.insecurity_insight.spreadsheet_creator import SpreadsheetCreator
 
 setup_logging()
 logger = logging.getLogger(__name__)
@@ -58,9 +59,12 @@ def main(
             )
             current_year = now_utc().year
 
-            insecurity_insight = InsecurityInsight(configuration, retriever)
-            api_cache = insecurity_insight.fetch_api_responses()
-            file_paths = insecurity_insight.refresh_spreadsheets_with_fresh_data(
+            api_reader = APIReader(configuration, retriever)
+            api_cache = api_reader.fetch_api_responses()
+            spreadsheet_creator = SpreadsheetCreator(
+                configuration, retriever, api_cache
+            )
+            file_paths = spreadsheet_creator.refresh_spreadsheets_with_fresh_data(
                 current_year
             )
             dataset_generator = DatasetGenerator(configuration, api_cache, file_paths)

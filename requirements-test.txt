@@ -205,7 +205,7 @@ pyphonetics==0.5.3
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
-pytest==9.0.1
+pytest==9.0.2
     # via
     #   hdx-scraper-insecurity-insight (pyproject.toml)
     #   pytest-cov
@@ -359,7 +359,7 @@ unidecode==1.4.0
     #   -c requirements.txt
     #   libhxl
     #   pyphonetics
-urllib3==2.5.0
+urllib3==2.6.0
     # via
     #   -c requirements.txt
     #   libhxl
