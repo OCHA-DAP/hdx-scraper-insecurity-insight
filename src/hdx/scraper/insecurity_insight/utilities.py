@@ -2,6 +2,7 @@
 """insecurity insight utilities"""
 
 import logging
+from datetime import date
 from os.path import join
 
 from pandas import DataFrame
@@ -86,8 +87,15 @@ def create_spreadsheet(
 
     # Generate filename
     date_field, _ = pick_date_and_iso_country_fields(filtered_rows[0])
-    start_year = min([x[date_field] for x in filtered_rows])[0:4]
-    end_year = max([x[date_field] for x in filtered_rows])[0:4]
+    min_date = output_dataframe[date_field].min()
+    max_date = output_dataframe[date_field].max()
+    if isinstance(min_date, date):
+        start_year = min_date.year
+        end_year = max_date.year
+    else:
+        start_year = int(min_date)
+        end_year = int(max_date)
+
     country_iso = ""
     if (country_filter is not None) and (len(country_filter) != 0):
         country_iso = f"-{country_filter}"

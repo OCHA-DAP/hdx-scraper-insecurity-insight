@@ -61,7 +61,7 @@ class InsecurityInsight:
                     add_cache(topic, topic_type, api_url)
 
         logger.info(
-            f"Loaded {len(self._api_cache)} API responses to cache, expected 23"
+            f"Loaded {len(self._api_cache)} API responses to cache, expected 32"
         )
         return self._api_cache
 

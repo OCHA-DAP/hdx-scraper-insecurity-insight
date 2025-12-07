@@ -1,4 +1,6 @@
+from datetime import datetime
 from os.path import basename
+from typing import Tuple
 
 from hdx.api.configuration import Configuration
 from hdx.data.dataset import Dataset
@@ -23,17 +25,19 @@ class DatasetGenerator:
         self,
         file_type: str,
         countries: list,
-    ) -> dict:
+    ) -> Tuple[datetime | None, datetime | None]:
         start_date_str, end_date_str = get_dates_from_api_response(
             self._api_cache[file_type], countries
         )
+        if not start_date_str:
+            return None, None
         if len(start_date_str) == 4:
             start_date = parse_date(f"{start_date_str}-01-01")
             end_date = parse_date(f"{end_date_str}-12-31")
         else:
             start_date = parse_date(start_date_str)
             end_date = parse_date(end_date_str)
-        return {"start_date": start_date, "end_date": end_date}
+        return start_date, end_date
 
     @staticmethod
     def create_dataset(
@@ -62,11 +66,9 @@ class DatasetGenerator:
         min_start_date = default_enddate
         max_end_date = default_date
         for file_type, metadata in resources_info.items():
-            file_path, resource_description, dates = metadata
-            start_date = dates["start_date"]
+            file_path, resource_description, start_date, end_date = metadata
             if start_date < min_start_date:
                 min_start_date = start_date
-            end_date = dates["end_date"]
             if end_date > max_end_date:
                 max_end_date = end_date
             start_date_str = start_date.strftime("%d %B %Y")
@@ -95,18 +97,23 @@ class DatasetGenerator:
         # update topic datasets
         def update_topic_resource_info(dataset_template, topic_resources_info, topic, all_countries):
             for file_type, file_path in self._file_paths.items():
-                if not file_type.startswith(topic):
+                if not file_type.startswith(topic) or not file_path:
                     continue
                 topic_type = "-".join(file_type.split("-")[1:])
-                resource_description = dataset_template["resource_descriptions"][
-                    topic_type
-                ]
+                resource_descriptions = dataset_template["resource_descriptions"]
+                if topic_type in resource_descriptions:
+                    resource_description = resource_descriptions[topic_type]
+                else:
+                    resource_description = resource_descriptions[topic][topic_type]
+
                 countries = get_countries_from_api_response(self._api_cache[file_type])
-                topic_dates = self.get_start_end_dates(
+                start_date, end_date = self.get_start_end_dates(
                     file_type, sorted(countries)
                 )
+                if not start_date:
+                    continue
                 all_countries.update(countries)
-                topic_resources_info[file_type] = file_path, resource_description, topic_dates
+                topic_resources_info[file_type] = file_path, resource_description, start_date, end_date
 
         for maintopic, value in self._configuration["topics"].items():
             dataset_template = self._configuration["datasets"][maintopic]
@@ -144,7 +151,7 @@ class DatasetGenerator:
             tags = set()
             country_resources_info = {}
             for file_type, file_path in self._file_paths.items():
-                if not file_type.startswith(country):
+                if not file_type.startswith(country) or not file_path:
                     continue
                 _, topic, topic_type = file_type.split("-")
                 if topic not in dataset_template["topics"]:
@@ -152,10 +159,12 @@ class DatasetGenerator:
                 tag_list = dataset_template["tags"][topic]
                 tags.update(tag_list)
                 resource_description = dataset_template["resource_descriptions"][topic]
-                topic_dates = self.get_start_end_dates(
+                start_date, end_date = self.get_start_end_dates(
                     f"{topic}-{topic_type}", [country.lower()]
                 )
-                country_resources_info[file_type] = file_path, resource_description, topic_dates
+                if not start_date:
+                    continue
+                country_resources_info[file_type] = file_path, resource_description, start_date, end_date
 
             dataset_template["tags"] = sorted(tags)
             dataset = self.create_dataset(

@@ -77,6 +77,7 @@ def main(
                     hxl_update=False,
                     updated_by_script=_UPDATED_BY_SCRIPT,
                     batch=info["batch"],
+                    ignore_field="resource:description",
                 )
                 dataset_generator.reorder_resources(dataset)
 
