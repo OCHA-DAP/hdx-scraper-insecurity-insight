@@ -2,8 +2,8 @@
 """insecurity insight scraper"""
 
 import logging
-from datetime import date
 from os.path import join
+from typing import Tuple
 
 from hdx.api.configuration import Configuration
 from hdx.utilities.retriever import Retrieve
@@ -27,117 +27,125 @@ class SpreadsheetCreator:
         self._api_cache = api_cache
         self._file_paths = {}
 
-    def filter_json_rows(
-        self, topic: str, topic_type: str, country_filter: str, year_filter: str
-    ) -> list[dict]:
-        filtered_rows = []
+    @staticmethod
+    def filter_country(
+        df: DataFrame, iso_country_field: str, country_filter: str = ""
+    ) -> DataFrame:
+        if not country_filter:
+            return df
+        return df[df[iso_country_field] == country_filter]
 
-        api_response = self._api_cache[f"{topic}-{topic_type}"]
-        date_field, iso_country_field = pick_date_and_iso_country_fields(
-            api_response[0]
-        )
-
-        for api_row in api_response:
-            if (
-                country_filter is not None
-                and len(country_filter) != 0
-                and api_row[iso_country_field] != country_filter
-            ):
-                continue
-            if (
-                year_filter is not None
-                and len(year_filter) != 0
-                and api_row[date_field][0:4] != year_filter
-            ):
-                continue
-            filtered_rows.append(api_row)
-
-        return filtered_rows
+    @staticmethod
+    def filter_process_dates(
+        df: DataFrame,
+        field_types: dict,
+        date_field: str,
+        year_filter: int | None = None,
+    ) -> Tuple[DataFrame, int, int]:
+        if year_filter:
+            if field_types[date_field] == "datetime64[ns, UTC]":
+                df = df[df[date_field].dt.year == year_filter]
+            else:
+                df = df[df[date_field] == year_filter]
+        if field_types[date_field] == "datetime64[ns, UTC]":
+            start_year = df[date_field].dt.year.min()
+            end_year = df[date_field].dt.year.max()
+        else:
+            start_year = df[date_field].min()
+            end_year = df[date_field].max()
+        df = df.copy()
+        for key, value in field_types.items():
+            if value == "datetime64[ns, UTC]":
+                df[key] = df[key].dt.strftime("%d/%m/%Y")
+        return df, start_year, end_year
 
     def create_spreadsheet(
         self,
         topic: str,
         topic_type: str,
         proper_name: str,
-        year_filter: str = "",
+        year_filter: int | None = None,
         country_filter: str | None = None,
     ):
-        filtered_rows = self.filter_json_rows(
-            topic, topic_type, country_filter, year_filter
-        )
-        if len(filtered_rows) == 0:
-            logger.info(
-                f"API response for `{topic}-{topic_type}` with country_filter {country_filter} contained no data"
-            )
-            file_path = None
-        else:
-            # get columns with correct type
-            output_dataframe = DataFrame.from_dict(filtered_rows, dtype="str")
-            field_types = {}
-            for column in output_dataframe.columns:
-                if column.lower() in ["latitude", "longitude"]:
-                    field_type = "float64"
-                elif column.lower().startswith("date"):
-                    field_type = "datetime64[ns, UTC]"
-                elif column.lower() == "sind event id":
-                    field_type = "str"
-                else:
-                    values = output_dataframe[column]
-                    is_numeric = values.str.isnumeric()
-                    if is_numeric.all():
-                        field_type = "Int64"
-                    else:
-                        field_type = "str"
-                field_types[column] = field_type
-            for key, value in field_types.items():
-                if value == "str":
-                    output_dataframe[key] = output_dataframe[key].replace("", None)
-            output_dataframe = output_dataframe.astype(field_types, errors="ignore")
-            for key, value in field_types.items():
-                if value == "datetime64[ns, UTC]":
-                    output_dataframe[key] = output_dataframe[key].dt.date
-
-            # Generate filename
-            date_field, _ = pick_date_and_iso_country_fields(filtered_rows[0])
-            min_date = output_dataframe[date_field].min()
-            max_date = output_dataframe[date_field].max()
-            if isinstance(min_date, date):
-                start_year = min_date.year
-                end_year = max_date.year
-            else:
-                start_year = int(min_date)
-                end_year = int(max_date)
-
-            country_iso = ""
-            if (country_filter is not None) and (len(country_filter) != 0):
-                country_iso = f"-{country_filter}"
-
-            if topic_type == "incidents":
-                filename = f"{start_year}-{end_year}{country_iso} {proper_name} Incident Data.xlsx"
-            elif topic_type == "incidents-current-year":
-                filename = f"{start_year} {proper_name} Incident Data.xlsx"
-            elif topic_type == "overview":
-                filename = f"{start_year}-{end_year}{country_iso} {proper_name} Overview Data.xlsx"
-            else:
-                raise (ValueError(f"Unknown topic type {topic_type}!"))
-            if start_year == end_year:
-                filename = filename.replace(f"-{end_year}", "")
-
-            # Despite the warning, this is the accepted way to remove the default bold header
-            excel.ExcelFormatter.header_style = None
-
-            # We can make the output an Excel table:
-            # https://stackoverflow.com/questions/58326392/how-to-create-excel-table-with-pandas-to-excel
-            file_path = join(self._temp_folder, filename)
-            output_dataframe.to_excel(
-                file_path,
-                index=False,
-            )
-
+        api_response = self._api_cache[f"{topic}-{topic_type}"]
         if country_filter:
-            self._file_paths[f"{country_filter}-{topic}-{topic_type}"] = file_path
+            file_paths_key = f"{country_filter}-{topic}-{topic_type}"
         else:
-            self._file_paths[f"{topic}-{topic_type}"] = file_path
+            file_paths_key = f"{topic}-{topic_type}"
+
+        # get columns with correct type
+        df = DataFrame.from_dict(api_response, dtype="str")
+        field_types = {}
+        for column in df.columns:
+            if column.lower() in ["latitude", "longitude"]:
+                field_type = "float64"
+            elif column.lower().startswith("date"):
+                field_type = "datetime64[ns, UTC]"
+            elif column.lower() == "sind event id":
+                field_type = "str"
+            else:
+                values = df[column]
+                is_numeric = values.str.isnumeric()
+                if is_numeric.all():
+                    field_type = "Int64"
+                else:
+                    field_type = "str"
+            field_types[column] = field_type
+        for key, value in field_types.items():
+            if value == "str":
+                df[key] = df[key].replace("", None)
+        df = df.astype(field_types, errors="ignore")
+
+        date_field, iso_country_field = pick_date_and_iso_country_fields(
+            api_response[0]
+        )
+        if country_filter:
+            country_iso = f"-{country_filter}"
+            df = self.filter_country(df, iso_country_field, country_filter)
+        else:
+            country_iso = ""
+        if len(df) == 0:
+            logger.info(
+                f"API response for `{topic}-{topic_type}` with country_filter '{country_filter}' contained no data"
+            )
+            self._file_paths[file_paths_key] = None
+            return
+        df, start_year, end_year = self.filter_process_dates(
+            df, field_types, date_field, year_filter
+        )
+        if len(df) == 0:
+            logger.info(
+                f"API response for `{topic}-{topic_type}` with year_filter {year_filter} contained no data (country_filter was '{country_filter}')"
+            )
+            self._file_paths[file_paths_key] = None
+            return
+
+        if topic_type == "incidents":
+            filename = (
+                f"{start_year}-{end_year}{country_iso} {proper_name} Incident Data.xlsx"
+            )
+        elif topic_type == "incidents-current-year":
+            filename = f"{start_year} {proper_name} Incident Data.xlsx"
+        elif topic_type == "overview":
+            filename = (
+                f"{start_year}-{end_year}{country_iso} {proper_name} Overview Data.xlsx"
+            )
+        else:
+            raise (ValueError(f"Unknown topic type {topic_type}!"))
+        if start_year == end_year:
+            filename = filename.replace(f"-{end_year}", "")
+
+        # Despite the warning, this is the accepted way to remove the default bold header
+        excel.ExcelFormatter.header_style = None
+
+        # We can make the output an Excel table:
+        # https://stackoverflow.com/questions/58326392/how-to-create-excel-table-with-pandas-to-excel
+        file_path = join(self._temp_folder, filename)
+        df.to_excel(
+            file_path,
+            index=False,
+        )
+        self._file_paths[file_paths_key] = file_path
 
     def refresh_spreadsheets_with_fresh_data(
         self,
@@ -147,9 +155,9 @@ class SpreadsheetCreator:
         topics_to_update = self._configuration["topics"]
         logger.info("Refreshing topic spreadsheets")
         for topic_type in self._configuration["topic_types"]:
-            year_filter = ""
+            year_filter = None
             if topic_type == "incidents-current-year":
-                year_filter = str(current_year)
+                year_filter = current_year
             for maintopic, value in topics_to_update.items():
                 if isinstance(value, str):
                     self.create_spreadsheet(
