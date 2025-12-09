@@ -31,7 +31,7 @@ click==8.3.1
     # via
     #   -c requirements.txt
     #   typer
-coverage==7.12.0
+coverage==7.13.0
     # via pytest-cov
 defopt==7.0.0
     # via
@@ -74,6 +74,7 @@ hdx-python-country==3.9.8
 hdx-python-utilities==3.9.5
     # via
     #   -c requirements.txt
+    #   hdx-scraper-insecurity-insight (pyproject.toml)
     #   hdx-python-api
     #   hdx-python-country
 humanize==4.14.0
@@ -359,7 +360,7 @@ unidecode==1.4.0
     #   -c requirements.txt
     #   libhxl
     #   pyphonetics
-urllib3==2.6.0
+urllib3==2.6.1
     # via
     #   -c requirements.txt
     #   libhxl

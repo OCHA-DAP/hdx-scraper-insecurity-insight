@@ -95,7 +95,7 @@ class DatasetGenerator:
         dataset.add_update_resources(resource_list)
         return dataset
 
-    def get_topic_datasets(self):
+    def get_topic_datasets(self, countries_to_include: list or None = None):
         datasets_to_update = []
 
         # update topic datasets
@@ -118,7 +118,12 @@ class DatasetGenerator:
                 )
                 if not start_date:
                     continue
-                all_countries.update(countries)
+                if countries_to_include:
+                    for country in countries_to_include:
+                        if country in countries:
+                            all_countries.append(country)
+                else:
+                    all_countries.update(countries)
                 topic_resources_info[file_type] = (
                     file_path,
                     resource_description,
@@ -204,7 +209,7 @@ class DatasetGenerator:
         self,
         countries_to_update: list or None = None,
     ) -> list[Dataset]:
-        topic_datasets_to_update = self.get_topic_datasets()
+        topic_datasets_to_update = self.get_topic_datasets(countries_to_update)
         country_datasets_to_update = self.get_country_datasets(countries_to_update)
         return topic_datasets_to_update + country_datasets_to_update
 

@@ -42,6 +42,7 @@ hdx-python-country==3.9.8
     #   hdx-python-api
 hdx-python-utilities==3.9.5
     # via
+    #   hdx-scraper-insecurity-insight (pyproject.toml)
     #   hdx-python-api
     #   hdx-python-country
 humanize==4.14.0
@@ -203,7 +204,7 @@ unidecode==1.4.0
     # via
     #   libhxl
     #   pyphonetics
-urllib3==2.6.0
+urllib3==2.6.1
     # via
     #   libhxl
     #   requests

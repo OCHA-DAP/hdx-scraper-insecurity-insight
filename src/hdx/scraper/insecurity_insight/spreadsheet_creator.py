@@ -151,8 +151,10 @@ class SpreadsheetCreator:
         self,
         current_year: int,
         countries: list | None = None,
+        topics_to_update: dict | None = None,
     ) -> dict:
-        topics_to_update = self._configuration["topics"]
+        if not topics_to_update:
+            topics_to_update = self._configuration["topics"]
         logger.info("Refreshing topic spreadsheets")
         for topic_type in self._configuration["topic_types"]:
             year_filter = None
