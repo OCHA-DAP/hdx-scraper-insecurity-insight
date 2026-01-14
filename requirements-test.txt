@@ -11,7 +11,7 @@ attrs==25.4.0
     #   jsonlines
     #   jsonschema
     #   referencing
-certifi==2025.11.12
+certifi==2026.1.4
     # via
     #   -c requirements.txt
     #   requests
@@ -31,7 +31,7 @@ click==8.3.1
     # via
     #   -c requirements.txt
     #   typer
-coverage==7.13.0
+coverage==7.13.1
     # via pytest-cov
 defopt==7.0.0
     # via
@@ -46,7 +46,7 @@ docopt==0.6.2
     #   -c requirements.txt
     #   ckanapi
     #   num2words
-docutils==0.22.3
+docutils==0.22.4
     # via
     #   -c requirements.txt
     #   defopt
@@ -62,22 +62,22 @@ frictionless==5.18.1
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
-hdx-python-api==6.5.4
+hdx-python-api==6.6.0
     # via
     #   -c requirements.txt
     #   hdx-scraper-insecurity-insight (pyproject.toml)
-hdx-python-country==3.9.8
+hdx-python-country==4.0.0
     # via
     #   -c requirements.txt
     #   hdx-scraper-insecurity-insight (pyproject.toml)
     #   hdx-python-api
-hdx-python-utilities==3.9.5
+hdx-python-utilities==4.0.0
     # via
     #   -c requirements.txt
     #   hdx-scraper-insecurity-insight (pyproject.toml)
     #   hdx-python-api
     #   hdx-python-country
-humanize==4.14.0
+humanize==4.15.0
     # via
     #   -c requirements.txt
     #   frictionless
@@ -112,7 +112,7 @@ jsonpath-ng==1.7.0
     # via
     #   -c requirements.txt
     #   libhxl
-jsonschema==4.25.1
+jsonschema==4.26.0
     # via
     #   -c requirements.txt
     #   frictionless
@@ -138,7 +138,7 @@ markdown-it-py==4.0.0
     # via
     #   -c requirements.txt
     #   rich
-marko==2.2.1
+marko==2.2.2
     # via
     #   -c requirements.txt
     #   frictionless
@@ -158,7 +158,7 @@ num2words==0.5.14
     # via
     #   -c requirements.txt
     #   quantulum3
-numpy==2.3.5
+numpy==2.4.1
     # via
     #   -c requirements.txt
     #   pandas
@@ -275,14 +275,10 @@ rpds-py==0.30.0
     #   -c requirements.txt
     #   jsonschema
     #   referencing
-ruamel-yaml==0.18.16
+ruamel-yaml==0.19.1
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
-ruamel-yaml-clib==0.2.15
-    # via
-    #   -c requirements.txt
-    #   ruamel-yaml
 setuptools==80.9.0
     # via
     #   -c requirements.txt
@@ -334,7 +330,7 @@ typeguard==4.4.4
     # via
     #   -c requirements.txt
     #   inflect
-typer==0.20.0
+typer==0.21.1
     # via
     #   -c requirements.txt
     #   frictionless
@@ -344,6 +340,7 @@ typing-extensions==4.15.0
     #   frictionless
     #   pydantic
     #   pydantic-core
+    #   referencing
     #   typeguard
     #   typer
     #   typing-inspection
@@ -351,7 +348,7 @@ typing-inspection==0.4.2
     # via
     #   -c requirements.txt
     #   pydantic
-tzdata==2025.2
+tzdata==2025.3
     # via
     #   -c requirements.txt
     #   pandas
@@ -360,7 +357,7 @@ unidecode==1.4.0
     #   -c requirements.txt
     #   libhxl
     #   pyphonetics
-urllib3==2.6.1
+urllib3==2.6.3
     # via
     #   -c requirements.txt
     #   libhxl

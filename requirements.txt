@@ -8,7 +8,7 @@ attrs==25.4.0
     #   jsonlines
     #   jsonschema
     #   referencing
-certifi==2025.11.12
+certifi==2026.1.4
     # via requests
 chardet==5.2.0
     # via frictionless
@@ -26,7 +26,7 @@ docopt==0.6.2
     # via
     #   ckanapi
     #   num2words
-docutils==0.22.3
+docutils==0.22.4
     # via defopt
 email-validator==2.3.0
     # via hdx-python-api
@@ -34,18 +34,18 @@ et-xmlfile==2.0.0
     # via openpyxl
 frictionless==5.18.1
     # via hdx-python-utilities
-hdx-python-api==6.5.4
+hdx-python-api==6.6.0
     # via hdx-scraper-insecurity-insight (pyproject.toml)
-hdx-python-country==3.9.8
+hdx-python-country==4.0.0
     # via
     #   hdx-scraper-insecurity-insight (pyproject.toml)
     #   hdx-python-api
-hdx-python-utilities==3.9.5
+hdx-python-utilities==4.0.0
     # via
     #   hdx-scraper-insecurity-insight (pyproject.toml)
     #   hdx-python-api
     #   hdx-python-country
-humanize==4.14.0
+humanize==4.15.0
     # via frictionless
 idna==3.11
     # via
@@ -63,7 +63,7 @@ jsonlines==4.0.0
     # via hdx-python-utilities
 jsonpath-ng==1.7.0
     # via libhxl
-jsonschema==4.25.1
+jsonschema==4.26.0
     # via
     #   frictionless
     #   tableschema-to-template
@@ -79,7 +79,7 @@ makefun==1.16.0
     # via hdx-python-api
 markdown-it-py==4.0.0
     # via rich
-marko==2.2.1
+marko==2.2.2
     # via frictionless
 markupsafe==3.0.3
     # via jinja2
@@ -89,7 +89,7 @@ more-itertools==10.8.0
     # via inflect
 num2words==0.5.14
     # via quantulum3
-numpy==2.3.5
+numpy==2.4.1
     # via pandas
 openpyxl==3.1.5
     # via hdx-python-utilities
@@ -154,10 +154,8 @@ rpds-py==0.30.0
     # via
     #   jsonschema
     #   referencing
-ruamel-yaml==0.18.16
+ruamel-yaml==0.19.1
     # via hdx-python-utilities
-ruamel-yaml-clib==0.2.15
-    # via ruamel-yaml
 setuptools==80.9.0
     # via ckanapi
 shellingham==1.5.4
@@ -186,25 +184,26 @@ text-unidecode==1.3
     # via python-slugify
 typeguard==4.4.4
     # via inflect
-typer==0.20.0
+typer==0.21.1
     # via frictionless
 typing-extensions==4.15.0
     # via
     #   frictionless
     #   pydantic
     #   pydantic-core
+    #   referencing
     #   typeguard
     #   typer
     #   typing-inspection
 typing-inspection==0.4.2
     # via pydantic
-tzdata==2025.2
+tzdata==2025.3
     # via pandas
 unidecode==1.4.0
     # via
     #   libhxl
     #   pyphonetics
-urllib3==2.6.1
+urllib3==2.6.3
     # via
     #   libhxl
     #   requests

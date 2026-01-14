@@ -9,9 +9,6 @@ from hdx.scraper.insecurity_insight.api_reader import APIReader
 from hdx.scraper.insecurity_insight.dataset_generator import DatasetGenerator
 from hdx.scraper.insecurity_insight.spreadsheet_creator import SpreadsheetCreator
 
-_TOPICS = None
-_FORCE_REFRESH = False
-
 
 class TestInsecurityInsight:
     def test_insecurity_insight(

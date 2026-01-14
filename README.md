@@ -1,4 +1,4 @@
-# Collector for insecurity_insight Datasets
+# Collector for Insecurity Insight Datasets
 [![Build Status](https://github.com/OCHA-DAP/hdx-scraper-insecurity-insight/actions/workflows/run-python-tests.yaml/badge.svg)](https://github.com/OCHA-DAP/hdx-scraper-insecurity-insight/actions/workflows/run-python-tests.yaml)
 [![Coverage Status](https://coveralls.io/repos/github/OCHA-DAP/hdx-scraper-insecurity-insight/badge.svg?branch=main&ts=1)](https://coveralls.io/github/OCHA-DAP/hdx-scraper-insecurity-insight?branch=main)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
@@ -7,14 +7,7 @@ This repository produces datasets for the [Insecurity Insights](https://data.hum
 
 Created by Ian Hopkinson November 2023-January 2024.
 
-Dataset updates are controlled by a set of flags:
-
-1. `TOPICS` - if None then all topics are updated or a subset of topics can be selected i.e. ["foodsecurity"] in which case just those listed are checked for updates.
-2. `FORCE_REFRESH` - if `True` then all resources and datasets are updated, rather than just those that have changed.
-
 The production of datasets and resources (Excel spreadsheets) from the Insecurity Insight API is driven by the files in the config folder.
-
-Results are written to console and are only written to `schema.csv` if entries are not already present.
 
 ## Development
 
