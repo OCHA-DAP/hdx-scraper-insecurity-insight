@@ -150,9 +150,13 @@ class TestInsecurityInsight:
                     "subnational": "1",
                     "tags": [
                         {
+                            "name": "children",
+                            "vocabulary_id": "b891512e-9516-4bf5-962a-7a289772a2a1",
+                        },
+                        {
                             "name": "conflict-violence",
                             "vocabulary_id": "b891512e-9516-4bf5-962a-7a289772a2a1",
-                        }
+                        },
                     ],
                     "title": "Conflict Incidents Affecting Children and Children-Related Services "
                     "Incident Data",
@@ -279,7 +283,11 @@ class TestInsecurityInsight:
                         {
                             "name": "conflict-violence",
                             "vocabulary_id": "b891512e-9516-4bf5-962a-7a289772a2a1",
-                        }
+                        },
+                        {
+                            "name": "gender-based violence-gbv",
+                            "vocabulary_id": "b891512e-9516-4bf5-962a-7a289772a2a1",
+                        },
                     ],
                     "title": "Conflict-Related (CRSV) or Political-Related Sexual Violence Data",
                 }

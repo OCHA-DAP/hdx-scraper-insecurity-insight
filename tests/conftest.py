@@ -209,6 +209,7 @@ def configuration(config_dir):
             for tag in (
                 "aid worker security",
                 "aid workers",
+                "children",
                 "complex emergency-conflict-security",
                 "conflict-violence",
                 "damage assessment",
@@ -218,6 +219,7 @@ def configuration(config_dir):
                 "facilities-infrastructure",
                 "fatalities",
                 "food security",
+                "gender-based violence-gbv",
                 "health",
                 "health facilities",
                 "indicators",
