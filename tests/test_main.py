@@ -30,12 +30,13 @@ class TestInsecurityInsight:
                 )
                 api_reader = APIReader(configuration, retriever)
                 api_cache = api_reader.fetch_api_responses()
-                assert len(api_cache) == 32
+                assert len(api_cache) == 33
                 spreadsheet_creator = SpreadsheetCreator(
                     configuration, retriever, api_cache
                 )
                 topics = {
                     "children": "Children in Armed Conflict",
+                    "countryYear": "",
                     "sv": {
                         "CRSV": "Conflict-Related Sexual Violence (CRSV)",
                         "SVPoliticalViolence": "Political-Related Sexual Violence",
@@ -48,7 +49,7 @@ class TestInsecurityInsight:
                     countries=["SDN"],
                     topics_to_update=topics,
                 )
-                assert len(file_paths) == 11
+                assert len(file_paths) == 12
 
                 for _, file_name in file_paths.items():
                     new_data = read_excel(file_name)

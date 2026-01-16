@@ -8,6 +8,7 @@ topics:
   healthcare: "Attacks on Health Care"
   vaccinations: "Attacks on Public Health"
   children: "Children in Armed Conflict"
+  countryYear: ""
   fivc: "Conflict-Related Incidents Affecting Food Systems"
   sv:
      CRSV: "Conflict-Related Sexual Violence (CRSV)"
@@ -205,7 +206,7 @@ country_datasets:
       water: "Resource covering {start_date} to {end_date} on conflict-incidents affected water systems based on agency- and open source events."
       CRSV: "Resource covering {start_date} to {end_date} on publicly-reported incidents of [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings) perpetrated by conflict actors (CRSV)."
       SVPoliticalViolence: "Resource covering {start_date} to {end_date} on incidents of [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings) perpetrated by police or state security personnel as part of political violence."
-      overview: "Resource covering 01 January 2016 to {end_date} on [attacks on health care](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief), [killed, injured, kidnapped, or arrested (KIKA)](https://insecurityinsight.org/projects/aid-in-danger/aid-security-digests),  [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings), [attacks on education](https://insecurityinsight.org/projects/education-in-danger/education-in-danger-monthly-news-brief), [explosive weapons](https://insecurityinsight.org/projects/explosive-weapons), [IDP/Refugee Camps](https://insecurityinsight.org/projects/ensuring-protection/protection-in-danger-monthly-news-brief-2), and [Food Security](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief) based on agency- and open source events in [country_name](https://insecurityinsight.org/country-pages/country_name). Categorised by year."
+      countryYear: "Resource covering {start_date} to {end_date} on [attacks on health care](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief), [killed, injured, kidnapped, or arrested (KIKA)](https://insecurityinsight.org/projects/aid-in-danger/aid-security-digests),  [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings), [attacks on education](https://insecurityinsight.org/projects/education-in-danger/education-in-danger-monthly-news-brief), [explosive weapons](https://insecurityinsight.org/projects/explosive-weapons), [IDP/Refugee Camps](https://insecurityinsight.org/projects/ensuring-protection/protection-in-danger-monthly-news-brief-2), and [Food Security](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief) based on agency- and open source events. Categorised by year."
     tags:
       aidworkerKIKA:
         - "aid worker security"
@@ -259,7 +260,7 @@ country_datasets:
       - "explosiveWeapons"
       - "healthcare"
       - "svPoliticalViolence"
-      - "overview"
+      - "countryYear"
   BDI:
     name: "burundi-bdi-attacks-on-education-and-health-care-and-conflict-related-sexual-violence-incident-data"
     title: "Burundi (BDI): Attacks on Education and Health Care and Conflict-Related Sexual Violence Incident Data"
@@ -268,7 +269,7 @@ country_datasets:
       - "CRSV"
       - "education"
       - "healthcare"
-      - "overview"
+      - "countryYear"
   BFA:
     name: "burkina-faso-violence-against-civilians-and-vital-civilian-facilities"
     title: "Burkina Faso (BFA): Attacks on Aid Operations, Education, Food and Water Systems and Health Care"
@@ -280,7 +281,7 @@ country_datasets:
       - "fivc"
       - "healthcare"
       - "water"
-      - "overview"
+      - "countryYear"
   BGD:
     name: "bangladesh-bgd-attacks-on-protection"
     title: "Bangladesh (BGD): Attacks on IDP/Refugee Camps"
@@ -296,7 +297,7 @@ country_datasets:
       - "education"
       - "explosiveWeapons"
       - "healthcare"
-      - "overview"
+      - "countryYear"
   CMR:
     name: "cameroon-attacks-on-civilians-and-vital-civilian-facilities"
     title: "Cameroon (CMR): Attacks on Aid Operations, Education, Food and Water Systems and Health Care and IDP/Refugee Camps, and Conflict-Related Sexual Violence"
@@ -310,7 +311,7 @@ country_datasets:
       - "healthcare"
       - "protection"
       - "water"
-      - "overview"
+      - "countryYear"
   COD:
     name: "attacks-on-ebola-response"
     title: "Democratic Republic of the Congo (COD): Attacks on Aid Operations, Education, Food and Water Systems, Health Care and IDP/Refugee Camps, and Conflict-Related or Political-Related Sexual Violence and Explosive Weapons Incident Data"
@@ -326,7 +327,7 @@ country_datasets:
       - "protection"
       - "SVPoliticalViolence"
       - "water"
-      - "overview"
+      - "countryYear"
   COL:
     name: "colombia-col-attacks-on-aid-operations-education-health-care-data"
     title: "Colombia (COL): Attacks on Aid Operations, Education, Health Care, and Political-Related Sexual Violence and Explosive Weapons Incident Data"
@@ -337,7 +338,7 @@ country_datasets:
       - "explosiveWeapons"
       - "healthcare"
       - "SVPoliticalViolence"
-      - "overview"
+      - "countryYear"
   ETH:
     name: "ethiopia-attacks-on-aid-operations-education-health-and-protection"
     title: "Ethiopia (ETH): Attacks on Aid Operations, Education, Health Care and IDP/Refugee Camps, and Conflict-Related Sexual Violence and Explosive Weapons Incident Data"
@@ -349,7 +350,7 @@ country_datasets:
       - "explosiveWeapons"
       - "healthcare"
       - "protection"
-      - "overview"
+      - "countryYear"
   HTI:
     name: "haiti-attacks-on-aid-operations-education-health-and-protection"
     title: "Haiti (HTI): Attacks on Aid Operations, Education and Health Care, and Conflict-Related Sexual Violence Incident Data"
@@ -359,7 +360,7 @@ country_datasets:
       - "CRSV"
       - "education"
       - "healthcare"
-      - "overview"
+      - "countryYear"
   IND:
     name: "india-ind-attacks-on-education-and-health-care"
     title: "India (IND): Attacks on Education and Health Care"
@@ -368,7 +369,7 @@ country_datasets:
       - "education"
       - "explosiveWeapons"
       - "healthcare"
-      - "overview"
+      - "countryYear"
   IRN:
     name: "iran-violent-and-threatening-incidents-against-healthcare"
     title: "Iran (IRN): Attacks on Aid Operations, Education, Health Care, and Political-Related Sexual Violence and Explosive Weapons Incident Data"
@@ -379,7 +380,7 @@ country_datasets:
       - "explosiveWeapons"
       - "healthcare"
       - "SVPoliticalViolence"
-      - "overview"
+      - "countryYear"
   IRQ:
     name: "iraq-violence-against-civilians-and-vital-civilian-facilities"
     title: "Iraq (IRQ): Attacks on Aid Operations, Education, Food and Water Systems and Health Care"
@@ -391,7 +392,7 @@ country_datasets:
       - "fivc"
       - "healthcare"
       - "water"
-      - "overview"
+      - "countryYear"
   ISR:
     name: "iran-violent-and-threatening-incidents-against-healthcare"
     title: "Israel (ISR): Attacks on Aid Operations, Education, Health Care, and Political-Related Sexual Violence and Explosive Weapons Incident Data"
@@ -402,7 +403,7 @@ country_datasets:
       - "education"
       - "explosiveWeapons"
       - "healthcare"
-      - "overview"
+      - "countryYear"
   LBN:
     name: "aid-security-risk-in-lebanon"
     title: "Lebanon (LBN): Attacks on Aid Operations, Education, Food and Water Systems, Health Care and IDP/Refugee Camps and Explosive Weapons Incident Data"
@@ -415,7 +416,7 @@ country_datasets:
       - "healthcare"
       - "protection"
       - "water"
-      - "overview"
+      - "countryYear"
   LBY:
     name: "libya-violence-against-civilians-and-vital-civilian-facilities"
     title: "Libya (LBY): Attacks on Aid Operations, Education and Health Care, and Explosive Weapons Incident Data"
@@ -425,7 +426,7 @@ country_datasets:
       - "education"
       - "explosiveWeapons"
       - "healthcare"
-      - "overview"
+      - "countryYear"
   MEX:
     name: "mexico-violent-and-threatening-incidents-against-health-care"
     title: "Mexico (MEX): Attacks on Aid Operations, Education and Health Care"
@@ -434,7 +435,7 @@ country_datasets:
       - "aidworkerKIKA"
       - "education"
       - "healthcare"
-      - "overview"
+      - "countryYear"
   MLI:
     name: "mali-violence-against-civilians-and-vital-civilian-facilities"
     title: "Mali (MLI): Attacks on Aid Operations, Education, Food and Water Systems and Health Care"
@@ -446,7 +447,7 @@ country_datasets:
       - "fivc"
       - "healthcare"
       - "water"
-      - "overview"
+      - "countryYear"
   MMR:
     name: "myanmar-attacks-on-aid-operations-education-health-and-protection"
     title: "Myanmar (MMR): Attacks on Aid Operations, Education, Health Care, Food and Water Systems and IDP/Refugee Camps, and Conflict-Related Sexual Violence and Explosive Weapons Incident Data"
@@ -461,7 +462,7 @@ country_datasets:
       - "protection"
       - "SVPoliticalViolence"
       - "water"
-      - "overview"
+      - "countryYear"
   MOZ:
     name: "mozambique-attacks-on-aid-operations-education-health-and-protection"
     title: "Mozambique (MOZ): Attacks on Aid Operations, Education and Health Care"
@@ -470,7 +471,7 @@ country_datasets:
       - "aidworkerKIKA"
       - "education"
       - "healthcare"
-      - "overview"
+      - "countryYear"
   NER:
     name: "niger-violence-against-cvilians-and-vital-civilian-facilities"
     title: "Niger (NER): Attacks on Aid Operations, Education, Food and Water Systems and Health Care"
@@ -482,7 +483,7 @@ country_datasets:
       - "fivc"
       - "healthcare"
       - "water"
-      - "overview"
+      - "countryYear"
   NGA:
     name: "nigeria-violence-agaiinst-civilians-and-vital-civilian-faciltties"
     title: "Nigeria (NGA): Attacks on Aid Operations, Education, Health Care and IDP/Refugee Camps, and Conflict-Related Sexual Violence Incident Data"
@@ -494,7 +495,7 @@ country_datasets:
       - "explosiveWeapons"
       - "healthcare"
       - "protection"
-      - "overview"
+      - "countryYear"
   PAK:
     name: "pakistan-violence-against-civilians-and-vital-civilian-facilities"
     title: "Pakistan (PAK): Attacks on Aid Operations, Education and Health Care"
@@ -504,7 +505,7 @@ country_datasets:
       - "education"
       - "explosiveWeapons"
       - "healthcare"
-      - "overview"
+      - "countryYear"
   PSE:
     name: "opt-violent-and-threatening-incidents-against-healthcare"
     title: "State of Palestine (PSE): Attacks on Aid Operations, Education, Food and Water Systems, Health Care and IDP/Refugee Camps, and Conflict-Related Sexual Violence and Explosive Weapons Incident Data"
@@ -518,7 +519,7 @@ country_datasets:
       - "healthcare"
       - "protection"
       - "water"
-      - "overview"
+      - "countryYear"
   SDN:
     name: "sudan-violence-against-civilians-and-vital-civilian-facilities"
     title: "Sudan (SDN): Attacks on Aid Operations, Education, Food and Water Systems, Health Care and IDP/Refugee Camps, and Conflict-Related or Political-Related Sexual Violence and Explosive Weapons Incident Data"
@@ -533,7 +534,7 @@ country_datasets:
       - "protection"
       - "SVPoliticalViolence"
       - "water"
-      - "overview"
+      - "countryYear"
   SOM:
     name: "somalia-violence-agaiinst-civilian-and-vital-civilian-facilitites"
     title: "Somalia (SOM): Attacks on Aid Operations, Education, Food and Water Systems and Health Care"
@@ -545,7 +546,7 @@ country_datasets:
       - "fivc"
       - "healthcare"
       - "water"
-      - "overview"
+      - "countryYear"
   SSD:
     name: "south-sudan-attacks-on-civilians-and-vital-civilian-facilities"
     title: "South Sudan (SSD): Attacks on Aid Operations, Education, Health Care, Food and Water Systems, and IDP/Refugee Camps, and Conflict-Related Sexual Violence Incident Data"
@@ -559,7 +560,7 @@ country_datasets:
       - "healthcare"
       - "protection"
       - "water"
-      - "overview"
+      - "countryYear"
   SYR:
     name: "syria-violent-and-threatening-incidents-against-healthcare"
     title: "Syria (SYR): Attacks on Aid Operations, Education, Food and Water Systems, Health Care and IDP/Refugee Camps, and Conflict-Related Sexual Violence and Explosive Weapons Incident Data"
@@ -573,7 +574,7 @@ country_datasets:
       - "healthcare"
       - "protection"
       - "water"
-      - "overview"
+      - "countryYear"
   UKR:
     name: "ukraine-data-on-attacks-on-aid-operations-education-health-and-protection"
     title: "Ukraine (UKR): Attacks on Aid Operations, Education, Food and Water Systems and Health Care, and Conflict-Related and Explosive Weapons Incident Data"
@@ -586,7 +587,7 @@ country_datasets:
       - "fivc"
       - "healthcare"
       - "water"
-      - "overview"
+      - "countryYear"
   YEM:
     name: "yemen-violence-aganist-civilian-and-vital-civilian-faciltities"
     title: "Yemen (YEM): Attacks on Aid Operations, Education, Food and Water Systems, Health Care and IDP/Refugee Camps, and Explosive Weapons Incident Data"
@@ -599,4 +600,4 @@ country_datasets:
       - "healthcare"
       - "protection"
       - "water"
-      - "overview"
+      - "countryYear"

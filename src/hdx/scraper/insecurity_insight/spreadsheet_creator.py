@@ -67,11 +67,13 @@ class SpreadsheetCreator:
         year_filter: int | None = None,
         country_filter: str | None = None,
     ):
-        api_response = self._api_cache[f"{topic}-{topic_type}"]
+        resource = f"{topic}-{topic_type}"
+        if topic == "countryYear":
+            resource = topic
+        api_response = self._api_cache[resource]
+        file_paths_key = resource
         if country_filter:
-            file_paths_key = f"{country_filter}-{topic}-{topic_type}"
-        else:
-            file_paths_key = f"{topic}-{topic_type}"
+            file_paths_key = f"{country_filter}-{resource}"
 
         # get columns with correct type
         df = DataFrame.from_dict(api_response, dtype="str")
@@ -106,7 +108,7 @@ class SpreadsheetCreator:
             country_iso = ""
         if len(df) == 0:
             logger.info(
-                f"API response for `{topic}-{topic_type}` with country_filter '{country_filter}' contained no data"
+                f"API response for `{resource}` with country_filter '{country_filter}' contained no data"
             )
             self._file_paths[file_paths_key] = None
             return
@@ -115,7 +117,7 @@ class SpreadsheetCreator:
         )
         if len(df) == 0:
             logger.info(
-                f"API response for `{topic}-{topic_type}` with year_filter {year_filter} contained no data (country_filter was '{country_filter}')"
+                f"API response for `{resource}` with year_filter {year_filter} contained no data (country_filter was '{country_filter}')"
             )
             self._file_paths[file_paths_key] = None
             return
@@ -134,6 +136,7 @@ class SpreadsheetCreator:
             raise (ValueError(f"Unknown topic type {topic_type}!"))
         if start_year == end_year:
             filename = filename.replace(f"-{end_year}", "")
+        filename = filename.replace("  ", " ")
 
         # Despite the warning, this is the accepted way to remove the default bold header
         excel.ExcelFormatter.header_style = None
@@ -162,6 +165,8 @@ class SpreadsheetCreator:
                 year_filter = current_year
             for maintopic, value in topics_to_update.items():
                 if isinstance(value, str):
+                    if maintopic == "countryYear":
+                        continue
                     self.create_spreadsheet(
                         maintopic, topic_type, value, year_filter=year_filter
                     )
@@ -189,9 +194,14 @@ class SpreadsheetCreator:
                 continue
             for maintopic, value in topics_to_update.items():
                 if isinstance(value, str):
-                    self.create_spreadsheet(
-                        maintopic, "incidents", value, country_filter=country
-                    )
+                    if maintopic == "countryYear":
+                        self.create_spreadsheet(
+                            maintopic, "overview", value, country_filter=country
+                        )
+                    else:
+                        self.create_spreadsheet(
+                            maintopic, "incidents", value, country_filter=country
+                        )
                     continue
 
                 for topic, proper_name in value.items():

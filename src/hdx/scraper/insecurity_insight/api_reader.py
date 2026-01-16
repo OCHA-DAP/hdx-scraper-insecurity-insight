@@ -1,4 +1,5 @@
 import logging
+from typing import Optional
 
 from hdx.api.configuration import Configuration
 from hdx.location.country import Country
@@ -77,11 +78,16 @@ class APIReader:
         return censored_rows
 
     def fetch_api_responses(self) -> dict:
-        def add_cache(topic, topic_type, api_url):
-            resource = f"{topic}-{topic_type}"
-            logger.info(f"Fetching data for {resource} from API")
+        def add_cache(api_url: str, topic: str, topic_type: Optional[str] = None):
+            if topic_type is None:
+                resource = topic
+            else:
+                resource = f"{topic}-{topic_type}"
+            if resource in self._api_cache:
+                return
 
-            if topic_type == "overview":
+            logger.info(f"Fetching data for {resource} from API")
+            if topic_type and topic_type == "overview":
                 api_url = f"{api_url}Overview"
             try:
                 json_response = self._retriever.download_json(api_url)
@@ -99,15 +105,18 @@ class APIReader:
             for maintopic, value in self._configuration["topics"].items():
                 if isinstance(value, str) or topic_type == "overview":
                     api_url = f"{self._configuration['base_url']}{maintopic}"
-                    add_cache(maintopic, topic_type, api_url)
+                    if maintopic == "countryYear":
+                        add_cache(api_url, maintopic)
+                    else:
+                        add_cache(api_url, maintopic, topic_type)
                     continue
                 for topic in value:
                     if topic == "overview":
                         continue
                     api_url = f"{self._configuration['base_url']}{topic}"
-                    add_cache(topic, topic_type, api_url)
+                    add_cache(api_url, topic, topic_type)
 
         logger.info(
-            f"Loaded {len(self._api_cache)} API responses to cache, expected 32"
+            f"Loaded {len(self._api_cache)} API responses to cache, expected 33"
         )
         return self._api_cache

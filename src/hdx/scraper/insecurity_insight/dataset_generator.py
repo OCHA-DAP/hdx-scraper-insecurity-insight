@@ -132,7 +132,9 @@ class DatasetGenerator:
                 )
 
         for maintopic, value in self._configuration["topics"].items():
-            dataset_template = self._configuration["datasets"][maintopic]
+            dataset_template = self._configuration["datasets"].get(maintopic)
+            if not dataset_template:
+                continue
             topic_resources_info = {}
             all_countries = set()
             if isinstance(value, str):
@@ -178,14 +180,19 @@ class DatasetGenerator:
             for file_type, file_path in self._file_paths.items():
                 if not file_type.startswith(country) or not file_path:
                     continue
-                _, topic, topic_type = file_type.split("-")
+                try:
+                    _, topic, topic_type = file_type.split("-")
+                    resource = f"{topic}-{topic_type}"
+                except ValueError:
+                    _, topic = file_type.split("-")
+                    resource = topic
                 if topic not in dataset_template["topics"]:
                     continue
-                tag_list = dataset_template["tags"][topic]
+                tag_list = dataset_template["tags"].get(topic, [])
                 tags.update(tag_list)
                 resource_description = dataset_template["resource_descriptions"][topic]
                 start_date, end_date = self.get_start_end_dates(
-                    f"{topic}-{topic_type}", [country.lower()]
+                    resource, [country.lower()]
                 )
                 if not start_date:
                     continue

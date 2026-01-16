@@ -62,16 +62,16 @@ frictionless==5.18.1
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
-hdx-python-api==6.6.0
+hdx-python-api==6.6.1
     # via
     #   -c requirements.txt
     #   hdx-scraper-insecurity-insight (pyproject.toml)
-hdx-python-country==4.0.0
+hdx-python-country==4.0.1
     # via
     #   -c requirements.txt
     #   hdx-scraper-insecurity-insight (pyproject.toml)
     #   hdx-python-api
-hdx-python-utilities==4.0.0
+hdx-python-utilities==4.0.2
     # via
     #   -c requirements.txt
     #   hdx-scraper-insecurity-insight (pyproject.toml)
