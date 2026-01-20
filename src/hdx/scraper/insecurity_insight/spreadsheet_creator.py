@@ -102,7 +102,7 @@ class SpreadsheetCreator:
             api_response[0]
         )
         if country_filter:
-            country_iso = f"-{country_filter}"
+            country_iso = country_filter
             df = self.filter_country(df, iso_country_field, country_filter)
         else:
             country_iso = ""
@@ -123,15 +123,11 @@ class SpreadsheetCreator:
             return
 
         if topic_type == "incidents":
-            filename = (
-                f"{start_year}-{end_year}{country_iso} {proper_name} Incident Data.xlsx"
-            )
+            filename = f"{start_year}-{end_year} {country_iso} {proper_name} Incident Data.xlsx"
         elif topic_type == "incidents-current-year":
             filename = f"{start_year} {proper_name} Incident Data.xlsx"
         elif topic_type == "overview":
-            filename = (
-                f"{start_year}-{end_year}{country_iso} {proper_name} Overview Data.xlsx"
-            )
+            filename = f"{start_year}-{end_year} {country_iso} {proper_name} Overview Data.xlsx"
         else:
             raise (ValueError(f"Unknown topic type {topic_type}!"))
         if start_year == end_year:
