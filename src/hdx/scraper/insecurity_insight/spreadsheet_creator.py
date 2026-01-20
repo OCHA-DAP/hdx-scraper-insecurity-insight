@@ -112,16 +112,22 @@ class SpreadsheetCreator:
             )
             self._file_paths[file_paths_key] = None
             return
-        df, start_year, end_year = self.filter_process_dates(
+        filtered_df, start_year, end_year = self.filter_process_dates(
             df, field_types, date_field, year_filter
         )
-        if len(df) == 0:
-            logger.info(
-                f"API response for `{resource}` with year_filter {year_filter} contained no data (country_filter was '{country_filter}')"
-            )
-            self._file_paths[file_paths_key] = None
-            return
-
+        if len(filtered_df) == 0:
+            if year_filter:
+                year_filter = year_filter - 1
+                filtered_df, start_year, end_year = self.filter_process_dates(
+                    df, field_types, date_field, year_filter
+                )
+            if len(filtered_df) == 0:
+                logger.warning(
+                    f"API response for `{resource}` with year_filter {year_filter} contained no data (country_filter was '{country_filter}')"
+                )
+                self._file_paths[file_paths_key] = None
+                return
+        df = filtered_df
         if topic_type == "incidents":
             filename = f"{start_year}-{end_year} {country_iso} {proper_name} Incident Data.xlsx"
         elif (
