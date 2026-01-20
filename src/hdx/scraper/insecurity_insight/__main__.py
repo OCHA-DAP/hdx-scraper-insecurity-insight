@@ -75,14 +75,14 @@ def main(
                         join("config", "hdx_dataset_static.yaml"), main
                     )
                 )
+                new_resources = dataset.get_resources()
                 dataset.create_in_hdx(
-                    remove_additional_resources=True,
-                    hxl_update=False,
+                    remove_additional_resources=False,
                     updated_by_script=_UPDATED_BY_SCRIPT,
                     batch=info["batch"],
                     ignore_field="resource:description",
                 )
-                dataset_generator.reorder_resources(dataset)
+                dataset_generator.delete_and_reorder_resources(dataset, new_resources)
 
     logger.info("Finished processing")
 

@@ -1,6 +1,7 @@
+import re
 from datetime import datetime
 from os.path import basename
-from typing import Tuple
+from typing import List, Tuple
 
 from hdx.api.configuration import Configuration
 from hdx.data.dataset import Dataset
@@ -220,15 +221,45 @@ class DatasetGenerator:
         country_datasets_to_update = self.get_country_datasets(countries_to_update)
         return topic_datasets_to_update + country_datasets_to_update
 
-    @staticmethod
-    def reorder_resources(dataset: Dataset) -> None:
+    def delete_and_reorder_resources(
+        self, dataset: Dataset, new_resources: List[Resource]
+    ) -> None:
+        resource_list_names = [x["name"] for x in new_resources]
+        resources_check = dataset.get_resources()
+
+        # Delete old API resources
+        countries = dataset.get_location_iso3s()
+        iso_match = ""
+        if len(countries) == 1:
+            iso_match = f"({countries[0].lower()}\\s)?"
+        proper_names = []
+        for _, value in self._configuration["topics"].items():
+            if isinstance(value, str):
+                if value != "":
+                    proper_names.append(value.lower().replace(" ", "\\s"))
+                continue
+            else:
+                for _, subtopic in value.items():
+                    proper_names.append(subtopic.lower().replace(" ", "\\s"))
+
+        old_resource_patterns = [
+            "[0-9]{4}(-[0-9]{4})?(\\s|-)"
+            + iso_match
+            + proper_name
+            + "\\s(incident|overview)\\sdata.xlsx"
+            for proper_name in proper_names
+        ]
+        for resource in resources_check:
+            matches = [
+                re.match(old_resource_pattern, resource["name"], re.IGNORECASE)
+                for old_resource_pattern in old_resource_patterns
+            ]
+            if resource["name"] not in resource_list_names and any(matches):
+                dataset.delete_resource(resource)
+
         # Reorder resources so that the datasets from the API come first
-        resource_list_names = [x["name"] for x in dataset.get_resources()]
-
-        dataset_name = dataset["name"]
-        revised_dataset = Dataset.read_from_hdx(dataset_name)
+        revised_dataset = Dataset.read_from_hdx(dataset["name"])
         resources_check = revised_dataset.get_resources()
-
         reordered_resource_ids = [
             x["id"] for x in resources_check if x["name"] in resource_list_names
         ]
