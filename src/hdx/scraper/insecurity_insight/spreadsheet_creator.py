@@ -124,7 +124,9 @@ class SpreadsheetCreator:
 
         if topic_type == "incidents":
             filename = f"{start_year}-{end_year} {country_iso} {proper_name} Incident Data.xlsx"
-        elif topic_type == "incidents-current-year":
+        elif (
+            topic_type == "incidents-current-year"
+        ):  # Current year data is not generated for country datasets
             filename = f"{start_year} {proper_name} Incident Data.xlsx"
         elif topic_type == "overview":
             filename = f"{start_year}-{end_year} {country_iso} {proper_name} Overview Data.xlsx"
