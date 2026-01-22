@@ -93,7 +93,9 @@ numpy==2.4.1
     # via pandas
 openpyxl==3.1.5
     # via hdx-python-utilities
-pandas==2.3.3
+packaging==26.0
+    # via wheel
+pandas==3.0.0
     # via hdx-scraper-insecurity-insight (pyproject.toml)
 petl==1.7.17
     # via frictionless
@@ -123,8 +125,6 @@ python-slugify==8.0.4
     # via
     #   ckanapi
     #   frictionless
-pytz==2025.2
-    # via pandas
 pyyaml==6.0.3
     # via
     #   frictionless
@@ -156,7 +156,7 @@ rpds-py==0.30.0
     #   referencing
 ruamel-yaml==0.19.1
     # via hdx-python-utilities
-setuptools==80.9.0
+setuptools==80.10.1
     # via ckanapi
 shellingham==1.5.4
     # via typer
@@ -197,8 +197,6 @@ typing-extensions==4.15.0
     #   typing-inspection
 typing-inspection==0.4.2
     # via pydantic
-tzdata==2025.3
-    # via pandas
 unidecode==1.4.0
     # via
     #   libhxl
@@ -209,7 +207,7 @@ urllib3==2.6.3
     #   requests
 validators==0.35.0
     # via frictionless
-wheel==0.45.1
+wheel==0.46.3
     # via libhxl
 xlrd==2.0.2
     # via hdx-python-utilities

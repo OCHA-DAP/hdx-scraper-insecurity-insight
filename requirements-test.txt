@@ -166,9 +166,12 @@ openpyxl==3.1.5
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
-packaging==25.0
-    # via pytest
-pandas==2.3.3
+packaging==26.0
+    # via
+    #   -c requirements.txt
+    #   pytest
+    #   wheel
+pandas==3.0.0
     # via
     #   -c requirements.txt
     #   hdx-scraper-insecurity-insight (pyproject.toml)
@@ -228,10 +231,6 @@ python-slugify==8.0.4
     #   -c requirements.txt
     #   ckanapi
     #   frictionless
-pytz==2025.2
-    # via
-    #   -c requirements.txt
-    #   pandas
 pyyaml==6.0.3
     # via
     #   -c requirements.txt
@@ -279,7 +278,7 @@ ruamel-yaml==0.19.1
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
-setuptools==80.9.0
+setuptools==80.10.1
     # via
     #   -c requirements.txt
     #   ckanapi
@@ -348,10 +347,6 @@ typing-inspection==0.4.2
     # via
     #   -c requirements.txt
     #   pydantic
-tzdata==2025.3
-    # via
-    #   -c requirements.txt
-    #   pandas
 unidecode==1.4.0
     # via
     #   -c requirements.txt
@@ -366,7 +361,7 @@ validators==0.35.0
     # via
     #   -c requirements.txt
     #   frictionless
-wheel==0.45.1
+wheel==0.46.3
     # via
     #   -c requirements.txt
     #   libhxl
