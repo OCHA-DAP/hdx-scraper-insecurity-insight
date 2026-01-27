@@ -56,7 +56,7 @@ class SpreadsheetCreator:
         df = df.copy()
         for key, value in field_types.items():
             if value == "datetime64[ns, UTC]":
-                df[key] = df[key].dt.strftime("%d/%m/%Y")
+                df[key] = df[key].dt.date
         return df, start_year, end_year
 
     def create_spreadsheet(
