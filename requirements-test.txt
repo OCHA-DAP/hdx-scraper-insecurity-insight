@@ -31,7 +31,7 @@ click==8.3.1
     # via
     #   -c requirements.txt
     #   typer
-coverage==7.13.1
+coverage==7.13.2
     # via pytest-cov
 defopt==7.0.0
     # via
@@ -62,7 +62,7 @@ frictionless==5.18.1
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
-hdx-python-api==6.6.1
+hdx-python-api==6.6.4
     # via
     #   -c requirements.txt
     #   hdx-scraper-insecurity-insight (pyproject.toml)
@@ -71,7 +71,7 @@ hdx-python-country==4.0.1
     #   -c requirements.txt
     #   hdx-scraper-insecurity-insight (pyproject.toml)
     #   hdx-python-api
-hdx-python-utilities==4.0.2
+hdx-python-utilities==4.0.4
     # via
     #   -c requirements.txt
     #   hdx-scraper-insecurity-insight (pyproject.toml)
@@ -124,7 +124,6 @@ jsonschema-specifications==2025.9.1
 libhxl==5.2.2
     # via
     #   -c requirements.txt
-    #   hdx-python-api
     #   hdx-python-country
 loguru==0.7.3
     # via
@@ -265,7 +264,7 @@ rfc3986==2.0.0
     # via
     #   -c requirements.txt
     #   frictionless
-rich==14.2.0
+rich==14.3.1
     # via
     #   -c requirements.txt
     #   typer
@@ -278,7 +277,7 @@ ruamel-yaml==0.19.1
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
-setuptools==80.10.1
+setuptools==80.10.2
     # via
     #   -c requirements.txt
     #   ckanapi
@@ -337,6 +336,7 @@ typing-extensions==4.15.0
     # via
     #   -c requirements.txt
     #   frictionless
+    #   hdx-python-utilities
     #   pydantic
     #   pydantic-core
     #   referencing
