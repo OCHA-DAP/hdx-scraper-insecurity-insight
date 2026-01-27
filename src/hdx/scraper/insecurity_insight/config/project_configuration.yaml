@@ -17,7 +17,7 @@ topics:
   education: "Education in Danger"
   explosiveWeapons: "Explosive Weapons"
   protection: "Protection in Danger"
-  water: "Water Systems"
+  water: "Conflict-Related Incidents Affecting Water Systems"
 
 topic_types:
   - "incidents"
@@ -171,9 +171,9 @@ datasets:
       - "refugee crisis"
       - "refugees"
     resource_descriptions:
-      incidents-current-year: "Resource covering January to {end_date} on threats and violence at [IDP/Refugee Camps](https://insecurityinsight.org/projects/ensuring-protection/protection-in-danger-monthly-news-brief-2) based on agency- and open source events. Categorised by country."
-      incidents: "Resource covering January 2020 to {end_date} on threats and violence at [IDP/Refugee Camps](https://insecurityinsight.org/projects/ensuring-protection/protection-in-danger-monthly-news-brief-2) based on agency- and open source events. Categorised by country."
-      overview: "Resource covering January 2020 to {end_date} on threats and violence at [IDP/Refugee Camps](https://insecurityinsight.org/projects/ensuring-protection/protection-in-danger-monthly-news-brief-2) based on agency- and open source events. Categorised by country and country."
+      incidents-current-year: "Resource covering 01 January to {end_date} on threats and violence at [IDP/Refugee Camps](https://insecurityinsight.org/projects/ensuring-protection/protection-in-danger-monthly-news-brief-2) based on agency- and open source events. Categorised by country."
+      incidents: "Resource covering 01 January 2020 to {end_date} on threats and violence at [IDP/Refugee Camps](https://insecurityinsight.org/projects/ensuring-protection/protection-in-danger-monthly-news-brief-2) based on agency- and open source events. Categorised by country."
+      overview: "Resource covering 01 January 2020 to {end_date} on threats and violence at [IDP/Refugee Camps](https://insecurityinsight.org/projects/ensuring-protection/protection-in-danger-monthly-news-brief-2) based on agency- and open source events. Categorised by country and country."
 
   water:
     name: "conflict-related-incidents-affecting-water-systems"
@@ -186,9 +186,9 @@ datasets:
       - "conflict-violence"
       - "food security"
     resource_descriptions:
-      incidents-current-year: "Resource covering 01 January to {end_date} on conflict-related incidents with clearly foreseeable impacts on or links to [water systems] based on agency- and open source events from Burkina Faso, Cameroon, DRC, Iraq, Lebanon, Mali, Myanmar, Niger, OPT, Somalia, South Sudan, Sudan, Syria, Ukraine and Yemen. Categorized by country."
-      incidents: "Resource covering 01 January to {end_date} on conflict-related incidents with clearly foreseeable impacts on or links to [water systems] based on agency- and open source events from Burkina Faso, Cameroon, DRC, Iraq, Lebanon, Mali, Myanmar, Niger, OPT, Somalia, South Sudan, Sudan, Syria, Ukraine and Yemen. Categorized by country."
-      overview: "Resource covering 01 January to {end_date} on conflict-related incidents with clearly foreseeable impacts on or links to [water systems] based on agency- and open source events from Burkina Faso, Cameroon, DRC, Iraq, Lebanon, Mali, Myanmar, Niger, OPT, Somalia, South Sudan, Sudan, Syria, Ukraine and Yemen. Categorized by country and year."
+      incidents-current-year: "Resource covering 01 January to {end_date} on conflict-related incidents with clearly foreseeable impacts on or links to [water systems] based on agency- and open source events from Burkina Faso, Cameroon, DRC, Iraq, Lebanon, Mali, Myanmar, Niger, OPT, Somalia, South Sudan, Sudan, Syria, Ukraine and Yemen. Categorized by country and year."
+      incidents: "Resource covering 01 January 2024 to {end_date} on conflict-related incidents with clearly foreseeable impacts on or links to [water systems] based on agency- and open source events from Burkina Faso, Cameroon, DRC, Iraq, Lebanon, Mali, Myanmar, Niger, OPT, Somalia, South Sudan, Sudan, Syria, Ukraine and Yemen. Categorized by country and year."
+      overview: "Resource covering 01 January 2024 to {end_date} on conflict-related incidents with clearly foreseeable impacts on or links to [water systems] based on agency- and open source events from Burkina Faso, Cameroon, DRC, Iraq, Lebanon, Mali, Myanmar, Niger, OPT, Somalia, South Sudan, Sudan, Syria, Ukraine and Yemen. Categorized by country and year."
 
 
 country_datasets:
@@ -197,16 +197,16 @@ country_datasets:
     license_id: "cc-by-sa"
     methodology_other: "Systematically collected from open source, public reports as well as verified submissions from our partner agencies."
     resource_descriptions:
-      aidworkerKIKA: "Resource covering {start_date} to {end_date} on aid workers [killed, injured, kidnapped, or arrested (KIKA)](https://insecurityinsight.org/projects/aid-in-danger/aid-security-digests) based on agency- and open source events."
-      education: "Resource covering {start_date} to {end_date} on [attacks on education](https://insecurityinsight.org/projects/education-in-danger/education-in-danger-monthly-news-brief) based on agency- and open source events."
-      explosiveWeapons: "Resource covering {start_date} to {end_date} on incidents in which aid access, education and healthcare services were impacted by [explosive weapons](https://insecurityinsight.org/projects/explosive-weapons) based on agency- and open source events."
-      healthcare: "Resource covering {start_date} to {end_date} on [attacks on health care](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief) based on agency- and open source events."
-      protection: "Resource covering {start_date} to {end_date} on threats and violence at [IDP/Refugee Camps](https://insecurityinsight.org/projects/ensuring-protection/protection-in-danger-monthly-news-brief-2) based on agency- and open source events."
-      fivc: "Resource covering {start_date} to {end_date} on incidents with clearly foreseeable impacts on or links to [food security](https://insecurityinsight.org/conflict-and-hunger) based on agency- and open source events."
-      water: "Resource covering {start_date} to {end_date} on conflict-incidents affected water systems based on agency- and open source events."
-      CRSV: "Resource covering {start_date} to {end_date} on publicly-reported incidents of [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings) perpetrated by conflict actors (CRSV)."
-      SVPoliticalViolence: "Resource covering {start_date} to {end_date} on incidents of [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings) perpetrated by police or state security personnel as part of political violence."
-      countryYear: "Resource covering {start_date} to {end_date} on [attacks on health care](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief), [killed, injured, kidnapped, or arrested (KIKA)](https://insecurityinsight.org/projects/aid-in-danger/aid-security-digests),  [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings), [attacks on education](https://insecurityinsight.org/projects/education-in-danger/education-in-danger-monthly-news-brief), [explosive weapons](https://insecurityinsight.org/projects/explosive-weapons), [IDP/Refugee Camps](https://insecurityinsight.org/projects/ensuring-protection/protection-in-danger-monthly-news-brief-2), and [Food Security](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief) based on agency- and open source events. Categorised by year."
+      aidworkerKIKA: "Resource covering 01 January 1997 to {end_date} on aid workers [killed, injured, kidnapped, or arrested (KIKA)](https://insecurityinsight.org/projects/aid-in-danger/aid-security-digests) based on agency- and open source events."
+      education: "Resource covering 01 January 2020 to {end_date} on [attacks on education](https://insecurityinsight.org/projects/education-in-danger/education-in-danger-monthly-news-brief) based on agency- and open source events."
+      explosiveWeapons: "Resource covering 01 January 2020 to {end_date} on incidents in which aid access, education and healthcare services were impacted by [explosive weapons](https://insecurityinsight.org/projects/explosive-weapons) based on agency- and open source events."
+      healthcare: "Resource covering 01 January 2016 to {end_date} on [attacks on health care](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief) based on agency- and open source events."
+      protection: "Resource covering 01 January 2020 to {end_date} on threats and violence at [IDP/Refugee Camps](https://insecurityinsight.org/projects/ensuring-protection/protection-in-danger-monthly-news-brief-2) based on agency- and open source events."
+      fivc: "Resource covering 01 January 2024 to {end_date} on incidents with clearly foreseeable impacts on or links to [food security](https://insecurityinsight.org/conflict-and-hunger) based on agency- and open source events."
+      water: "Resource covering 01 January 2024 to {end_date} on conflict-incidents affected water systems based on agency- and open source events."
+      CRSV: "Resource covering 01 January 2020 to {end_date} on publicly-reported incidents of [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings) perpetrated by conflict actors (CRSV)."
+      SVPoliticalViolence: "Resource covering 01 January 2020 to {end_date} on incidents of [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings) perpetrated by police or state security personnel as part of political violence."
+      countryYear: "Resource covering 01 January 2020 to {end_date} on [attacks on health care](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief), [killed, injured, kidnapped, or arrested (KIKA)](https://insecurityinsight.org/projects/aid-in-danger/aid-security-digests),  [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings), [attacks on education](https://insecurityinsight.org/projects/education-in-danger/education-in-danger-monthly-news-brief), [explosive weapons](https://insecurityinsight.org/projects/explosive-weapons), [IDP/Refugee Camps](https://insecurityinsight.org/projects/ensuring-protection/protection-in-danger-monthly-news-brief-2), and [Food Security](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief) based on agency- and open source events. Categorised by year."
     tags:
       aidworkerKIKA:
         - "aid worker security"
