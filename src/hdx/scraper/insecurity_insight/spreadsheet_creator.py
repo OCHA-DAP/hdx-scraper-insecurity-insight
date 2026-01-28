@@ -86,7 +86,7 @@ class SpreadsheetCreator:
             elif column.lower() == "sind event id":
                 field_type = "str"
             else:
-                values = df[column]
+                values = df[column].dropna()
                 is_numeric = values.str.isnumeric()
                 if is_numeric.all():
                     field_type = "Int64"
