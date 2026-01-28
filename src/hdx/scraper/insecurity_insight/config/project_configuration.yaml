@@ -394,7 +394,7 @@ country_datasets:
       - "water"
       - "countryYear"
   ISR:
-    name: "iran-violent-and-threatening-incidents-against-healthcare"
+    name: "israel-isr-attacks-on-aid-operations-education-health-care-incident-data"
     title: "Israel (ISR): Attacks on Aid Operations, Education, Health Care, and Political-Related Sexual Violence and Explosive Weapons Incident Data"
     notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, education, health care services in Israel. They also provide information on incidents on political-related sexual violence as well as information on incidents of explosive weapons use affecting aid access, education and health care services.  Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.   Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
     topics:
