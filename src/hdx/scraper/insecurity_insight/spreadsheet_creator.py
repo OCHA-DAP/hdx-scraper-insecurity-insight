@@ -91,7 +91,19 @@ class SpreadsheetCreator:
                 if is_numeric.all():
                     field_type = "Int64"
                 else:
-                    field_type = "str"
+                    is_numeric = values.str.replace(
+                        "\\.", "", regex=True
+                    ).str.isnumeric()
+                    if is_numeric.all():
+                        is_int = values.str.replace(
+                            "\\.0", "", regex=True
+                        ).str.isnumeric()
+                        if is_int.all():
+                            field_type = "Int64"
+                        else:
+                            field_type = "float"
+                    else:
+                        field_type = "str"
             field_types[column] = field_type
         for key, value in field_types.items():
             if value == "str":
