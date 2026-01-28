@@ -99,6 +99,7 @@ class SpreadsheetCreator:
                             "\\.0", "", regex=True
                         ).str.isnumeric()
                         if is_int.all():
+                            df[column] = df[column].str.replace("\\.0", "", regex=True)
                             field_type = "Int64"
                         else:
                             field_type = "float"
