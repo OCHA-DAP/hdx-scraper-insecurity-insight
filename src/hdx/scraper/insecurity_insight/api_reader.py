@@ -22,7 +22,9 @@ class APIReader:
         self._api_cache = {}
 
     @staticmethod
-    def censor_location(countries: list[str], api_response: list[dict]) -> list[dict]:
+    def censor_location(
+        api_response: list[dict], countries: Optional[list[str]] = None
+    ) -> list[dict]:
         censored_rows = []
 
         _, iso_country_field = pick_date_and_iso_country_fields(api_response[0])
@@ -40,7 +42,7 @@ class APIReader:
                     logger.error(f"No country iso found for {countryname}!")
                     continue
             api_row[iso_country_field] = countryiso
-            if countryiso in countries:
+            if not countries or (countries and countryiso in countries):
                 if "Latitude" in api_row:
                     n_censored += 1
                     api_row["Latitude"] = None
@@ -48,6 +50,8 @@ class APIReader:
                     api_row["Geo Precision"] = "censored"
             censored_rows.append(api_row)
 
+        if not countries:
+            countries = "all countries"
         logging.info(f"Censoring latitude/longitude fields if present for {countries}")
         logging.info(f"{n_censored} of {n_records} censored for {countries}")
         return censored_rows
@@ -95,7 +99,7 @@ class APIReader:
                 logger.error(f"Failed to download response for {resource}")
                 return
 
-            censored_location_response = self.censor_location(["PSE"], json_response)
+            censored_location_response = self.censor_location(json_response)
             censored_response = self.censor_event_description(
                 censored_location_response
             )
