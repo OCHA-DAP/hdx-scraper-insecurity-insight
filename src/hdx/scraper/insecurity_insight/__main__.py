@@ -57,7 +57,8 @@ def main(
                 save=save,
                 use_saved=use_saved,
             )
-            current_year = now_utc().year
+            today = now_utc()
+            current_year = today.year
 
             api_reader = APIReader(configuration, retriever)
             api_cache = api_reader.fetch_api_responses()
@@ -67,7 +68,9 @@ def main(
             file_paths = spreadsheet_creator.refresh_spreadsheets_with_fresh_data(
                 current_year
             )
-            dataset_generator = DatasetGenerator(configuration, api_cache, file_paths)
+            dataset_generator = DatasetGenerator(
+                configuration, api_cache, file_paths, today
+            )
             datasets = dataset_generator.get_datasets()
             for dataset in datasets:
                 dataset.update_from_yaml(

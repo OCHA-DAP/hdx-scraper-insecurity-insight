@@ -20,10 +20,17 @@ from hdx.scraper.insecurity_insight.utilities import (
 
 
 class DatasetGenerator:
-    def __init__(self, configuration: Configuration, api_cache: dict, file_paths: dict):
+    def __init__(
+        self,
+        configuration: Configuration,
+        api_cache: dict,
+        file_paths: dict,
+        today: datetime,
+    ):
         self._configuration = configuration
         self._api_cache = api_cache
         self._file_paths = file_paths
+        self._today = today
 
     def get_start_end_dates(
         self,
@@ -43,8 +50,8 @@ class DatasetGenerator:
             end_date = parse_date(end_date_str)
         return start_date, end_date
 
-    @staticmethod
     def create_dataset(
+        self,
         dataset_template: dict,
         countries: list,
         resources_info: dict,
@@ -75,6 +82,8 @@ class DatasetGenerator:
                 min_start_date = start_date
             if end_date > max_end_date:
                 max_end_date = end_date
+            if end_date > self._today:
+                end_date = self._today
             start_date_str = start_date.strftime("%d %B %Y")
             end_date_str = end_date.strftime("%d %B %Y")
             resource_name = basename(file_path)
@@ -92,6 +101,8 @@ class DatasetGenerator:
             resource.set_file_to_upload(file_path)
             resource_list.append(resource)
 
+        if max_end_date > self._today:
+            max_end_date = self._today
         dataset.set_time_period(min_start_date, max_end_date)
         dataset.add_update_resources(resource_list)
         return dataset

@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 from os.path import basename, join
 
 from hdx.utilities.downloader import Download
@@ -57,7 +58,10 @@ class TestInsecurityInsight:
                     assert new_data.equals(old_data)
 
                 dataset_generator = DatasetGenerator(
-                    configuration, api_cache, file_paths
+                    configuration,
+                    api_cache,
+                    file_paths,
+                    datetime(2025, 12, 30, tzinfo=timezone.utc),
                 )
                 datasets = dataset_generator.get_datasets()
 
@@ -72,7 +76,7 @@ class TestInsecurityInsight:
                     "affecting the provision of healthcare. Data collection is ongoing "
                     "and data may change as more information is made available.",
                     "data_update_frequency": "-2",
-                    "dataset_date": "[2016-01-01T00:00:00 TO 2025-12-31T23:59:59]",
+                    "dataset_date": "[2016-01-01T00:00:00 TO 2025-12-30T23:59:59]",
                     "dataset_source": "Insecurity Insight",
                     "groups": [
                         {"name": "afg"},
@@ -177,7 +181,7 @@ class TestInsecurityInsight:
                     },
                     {
                         "name": "2016-2025 Children in Armed Conflict Overview Data.xlsx",
-                        "description": "Resource covering 01 January 2024 to 31 December 2025 on incidents affecting children and children-related services in conflict zones. Based on agency- and open source events. Categorized by country and year.",
+                        "description": "Resource covering 01 January 2024 to 30 December 2025 on incidents affecting children and children-related services in conflict zones. Based on agency- and open source events. Categorized by country and year.",
                         "format": "xlsx",
                     },
                 ]
@@ -185,7 +189,7 @@ class TestInsecurityInsight:
                 dataset = datasets[5]
                 assert dataset == {
                     "caveats": "The incidents reported are not a complete nor a representative list of all incidents and have not been independently verified.",
-                    "dataset_date": "[2020-01-01T00:00:00 TO 2025-12-31T23:59:59]",
+                    "dataset_date": "[2020-01-01T00:00:00 TO 2025-12-30T23:59:59]",
                     "groups": [
                         {"name": "afg"},
                         {"name": "ago"},
@@ -317,7 +321,7 @@ class TestInsecurityInsight:
                     },
                     {
                         "name": "2020-2025 Conflict-Related (CRSV) or Political-Related Sexual Violence Overview Data.xlsx",
-                        "description": "Resource covering 01 January 2020 to 31 December 2025 on incidents of [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings) perpetrated by conflict actors, security personnel, and sexual violence that targets aid workers, educators, health workers and IDPs/refugees. Categorised by country and year.",
+                        "description": "Resource covering 01 January 2020 to 30 December 2025 on incidents of [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings) perpetrated by conflict actors, security personnel, and sexual violence that targets aid workers, educators, health workers and IDPs/refugees. Categorised by country and year.",
                         "format": "xlsx",
                     },
                 ]
