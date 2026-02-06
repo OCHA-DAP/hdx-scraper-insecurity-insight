@@ -246,18 +246,19 @@ class DatasetGenerator:
         proper_names = []
         for _, value in self._configuration["topics"].items():
             if isinstance(value, str):
-                if value != "":
-                    proper_names.append(value.lower().replace(" ", "\\s"))
-                continue
+                if value == "":
+                    proper_names.append("")
+                else:
+                    proper_names.append(value.lower().replace(" ", "\\s") + "\\s")
             else:
                 for _, subtopic in value.items():
-                    proper_names.append(subtopic.lower().replace(" ", "\\s"))
+                    proper_names.append(subtopic.lower().replace(" ", "\\s") + "\\s")
 
         old_resource_patterns = [
             "[0-9]{4}(-[0-9]{4})?(\\s|-)"
             + iso_match
             + proper_name
-            + "\\s(incident|overview)\\sdata.xlsx"
+            + "(incident|overview)\\sdata.xlsx"
             for proper_name in proper_names
         ]
         for resource in resources_check:
