@@ -139,8 +139,8 @@ datasets:
       - "fatalities"
     resource_descriptions:
       incidents-current-year: "Resource covering 01 January to {end_date} on [attacks on education](https://insecurityinsight.org/projects/education-in-danger/education-in-danger-monthly-news-brief) based on agency- and open source events. Categorised by country."
-      incidents: "Resource covering 01 January 2020 to {end_date} on [attacks on education](https://insecurityinsight.org/projects/education-in-danger/education-in-danger-monthly-news-brief) based on agency- and open source events. Categorised by country."
-      overview: "Resource covering 01 January 2020 to {end_date} on [attacks on education](https://insecurityinsight.org/projects/education-in-danger/education-in-danger-monthly-news-brief) based on agency- and open source events. Categorised by country and year."
+      incidents: "Resource covering 01 January 2017 to {end_date} on [attacks on education](https://insecurityinsight.org/projects/education-in-danger/education-in-danger-monthly-news-brief) based on agency- and open source events. Categorised by country."
+      overview: "Resource covering 01 January 2017 to {end_date} on [attacks on education](https://insecurityinsight.org/projects/education-in-danger/education-in-danger-monthly-news-brief) based on agency- and open source events. Categorised by country and year."
 
   explosiveWeapons:
     name: "explosive-weapons-use-affecting-aid-access-education-and-healthcare-services"
@@ -198,7 +198,7 @@ country_datasets:
     methodology_other: "Systematically collected from open source, public reports as well as verified submissions from our partner agencies."
     resource_descriptions:
       aidworkerKIKA: "Resource covering 01 January 1997 to {end_date} on aid workers [killed, injured, kidnapped, or arrested (KIKA)](https://insecurityinsight.org/projects/aid-in-danger/aid-security-digests) based on agency- and open source events."
-      education: "Resource covering 01 January 2020 to {end_date} on [attacks on education](https://insecurityinsight.org/projects/education-in-danger/education-in-danger-monthly-news-brief) based on agency- and open source events."
+      education: "Resource covering 01 January 2017 to {end_date} on [attacks on education](https://insecurityinsight.org/projects/education-in-danger/education-in-danger-monthly-news-brief) based on agency- and open source events."
       explosiveWeapons: "Resource covering 01 January 2020 to {end_date} on incidents in which aid access, education and healthcare services were impacted by [explosive weapons](https://insecurityinsight.org/projects/explosive-weapons) based on agency- and open source events."
       healthcare: "Resource covering 01 January 2016 to {end_date} on [attacks on health care](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief) based on agency- and open source events."
       protection: "Resource covering 01 January 2020 to {end_date} on threats and violence at [IDP/Refugee Camps](https://insecurityinsight.org/projects/ensuring-protection/protection-in-danger-monthly-news-brief-2) based on agency- and open source events."

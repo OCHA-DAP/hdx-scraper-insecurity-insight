@@ -44,9 +44,9 @@ class SpreadsheetCreator:
     ) -> Tuple[DataFrame, int, int]:
         if year_filter:
             if field_types[date_field] == "datetime64[ns, UTC]":
-                df = df[df[date_field].dt.year == year_filter]
+                df = df[df[date_field].dt.year >= year_filter]
             else:
-                df = df[df[date_field] == year_filter]
+                df = df[df[date_field] >= year_filter]
         if field_types[date_field] == "datetime64[ns, UTC]":
             start_year = df[date_field].dt.year.min()
             end_year = df[date_field].dt.year.max()
@@ -213,7 +213,11 @@ class SpreadsheetCreator:
                 if isinstance(value, str):
                     if maintopic == "countryYear":
                         self.create_spreadsheet(
-                            maintopic, "overview", value, country_filter=country
+                            maintopic,
+                            "overview",
+                            value,
+                            year_filter=2020,
+                            country_filter=country,
                         )
                     else:
                         self.create_spreadsheet(
