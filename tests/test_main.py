@@ -171,7 +171,7 @@ class TestInsecurityInsight:
                 assert resources == [
                     {
                         "name": "2016-2025 Children in Armed Conflict Incident Data.xlsx",
-                        "description": "Resource covering 01 January 2024 to 31 December 2024 on incidents affecting children and children-related services in conflict zones. Based on agency- and open source events. Categorized by country.",
+                        "description": "Resource covering 01 January 2016 to 31 December 2024 on incidents affecting children and children-related services in conflict zones. Based on agency- and open source events. Categorized by country.",
                         "format": "xlsx",
                     },
                     {
@@ -181,7 +181,7 @@ class TestInsecurityInsight:
                     },
                     {
                         "name": "2016-2025 Children in Armed Conflict Overview Data.xlsx",
-                        "description": "Resource covering 01 January 2024 to 30 December 2025 on incidents affecting children and children-related services in conflict zones. Based on agency- and open source events. Categorized by country and year.",
+                        "description": "Resource covering 01 January 2016 to 30 December 2025 on incidents affecting children and children-related services in conflict zones. Based on agency- and open source events. Categorized by country and year.",
                         "format": "xlsx",
                     },
                 ]

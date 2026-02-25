@@ -64,6 +64,7 @@ class SpreadsheetCreator:
         topic: str,
         topic_type: str,
         proper_name: str,
+        start_year: int,
         year_filter: int | None = None,
         country_filter: str | None = None,
     ):
@@ -125,13 +126,13 @@ class SpreadsheetCreator:
             )
             self._file_paths[file_paths_key] = None
             return
-        filtered_df, start_year, end_year = self.filter_process_dates(
+        filtered_df, _, end_year = self.filter_process_dates(
             df, field_types, date_field, year_filter
         )
         if len(filtered_df) == 0:
             if year_filter:
                 year_filter = year_filter - 1
-                filtered_df, start_year, end_year = self.filter_process_dates(
+                filtered_df, _, end_year = self.filter_process_dates(
                     df, field_types, date_field, year_filter
                 )
             if len(filtered_df) == 0:
@@ -146,7 +147,7 @@ class SpreadsheetCreator:
         elif (
             topic_type == "incidents-current-year"
         ):  # Current year data is not generated for country datasets
-            filename = f"{start_year} {proper_name} Incident Data.xlsx"
+            filename = f"{end_year} {proper_name} Incident Data.xlsx"
         elif topic_type == "overview":
             filename = f"{start_year}-{end_year} {country_iso} {proper_name} Overview Data.xlsx"
         else:
@@ -181,11 +182,16 @@ class SpreadsheetCreator:
             if topic_type == "incidents-current-year":
                 year_filter = current_year
             for maintopic, value in topics_to_update.items():
+                start_year = self._configuration["datasets"][maintopic]["start_year"]
                 if isinstance(value, str):
                     if maintopic == "countryYear":
                         continue
                     self.create_spreadsheet(
-                        maintopic, topic_type, value, year_filter=year_filter
+                        maintopic,
+                        topic_type,
+                        value,
+                        start_year,
+                        year_filter=year_filter,
                     )
                     continue
 
@@ -194,13 +200,21 @@ class SpreadsheetCreator:
                         if topic_type != "overview":
                             continue
                         self.create_spreadsheet(
-                            maintopic, topic_type, proper_name, year_filter=year_filter
+                            maintopic,
+                            topic_type,
+                            proper_name,
+                            start_year,
+                            year_filter=year_filter,
                         )
                         continue
                     if topic_type == "overview":
                         continue
                     self.create_spreadsheet(
-                        topic, topic_type, proper_name, year_filter=year_filter
+                        topic,
+                        topic_type,
+                        proper_name,
+                        start_year,
+                        year_filter=year_filter,
                     )
 
         logger.info("Refreshing all country spreadsheets")
@@ -210,18 +224,24 @@ class SpreadsheetCreator:
             if country == "all":
                 continue
             for maintopic, value in topics_to_update.items():
+                start_year = self._configuration["datasets"][maintopic]["start_year"]
                 if isinstance(value, str):
                     if maintopic == "countryYear":
                         self.create_spreadsheet(
                             maintopic,
                             "overview",
                             value,
+                            start_year,
                             year_filter=2020,
                             country_filter=country,
                         )
                     else:
                         self.create_spreadsheet(
-                            maintopic, "incidents", value, country_filter=country
+                            maintopic,
+                            "incidents",
+                            value,
+                            start_year,
+                            country_filter=country,
                         )
                     continue
 
@@ -229,6 +249,10 @@ class SpreadsheetCreator:
                     if topic == "overview":
                         continue
                     self.create_spreadsheet(
-                        topic, "incidents", proper_name, country_filter=country
+                        topic,
+                        "incidents",
+                        proper_name,
+                        start_year,
+                        country_filter=country,
                     )
         return self._file_paths

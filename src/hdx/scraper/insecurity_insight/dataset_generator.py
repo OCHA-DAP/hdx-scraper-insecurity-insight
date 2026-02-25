@@ -144,6 +144,8 @@ class DatasetGenerator:
                 )
 
         for maintopic, value in self._configuration["topics"].items():
+            if maintopic == "countryYear":
+                continue
             dataset_template = self._configuration["datasets"].get(maintopic)
             if not dataset_template:
                 continue

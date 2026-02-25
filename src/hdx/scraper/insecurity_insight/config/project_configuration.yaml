@@ -37,6 +37,7 @@ datasets:
       - "aid workers"
       - "conflict-violence"
       - "indicators"
+    start_year: 1997
     resource_descriptions:
       incidents-current-year: "Resource covering 01 January to {end_date} on aid workers [killed, injured, kidnapped, or arrested (KIKA)](https://insecurityinsight.org/projects/aid-in-danger/aid-security-digests) based on agency- and open source events. Categorized by country."
       incidents: "Resource covering 01 January 1997 to {end_date} on aid workers [killed, injured, kidnapped, or arrested (KIKA)](https://insecurityinsight.org/projects/aid-in-danger/aid-security-digests) based on agency- and open source events. Categorized by country."
@@ -54,6 +55,7 @@ datasets:
       - "disease"
       - "health"
       - "health facilities"
+    start_year: 2016
     resource_descriptions:
       incidents-current-year: "Resource covering 01 January to {end_date} on [attacks on health care](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief) based on agency- and open source events. Categorised by country."
       incidents: "Resource covering 01 January 2016 to {end_date} on [attacks on health care](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief) based on agency- and open source events. Categorised by country."
@@ -71,6 +73,7 @@ datasets:
       - "disease"
       - "health"
       - "health facilities"
+    start_year: 2016
     resource_descriptions:
       incidents-current-year: "Resource covering 01 January to {end_date} on [attacks on health care](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief) affecting public-health related programmes, including COVID-19, Ebola, and vaccination campaigns. published in the [Attacks on Health Care News Brief](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief). Based on agency- and open source events. Categorized by country."
       incidents: "Resource covering 01 January 2016 to {end_date} on [attacks on health care](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief) affecting public-health related programmes, including COVID-19, Ebola, and vaccination campaigns. published in the [Attacks on Health Care News Brief](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief). Based on agency- and open source events. Categorized by country."
@@ -86,10 +89,11 @@ datasets:
     tags:
       - "children"
       - "conflict-violence"
+    start_year: 2016
     resource_descriptions:
       incidents-current-year: "Resource covering 01 January to {end_date} on incidents affecting children and children-related services in conflict zones. Based on agency- and open source events. Categorized by country."
-      incidents: "Resource covering 01 January 2024 to {end_date} on incidents affecting children and children-related services in conflict zones. Based on agency- and open source events. Categorized by country."
-      overview: "Resource covering 01 January 2024 to {end_date} on incidents affecting children and children-related services in conflict zones. Based on agency- and open source events. Categorized by country and year."
+      incidents: "Resource covering 01 January 2016 to {end_date} on incidents affecting children and children-related services in conflict zones. Based on agency- and open source events. Categorized by country."
+      overview: "Resource covering 01 January 2016 to {end_date} on incidents affecting children and children-related services in conflict zones. Based on agency- and open source events. Categorized by country and year."
 
   fivc:
     name: "conflict-hunger-and-aid-security"
@@ -101,6 +105,7 @@ datasets:
     tags:
       - "conflict-violence"
       - "food security"
+    start_year: 2024
     resource_descriptions:
       incidents-current-year: "Resource covering 01 January to {end_date} on conflict-related incidents with clearly foreseeable impacts on or links to [food systems](https://insecurityinsight.org/conflict-and-hunger) based on agency- and open source events from Burkina Faso, Cameroon, DRC, Iraq, Lebanon, Mali, Myanmar, Niger, OPT, Somalia, Sudan, Syria, Ukraine and Yemen. Categorized by country."
       incidents: "Resource covering 01 January 2024 to {end_date} on conflict-related incidents with clearly foreseeable impacts on or links to [food systems](https://insecurityinsight.org/conflict-and-hunger) based on agency- and open source events from Burkina Faso, Cameroon, DRC, Iraq, Lebanon, Mali, Myanmar, Niger, OPT, Somalia, Sudan, Syria, Ukraine and Yemen. Categorized by country."
@@ -116,6 +121,7 @@ datasets:
     tags:
       - "conflict-violence"
       - "gender-based violence-gbv"
+    start_year: 2020
     resource_descriptions:
       CRSV:
         incidents-current-year: "Resource covering 01 January to {end_date} on incidents of [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings) perpetrated by conflict actors. Categorised by country."
@@ -137,6 +143,7 @@ datasets:
       - "education"
       - "education facilities-schools"
       - "fatalities"
+    start_year: 2017
     resource_descriptions:
       incidents-current-year: "Resource covering 01 January to {end_date} on [attacks on education](https://insecurityinsight.org/projects/education-in-danger/education-in-danger-monthly-news-brief) based on agency- and open source events. Categorised by country."
       incidents: "Resource covering 01 January 2017 to {end_date} on [attacks on education](https://insecurityinsight.org/projects/education-in-danger/education-in-danger-monthly-news-brief) based on agency- and open source events. Categorised by country."
@@ -152,6 +159,7 @@ datasets:
     tags:
       - "complex emergency-conflict-security"
       - "conflict-violence"
+    start_year: 2020
     resource_descriptions:
       incidents-current-year: "Resource covering 01 January to {end_date} on incidents in which aid access, education, healthcare services and food systems were impacted by [explosive weapons](https://insecurityinsight.org/projects/explosive-weapons) based on agency- and open source events. Categorised by country."
       incidents: "Resource covering 01 January 2020 to {end_date} on incidents in which aid access, education, healthcare services and food systems were impacted by [explosive weapons](https://insecurityinsight.org/projects/explosive-weapons) based on agency- and open source events. Categorised by country."
@@ -170,6 +178,7 @@ datasets:
       - "populated places-settlements"
       - "refugee crisis"
       - "refugees"
+    start_year: 2020
     resource_descriptions:
       incidents-current-year: "Resource covering 01 January to {end_date} on threats and violence at [IDP/Refugee Camps](https://insecurityinsight.org/projects/ensuring-protection/protection-in-danger-monthly-news-brief-2) based on agency- and open source events. Categorised by country."
       incidents: "Resource covering 01 January 2020 to {end_date} on threats and violence at [IDP/Refugee Camps](https://insecurityinsight.org/projects/ensuring-protection/protection-in-danger-monthly-news-brief-2) based on agency- and open source events. Categorised by country."
@@ -185,11 +194,14 @@ datasets:
     tags:
       - "conflict-violence"
       - "food security"
+    start_year: 2025
     resource_descriptions:
       incidents-current-year: "Resource covering 01 January to {end_date} on conflict-related incidents with clearly foreseeable impacts on or links to [water systems] based on agency- and open source events from Burkina Faso, Cameroon, DRC, Iraq, Lebanon, Mali, Myanmar, Niger, OPT, Somalia, South Sudan, Sudan, Syria, Ukraine and Yemen. Categorized by country and year."
       incidents: "Resource covering 01 January 2024 to {end_date} on conflict-related incidents with clearly foreseeable impacts on or links to [water systems] based on agency- and open source events from Burkina Faso, Cameroon, DRC, Iraq, Lebanon, Mali, Myanmar, Niger, OPT, Somalia, South Sudan, Sudan, Syria, Ukraine and Yemen. Categorized by country and year."
       overview: "Resource covering 01 January 2024 to {end_date} on conflict-related incidents with clearly foreseeable impacts on or links to [water systems] based on agency- and open source events from Burkina Faso, Cameroon, DRC, Iraq, Lebanon, Mali, Myanmar, Niger, OPT, Somalia, South Sudan, Sudan, Syria, Ukraine and Yemen. Categorized by country and year."
 
+  countryYear:
+    start_year: 2020
 
 country_datasets:
   all:
