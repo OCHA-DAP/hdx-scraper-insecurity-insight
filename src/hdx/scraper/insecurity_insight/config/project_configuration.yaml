@@ -1,0 +1,615 @@
+# Collector specific configuration
+base_url: "https://sind-api.herokuapp.com/hdx/v1/"
+
+country_dataset_basename: "insecurity-insight-country-dataset"
+
+topics:
+  aidworkerKIKA: "Aid Worker KIKA"
+  healthcare: "Attacks on Health Care"
+  vaccinations: "Attacks on Public Health"
+  children: "Children in Armed Conflict"
+  countryYear: ""
+  fivc: "Conflict-Related Incidents Affecting Food Systems"
+  sv:
+     CRSV: "Conflict-Related Sexual Violence (CRSV)"
+     SVPoliticalViolence: "Political-Related Sexual Violence"
+     overview: "Conflict-Related (CRSV) or Political-Related Sexual Violence"
+  education: "Education in Danger"
+  explosiveWeapons: "Explosive Weapons"
+  protection: "Protection in Danger"
+  water: "Conflict-Related Incidents Affecting Water Systems"
+
+topic_types:
+  - "incidents"
+  - "incidents-current-year"
+  - "overview"
+
+datasets:
+  aidworkerKIKA:
+    name: "sind-aid-worker-kka-dataset"
+    title: "Aid Worker KIKA (Killed, Injured, Kidnapped or Arrested) Data"
+    caveats: "Not representative or a comprehensive compilation of all events in which an aid worker was killed, kidnapped, or arrested.  \nKey definitions  \nAid worker: An individual employed by or attached to a humanitarian, UN, international, national, or government aid agency.  \nKilled: Refers to a staff member being killed. Aid worker(s) killed while in captivity are coded as \u2018kidnapped\u2019.  \nKidnapped: Refers to a staff member being kidnapped, missing or taken hostage.  \nArrested: Refers to a staff member being arrested, charged, detained, fined or imprisoned.  \nData collection is ongoing and data may change as more information is made available."
+    notes: "This page contains agency- and publicly-reported data for events in which an aid worker was [killed, injured, kidnapped, or arrested (KIKA)](https://insecurityinsight.org/projects/aid-in-danger/aid-security-digests). Categorized by country. Please get in touch if you are interested in curated Resources: info@insecurityinsight.org"
+    license_id: "cc-by-sa"
+    methodology_other: "Systematically collected from open source, public reports as well as verified submissions from our partner agencies."
+    tags:
+      - "aid worker security"
+      - "aid workers"
+      - "conflict-violence"
+      - "indicators"
+    start_year: 1997
+    resource_descriptions:
+      incidents-current-year: "Resource covering 01 January to {end_date} on aid workers [killed, injured, kidnapped, or arrested (KIKA)](https://insecurityinsight.org/projects/aid-in-danger/aid-security-digests) based on agency- and open source events. Categorized by country."
+      incidents: "Resource covering 01 January 1997 to {end_date} on aid workers [killed, injured, kidnapped, or arrested (KIKA)](https://insecurityinsight.org/projects/aid-in-danger/aid-security-digests) based on agency- and open source events. Categorized by country."
+      overview: "Resource covering 01 January 1997 to {end_date} on aid workers [killed, injured, kidnapped, or arrested (KIKA)](https://insecurityinsight.org/projects/aid-in-danger/aid-security-digests) based on agency- and open source events. Categorized by country and year."
+
+  healthcare:
+    name: "sind-safeguarding-healthcare-monthly-news-briefs-dataset"
+    title: "Attacks on Health Care Data"
+    caveats: "Not representative or a comprehensive compilation of all events affecting the provision of healthcare. Data collection is ongoing and data may change as more information is made available."
+    notes: "This page contains agency- and open source events published in the [Attacks on Health Care News Brief](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief). Categorized by country. Please get in touch if you are interested in curated Resources: info@insecurityinsight.org. For data supporting the Safeguarding Health in Conflict Coalition (SHCC), please see: https://data.humdata.org/dataset/shcchealthcare-dataset"
+    license_id: "cc-by-sa"
+    methodology_other: "Systematically collected from open source using the SiND."
+    tags:
+      - "complex emergency-conflict-security"
+      - "disease"
+      - "health"
+      - "health facilities"
+    start_year: 2016
+    resource_descriptions:
+      incidents-current-year: "Resource covering 01 January to {end_date} on [attacks on health care](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief) based on agency- and open source events. Categorised by country."
+      incidents: "Resource covering 01 January 2016 to {end_date} on [attacks on health care](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief) based on agency- and open source events. Categorised by country."
+      overview: "Resource covering 01 January 2016 to {end_date} on [attacks on health care](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief) based on agency- and open source events. Categorised by country and year."
+
+  vaccinations:
+    name: "attacks-on-vaccination-campaigns"
+    title: "Attacks on Public Health-Related Programmes Data"
+    caveats: "Not representative or a comprehensive compilation of all events affecting the provision of healthcare. Data collection is ongoing and data may change as more information is made available."
+    notes: "This page contains agency- and open source events affecting public-health related programmes, including COVID-19, Ebola, and vaccination campaigns. published in the Attacks on Health Care News Brief. Categorized by country. Please get in touch if you are interested in curated Resources: info@insecurityinsight.org."
+    license_id: "cc-by-sa"
+    methodology_other: "Systematically collected from open source using the SiND."
+    tags:
+      - "complex emergency-conflict-security"
+      - "disease"
+      - "health"
+      - "health facilities"
+    start_year: 2016
+    resource_descriptions:
+      incidents-current-year: "Resource covering 01 January to {end_date} on [attacks on health care](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief) affecting public-health related programmes, including COVID-19, Ebola, and vaccination campaigns. published in the [Attacks on Health Care News Brief](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief). Based on agency- and open source events. Categorized by country."
+      incidents: "Resource covering 01 January 2016 to {end_date} on [attacks on health care](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief) affecting public-health related programmes, including COVID-19, Ebola, and vaccination campaigns. published in the [Attacks on Health Care News Brief](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief). Based on agency- and open source events. Categorized by country."
+      overview: "Resource covering 01 January 2016 to {end_date} on [attacks on health care](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief) affecting public-health related programmes, including COVID-19, Ebola, and vaccination campaigns. published in the [Attacks on Health Care News Brief](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief). Based on agency- and open source events. Categorized by country and year."
+
+  children:
+    name: "children-in-armed-conflict-data"
+    title: "Conflict Incidents Affecting Children and Children-Related Services Incident Data"
+    caveats: "Not representative or a comprehensive compilation of all events affecting the provision of healthcare. Data collection is ongoing and data may change as more information is made available."
+    notes: "This page contains agency- and publicly-reported data for events affecting children and children-related services in conflict zones. Based on agency- and open source events. Categorized by country."
+    license_id: "cc-by-sa"
+    methodology_other: "Systematically collected from open source using the SiND."
+    tags:
+      - "children"
+      - "conflict-violence"
+    start_year: 2016
+    resource_descriptions:
+      incidents-current-year: "Resource covering 01 January to {end_date} on incidents affecting children and children-related services in conflict zones. Based on agency- and open source events. Categorized by country."
+      incidents: "Resource covering 01 January 2016 to {end_date} on incidents affecting children and children-related services in conflict zones. Based on agency- and open source events. Categorized by country."
+      overview: "Resource covering 01 January 2016 to {end_date} on incidents affecting children and children-related services in conflict zones. Based on agency- and open source events. Categorized by country and year."
+
+  fivc:
+    name: "conflict-hunger-and-aid-security"
+    title: "Conflict-Related Incidents Affecting Food Systems"
+    caveats: "Not representative or a comprehensive compilation of all events impacting food security. Data collection is ongoing and data may change as more information is made available."
+    notes: "This page contains data on conflict events with clearly foreseeable impacts on or links to food systems based on agency-and open source events. Covers Cameroon, DRC, Lebanon, Mali, Myanmar, Niger, oPt, Somalia, Sudan, Syria and Yemen. Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    license_id: "cc-by-igo"
+    methodology_other: "Systematically collected from open source using the SiND."
+    tags:
+      - "conflict-violence"
+      - "food security"
+    start_year: 2024
+    resource_descriptions:
+      incidents-current-year: "Resource covering 01 January to {end_date} on conflict-related incidents with clearly foreseeable impacts on or links to [food systems](https://insecurityinsight.org/conflict-and-hunger) based on agency- and open source events from Burkina Faso, Cameroon, DRC, Iraq, Lebanon, Mali, Myanmar, Niger, OPT, Somalia, Sudan, Syria, Ukraine and Yemen. Categorized by country."
+      incidents: "Resource covering 01 January 2024 to {end_date} on conflict-related incidents with clearly foreseeable impacts on or links to [food systems](https://insecurityinsight.org/conflict-and-hunger) based on agency- and open source events from Burkina Faso, Cameroon, DRC, Iraq, Lebanon, Mali, Myanmar, Niger, OPT, Somalia, Sudan, Syria, Ukraine and Yemen. Categorized by country."
+      overview: "Resource covering 01 January 2024 to {end_date} on conflict-related incidents with clearly foreseeable impacts on or links to [food systems](https://insecurityinsight.org/conflict-and-hunger) based on agency- and open source events from Burkina Faso, Cameroon, DRC, Iraq, Lebanon, Mali, Myanmar, Niger, OPT, Somalia, Sudan, Syria, Ukraine and Yemen. Categorized by country and year."
+
+  sv:
+    name: "conflict-related-sexual-violence"
+    title: "Conflict-Related (CRSV) or Political-Related Sexual Violence Data"
+    caveats: "The incidents reported are not a complete nor a representative list of all incidents and have not been independently verified."
+    notes: "This page contains publicly-reported cases of conflict-related and political [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings) by conflict actors, security personnel, and sexual violence violence that targets aid workers, educators, health workers and IDPS/refugees. Please get in touch if you are interested in curated Resources: info@insecurityinsight.org"
+    license_id: "cc-by"
+    methodology_other: "Systematically collected from open source, public reports as well as verified submissions from our partner agencies."
+    tags:
+      - "conflict-violence"
+      - "gender-based violence-gbv"
+    start_year: 2020
+    resource_descriptions:
+      CRSV:
+        incidents-current-year: "Resource covering 01 January to {end_date} on incidents of [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings) perpetrated by conflict actors. Categorised by country."
+        incidents: "Resource covering 01 January 2020 to {end_date} on incidents of [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings) perpetrated by conflict actors. Categorised by country."
+      SVPoliticalViolence:
+        incidents-current-year: "Resource covering 01 January to {end_date} on incidents of [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings) perpetrated by police or state security personnel. Categorised by country."
+        incidents: "Resource covering 01 January 2020 to {end_date} on incidents of [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings) perpetrated by police or state security personnel. Categorised by country."
+      overview: "Resource covering 01 January 2020 to {end_date} on incidents of [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings) perpetrated by conflict actors, security personnel, and sexual violence that targets aid workers, educators, health workers and IDPs/refugees. Categorised by country and year."
+
+  education:
+    name: "sind-education-in-danger-monthly-news-briefs-dataset"
+    title: "Education in Danger Data"
+    caveats: "Not representative or a comprehensive compilation of all events affecting the provision of education."
+    notes: "This page contains agency- and open source events published in the [Education in Danger Monthly News Brief](https://insecurityinsight.org/projects/education-in-danger/education-in-danger-monthly-news-brief). Categorized by country. Please get in touch if you are interested in curated Resources: info@insecurityinsight.org"
+    license_id: "cc-by-sa"
+    methodology_other: "Systematically collected from open source using the SiND."
+    tags:
+      - "damage assessment"
+      - "education"
+      - "education facilities-schools"
+      - "fatalities"
+    start_year: 2017
+    resource_descriptions:
+      incidents-current-year: "Resource covering 01 January to {end_date} on [attacks on education](https://insecurityinsight.org/projects/education-in-danger/education-in-danger-monthly-news-brief) based on agency- and open source events. Categorised by country."
+      incidents: "Resource covering 01 January 2017 to {end_date} on [attacks on education](https://insecurityinsight.org/projects/education-in-danger/education-in-danger-monthly-news-brief) based on agency- and open source events. Categorised by country."
+      overview: "Resource covering 01 January 2017 to {end_date} on [attacks on education](https://insecurityinsight.org/projects/education-in-danger/education-in-danger-monthly-news-brief) based on agency- and open source events. Categorised by country and year."
+
+  explosiveWeapons:
+    name: "explosive-weapons-use-affecting-aid-access-education-and-healthcare-services"
+    title: "Explosive Weapons Monitor Data by Insecurity Insight"
+    caveats: "Not representative or a comprehensive compilation of all incidents in which aid access, education and healthcare services were impacted by explosive weapons use since 2020."
+    notes: "This page contains agency- and open source events in which aid access, education, food systems and health care services were impacted by [explosive weapons](https://insecurityinsight.org/projects/explosive-weapons). Categorized by country. Insecurity Insight collaborates with the [International Network on Explosive Weapons (INEW)](https://www.inew.org/) in producing research and analysis on the harm and use of explosive weapons for the [Explosive Weapons Monitor](https://www.explosiveweaponsmonitor.org/) by documenting their effects on health care, education, food systems and aid access. Please get in touch if you are interested in curated Resources: info@insecurityinsight.org"
+    license_id: "cc-by-sa"
+    methodology_other: "Systematically collected from open source, public reports as well as verified submissions from our partner agencies."
+    tags:
+      - "complex emergency-conflict-security"
+      - "conflict-violence"
+    start_year: 2020
+    resource_descriptions:
+      incidents-current-year: "Resource covering 01 January to {end_date} on incidents in which aid access, education, healthcare services and food systems were impacted by [explosive weapons](https://insecurityinsight.org/projects/explosive-weapons) based on agency- and open source events. Categorised by country."
+      incidents: "Resource covering 01 January 2020 to {end_date} on incidents in which aid access, education, healthcare services and food systems were impacted by [explosive weapons](https://insecurityinsight.org/projects/explosive-weapons) based on agency- and open source events. Categorised by country."
+      overview: "Resource covering 01 January 2020 to {end_date} on incidents in which aid access, education, healthcare services and food systems were impacted by [explosive weapons](https://insecurityinsight.org/projects/explosive-weapons) based on agency- and open source events. Categorised by country and year."
+
+  protection:
+    name: "sind-protection-in-danger-monthly-news-briefs-dataset"
+    title: "Protection in Danger Data"
+    caveats: "Not representative or a comprehensive compilation of all events affecting the provision of healthcare. Data collection is ongoing and data may change as more information is made available."
+    notes: "This page contains violent agency- and open source events affecting refugee and IDP camps published in the [Protection in Danger Monthly News Brief](https://insecurityinsight.org/projects/ensuring-protection/protection-in-danger-monthly-news-brief-2). Categorized by country. Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    license_id: "cc-by-sa"
+    methodology_other: "Systematically collected from open source using the SiND."
+    tags:
+      - "aid worker security"
+      - "internally displaced persons-idp"
+      - "populated places-settlements"
+      - "refugee crisis"
+      - "refugees"
+    start_year: 2020
+    resource_descriptions:
+      incidents-current-year: "Resource covering 01 January to {end_date} on threats and violence at [IDP/Refugee Camps](https://insecurityinsight.org/projects/ensuring-protection/protection-in-danger-monthly-news-brief-2) based on agency- and open source events. Categorised by country."
+      incidents: "Resource covering 01 January 2020 to {end_date} on threats and violence at [IDP/Refugee Camps](https://insecurityinsight.org/projects/ensuring-protection/protection-in-danger-monthly-news-brief-2) based on agency- and open source events. Categorised by country."
+      overview: "Resource covering 01 January 2020 to {end_date} on threats and violence at [IDP/Refugee Camps](https://insecurityinsight.org/projects/ensuring-protection/protection-in-danger-monthly-news-brief-2) based on agency- and open source events. Categorised by country and country."
+
+  water:
+    name: "conflict-related-incidents-affecting-water-systems"
+    title: "Conflict-Related Incidents Affecting Water Systems"
+    caveats: "Not representative or a comprehensive compilation of all events impacting food security. Data collection is ongoing and data may change as more information is made available."
+    notes: "This page contains data on conflict events with clearly foreseeable impacts on or links to water systems based on agency-and open source events. Categorized by country. Covers Cameroon, DRC, Lebanon, Mali, Myanmar, Niger, oPt, Somalia, Sudan, Syria and Yemen. Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    license_id: "cc-by-igo"
+    methodology_other: "Systematically collected from open source using the SiND."
+    tags:
+      - "conflict-violence"
+      - "food security"
+    start_year: 2025
+    resource_descriptions:
+      incidents-current-year: "Resource covering 01 January to {end_date} on conflict-related incidents with clearly foreseeable impacts on or links to [water systems] based on agency- and open source events from Burkina Faso, Cameroon, DRC, Iraq, Lebanon, Mali, Myanmar, Niger, OPT, Somalia, South Sudan, Sudan, Syria, Ukraine and Yemen. Categorized by country and year."
+      incidents: "Resource covering 01 January 2024 to {end_date} on conflict-related incidents with clearly foreseeable impacts on or links to [water systems] based on agency- and open source events from Burkina Faso, Cameroon, DRC, Iraq, Lebanon, Mali, Myanmar, Niger, OPT, Somalia, South Sudan, Sudan, Syria, Ukraine and Yemen. Categorized by country and year."
+      overview: "Resource covering 01 January 2024 to {end_date} on conflict-related incidents with clearly foreseeable impacts on or links to [water systems] based on agency- and open source events from Burkina Faso, Cameroon, DRC, Iraq, Lebanon, Mali, Myanmar, Niger, OPT, Somalia, South Sudan, Sudan, Syria, Ukraine and Yemen. Categorized by country and year."
+
+  countryYear:
+    start_year: 2020
+
+country_datasets:
+  all:
+    caveats: "The incidents reported are not a complete nor a representative list of all incidents and have not been independently verified."
+    license_id: "cc-by-sa"
+    methodology_other: "Systematically collected from open source, public reports as well as verified submissions from our partner agencies."
+    resource_descriptions:
+      aidworkerKIKA: "Resource covering 01 January 1997 to {end_date} on aid workers [killed, injured, kidnapped, or arrested (KIKA)](https://insecurityinsight.org/projects/aid-in-danger/aid-security-digests) based on agency- and open source events."
+      education: "Resource covering 01 January 2017 to {end_date} on [attacks on education](https://insecurityinsight.org/projects/education-in-danger/education-in-danger-monthly-news-brief) based on agency- and open source events."
+      explosiveWeapons: "Resource covering 01 January 2020 to {end_date} on incidents in which aid access, education and healthcare services were impacted by [explosive weapons](https://insecurityinsight.org/projects/explosive-weapons) based on agency- and open source events."
+      healthcare: "Resource covering 01 January 2016 to {end_date} on [attacks on health care](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief) based on agency- and open source events."
+      protection: "Resource covering 01 January 2020 to {end_date} on threats and violence at [IDP/Refugee Camps](https://insecurityinsight.org/projects/ensuring-protection/protection-in-danger-monthly-news-brief-2) based on agency- and open source events."
+      fivc: "Resource covering 01 January 2024 to {end_date} on incidents with clearly foreseeable impacts on or links to [food security](https://insecurityinsight.org/conflict-and-hunger) based on agency- and open source events."
+      water: "Resource covering 01 January 2024 to {end_date} on conflict-incidents affected water systems based on agency- and open source events."
+      CRSV: "Resource covering 01 January 2020 to {end_date} on publicly-reported incidents of [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings) perpetrated by conflict actors (CRSV)."
+      SVPoliticalViolence: "Resource covering 01 January 2020 to {end_date} on incidents of [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings) perpetrated by police or state security personnel as part of political violence."
+      countryYear: "Resource covering 01 January 2020 to {end_date} on [attacks on health care](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief), [killed, injured, kidnapped, or arrested (KIKA)](https://insecurityinsight.org/projects/aid-in-danger/aid-security-digests),  [sexual violence](https://insecurityinsight.org/projects/reporting-sexual-violence-and-abuse-in-conflict-settings), [attacks on education](https://insecurityinsight.org/projects/education-in-danger/education-in-danger-monthly-news-brief), [explosive weapons](https://insecurityinsight.org/projects/explosive-weapons), [IDP/Refugee Camps](https://insecurityinsight.org/projects/ensuring-protection/protection-in-danger-monthly-news-brief-2), and [Food Security](https://insecurityinsight.org/projects/healthcare/monthlynewsbrief) based on agency- and open source events. Categorised by year."
+    tags:
+      aidworkerKIKA:
+        - "aid worker security"
+        - "aid workers"
+        - "conflict-violence"
+        - "indicators"
+      education:
+        - "damage assessment"
+        - "education"
+        - "education facilities-schools"
+        - "fatalities"
+      explosiveWeapons:
+        - "complex emergency-conflict-security"
+        - "conflict-violence"
+      healthcare:
+        - "complex emergency-conflict-security"
+        - "disease"
+        - "health"
+        - "health facilities"
+      vaccinations:
+        - "complex emergency-conflict-security"
+        - "disease"
+        - "health"
+        - "health facilities"
+      protection:
+        - "aid worker security"
+        - "internally displaced persons-idp"
+        - "populated places-settlements"
+        - "refugee crisis"
+        - "refugees"
+      fivc:
+        - "conflict-violence"
+        - "food security"
+      water:
+        - "conflict-violence"
+        - "food security"
+      CRSV:
+        - "conflict-violence"
+        - "gender-based violence-gbv"
+      SVPoliticalViolence:
+        - "conflict-violence"
+        - "gender-based violence-gbv"
+
+  AFG:
+    name: "afghanistan-violence-against-civilians-and-vital-civilian-facilities"
+    title: "Afghanistan (AFG): Attacks on Aid Operations, Education and Health Care, and Political-Related Sexual Violence and Explosive Weapons Incident Data"
+    notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, education and health care services in [Afghanistan](https://insecurityinsight.org/country-pages/afghanistan). They also provide information on incidents of explosive weapons use affecting aid access, education, and health care services as well information on incidents of political related sexual violence.    Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports. Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "education"
+      - "explosiveWeapons"
+      - "healthcare"
+      - "svPoliticalViolence"
+      - "countryYear"
+  BDI:
+    name: "burundi-bdi-attacks-on-education-and-health-care-and-conflict-related-sexual-violence-incident-data"
+    title: "Burundi (BDI): Attacks on Education and Health Care and Conflict-Related Sexual Violence Incident Data"
+    notes: "This page contains information on reported incidents of violence and threats affecting education and health care services in Burundi.  They also provide information on incidents of conflict related sexual violence (CRSV)  Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "CRSV"
+      - "education"
+      - "healthcare"
+      - "countryYear"
+  BFA:
+    name: "burkina-faso-violence-against-civilians-and-vital-civilian-facilities"
+    title: "Burkina Faso (BFA): Attacks on Aid Operations, Education, Food and Water Systems and Health Care"
+    notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, education, food systems and health care services in [Burkina Faso](https://insecurityinsight.org/country-pages/burkina-faso). Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.   Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "education"
+      - "explosiveWeapons"
+      - "fivc"
+      - "healthcare"
+      - "water"
+      - "countryYear"
+  BGD:
+    name: "bangladesh-bgd-attacks-on-protection"
+    title: "Bangladesh (BGD): Attacks on IDP/Refugee Camps"
+    notes: "This page contains information on violent and threatening incidents affecting refugee/IDP camps in Bangladesh. Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "protection"
+  CAF:
+    name: "car-violence-against-civilians-and-vital-civlian-facilities"
+    title: "Central African Republic (CFA): Attacks on Aid Operations, Education and Health Care"
+    notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, education and health care services in the [CAR](https://insecurityinsight.org/country-pages/central-african-republic). Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports. Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "education"
+      - "explosiveWeapons"
+      - "healthcare"
+      - "countryYear"
+  CMR:
+    name: "cameroon-attacks-on-civilians-and-vital-civilian-facilities"
+    title: "Cameroon (CMR): Attacks on Aid Operations, Education, Food and Water Systems and Health Care and IDP/Refugee Camps, and Conflict-Related Sexual Violence"
+    notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, education, food systems and health care services in [Cameroon](https://insecurityinsight.org/country-pages/cameroon). They also provide information on incidents of conflict related sexual violence (CRSV).  Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.   Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "CRSV"
+      - "education"
+      - "explosiveWeapons"
+      - "fivc"
+      - "healthcare"
+      - "protection"
+      - "water"
+      - "countryYear"
+  COD:
+    name: "attacks-on-ebola-response"
+    title: "Democratic Republic of the Congo (COD): Attacks on Aid Operations, Education, Food and Water Systems, Health Care and IDP/Refugee Camps, and Conflict-Related or Political-Related Sexual Violence and Explosive Weapons Incident Data"
+    notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, education, food security, health care services and refugee and IDP camps in the [DRC](https://insecurityinsight.org/country-pages/democratic-republic-of-the-congo). They also provide information on incidents of explosive weapons use affecting aid access, education, food systems and health care services as well information on incidents of conflict related sexual violence (CRSV).   Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.   Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "CRSV"
+      - "education"
+      - "explosiveWeapons"
+      - "explosiveWeapons"
+      - "fivc"
+      - "healthcare"
+      - "protection"
+      - "SVPoliticalViolence"
+      - "water"
+      - "countryYear"
+  COL:
+    name: "colombia-col-attacks-on-aid-operations-education-health-care-data"
+    title: "Colombia (COL): Attacks on Aid Operations, Education, Health Care, and Political-Related Sexual Violence and Explosive Weapons Incident Data"
+    notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, education, health care services in [Colombia](https://insecurityinsight.org/columbia). They also provide information on incidents on political-related sexual violence as well as information on incidents of explosive weapons use affecting aid access, education and health care services.  Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.   Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "education"
+      - "explosiveWeapons"
+      - "healthcare"
+      - "SVPoliticalViolence"
+      - "countryYear"
+  ETH:
+    name: "ethiopia-attacks-on-aid-operations-education-health-and-protection"
+    title: "Ethiopia (ETH): Attacks on Aid Operations, Education, Health Care and IDP/Refugee Camps, and Conflict-Related Sexual Violence and Explosive Weapons Incident Data"
+    notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, education, health care services and refugee and IDP camps in [Ethiopia](https://insecurityinsight.org/country-pages/ethiopia). They also provide information on incidents of conflict related sexual violence (CRSV) and explosive weapons use affecting aid access, education and health care services.   Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.   Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "CRSV"
+      - "education"
+      - "explosiveWeapons"
+      - "healthcare"
+      - "protection"
+      - "countryYear"
+  HTI:
+    name: "haiti-attacks-on-aid-operations-education-health-and-protection"
+    title: "Haiti (HTI): Attacks on Aid Operations, Education and Health Care, and Conflict-Related Sexual Violence Incident Data"
+    notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, and health care services in [Haiti](https://insecurityinsight.org/country-pages/haiti). They also provide information on incidents of conflict related sexual violence (CRSV).  Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.   Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "CRSV"
+      - "education"
+      - "healthcare"
+      - "countryYear"
+  IND:
+    name: "india-ind-attacks-on-education-and-health-care"
+    title: "India (IND): Attacks on Education and Health Care"
+    notes: "This page contains information on reported incidents of violence and threats affecting education and health care services in India.  Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.   Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "education"
+      - "explosiveWeapons"
+      - "healthcare"
+      - "countryYear"
+  IRN:
+    name: "iran-violent-and-threatening-incidents-against-healthcare"
+    title: "Iran (IRN): Attacks on Aid Operations, Education, Health Care, and Political-Related Sexual Violence and Explosive Weapons Incident Data"
+    notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, education, health care services in Iran. They also provide information on incidents on political-related sexual violence as well as information on incidents of explosive weapons use affecting aid access, education and health care services.  Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.   Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "education"
+      - "explosiveWeapons"
+      - "healthcare"
+      - "SVPoliticalViolence"
+      - "countryYear"
+  IRQ:
+    name: "iraq-violence-against-civilians-and-vital-civilian-facilities"
+    title: "Iraq (IRQ): Attacks on Aid Operations, Education, Food and Water Systems and Health Care"
+    notes: "These datasets contain information on reported incidents of violence and threats affecting aid operations and workers, and health care services in Iraq. Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.  \n  \nPlease get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "education"
+      - "explosiveWeapons"
+      - "fivc"
+      - "healthcare"
+      - "water"
+      - "countryYear"
+  ISR:
+    name: "israel-isr-attacks-on-aid-operations-education-health-care-incident-data"
+    title: "Israel (ISR): Attacks on Aid Operations, Education, Health Care, and Political-Related Sexual Violence and Explosive Weapons Incident Data"
+    notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, education, health care services in Israel. They also provide information on incidents on political-related sexual violence as well as information on incidents of explosive weapons use affecting aid access, education and health care services.  Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.   Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "CRSV"
+      - "education"
+      - "explosiveWeapons"
+      - "healthcare"
+      - "countryYear"
+  LBN:
+    name: "aid-security-risk-in-lebanon"
+    title: "Lebanon (LBN): Attacks on Aid Operations, Education, Food and Water Systems, Health Care and IDP/Refugee Camps and Explosive Weapons Incident Data"
+    notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, education, food systems and health care services and refugee and IDP camps in [Lebanon](https://insecurityinsight.org/country-pages/lebanon). They also provide information on incidents of explosive weapons use affecting aid access, education, food systems and health care services.   Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.   Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "education"
+      - "explosiveWeapons"
+      - "fivc"
+      - "healthcare"
+      - "protection"
+      - "water"
+      - "countryYear"
+  LBY:
+    name: "libya-violence-against-civilians-and-vital-civilian-facilities"
+    title: "Libya (LBY): Attacks on Aid Operations, Education and Health Care, and Explosive Weapons Incident Data"
+    notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, and health care services in [Libya](https://insecurityinsight.org/country-pages/libya). They also provide information on incidents of explosive weapons use affecting aid access, education and health care services.    Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.   Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "education"
+      - "explosiveWeapons"
+      - "healthcare"
+      - "countryYear"
+  MEX:
+    name: "mexico-violent-and-threatening-incidents-against-health-care"
+    title: "Mexico (MEX): Attacks on Aid Operations, Education and Health Care"
+    notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, education, and health care services in [Mexico](https://insecurityinsight.org/country-pages/mexico).   Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.   Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "education"
+      - "healthcare"
+      - "countryYear"
+  MLI:
+    name: "mali-violence-against-civilians-and-vital-civilian-facilities"
+    title: "Mali (MLI): Attacks on Aid Operations, Education, Food and Water Systems and Health Care"
+    notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, education, food systems and health care services in [Mali](https://insecurityinsight.org/country-pages/mali).   Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.   Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "education"
+      - "explosiveWeapons"
+      - "fivc"
+      - "healthcare"
+      - "water"
+      - "countryYear"
+  MMR:
+    name: "myanmar-attacks-on-aid-operations-education-health-and-protection"
+    title: "Myanmar (MMR): Attacks on Aid Operations, Education, Health Care, Food and Water Systems and IDP/Refugee Camps, and Conflict-Related Sexual Violence and Explosive Weapons Incident Data"
+    notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, education, food systems, health care services and refugee and IDP camps in [Myanmar](https://insecurityinsight.org/country-pages/myanmar). They also provide information on incidents of explosive weapons use affecting aid access, education, food systems and health care services as well information on incidents of conflict related sexual violence (CRSV).   Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.   Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "CRSV"
+      - "education"
+      - "explosiveWeapons"
+      - "fivc"
+      - "healthcare"
+      - "protection"
+      - "SVPoliticalViolence"
+      - "water"
+      - "countryYear"
+  MOZ:
+    name: "mozambique-attacks-on-aid-operations-education-health-and-protection"
+    title: "Mozambique (MOZ): Attacks on Aid Operations, Education and Health Care"
+    notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, education and health care services in [Mozambique](https://insecurityinsight.org/country-pages/mozambique).   Also included are datasets cited in the Safeguarding Health in Conflict Coalition (SHCC)'s annual reports.   Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "education"
+      - "healthcare"
+      - "countryYear"
+  NER:
+    name: "niger-violence-against-cvilians-and-vital-civilian-facilities"
+    title: "Niger (NER): Attacks on Aid Operations, Education, Food and Water Systems and Health Care"
+    notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, education, food systems and health care services in [Niger](https://insecurityinsight.org/country-pages/niger).   Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.   Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "education"
+      - "explosiveWeapons"
+      - "fivc"
+      - "healthcare"
+      - "water"
+      - "countryYear"
+  NGA:
+    name: "nigeria-violence-agaiinst-civilians-and-vital-civilian-faciltties"
+    title: "Nigeria (NGA): Attacks on Aid Operations, Education, Health Care and IDP/Refugee Camps, and Conflict-Related Sexual Violence Incident Data"
+    notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, education, health care services and refugee and IDP camps in [Nigeria](https://insecurityinsight.org/country-pages/nigeria). They also provide information on incidents of conflict related sexual violence (CRSV).   Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.   Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "CRSV"
+      - "education"
+      - "explosiveWeapons"
+      - "healthcare"
+      - "protection"
+      - "countryYear"
+  PAK:
+    name: "pakistan-violence-against-civilians-and-vital-civilian-facilities"
+    title: "Pakistan (PAK): Attacks on Aid Operations, Education and Health Care"
+    notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, education and health care services in [Pakistan](https://insecurityinsight.org/pakistan).   Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.   Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "education"
+      - "explosiveWeapons"
+      - "healthcare"
+      - "countryYear"
+  PSE:
+    name: "opt-violent-and-threatening-incidents-against-healthcare"
+    title: "State of Palestine (PSE): Attacks on Aid Operations, Education, Food and Water Systems, Health Care and IDP/Refugee Camps, and Conflict-Related Sexual Violence and Explosive Weapons Incident Data"
+    notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, education, food systems, health care services and refugee and IDP camps in the [oPt](https://insecurityinsight.org/country-pages/occupied-palestinian-territory-opt). They also provide information on incidents of conflict related sexual violence (CRSV) and explosive weapons use affecting aid access, education, food security and health care services.   Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.   Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "CRSV"
+      - "education"
+      - "explosiveWeapons"
+      - "fivc"
+      - "healthcare"
+      - "protection"
+      - "water"
+      - "countryYear"
+  SDN:
+    name: "sudan-violence-against-civilians-and-vital-civilian-facilities"
+    title: "Sudan (SDN): Attacks on Aid Operations, Education, Food and Water Systems, Health Care and IDP/Refugee Camps, and Conflict-Related or Political-Related Sexual Violence and Explosive Weapons Incident Data"
+    notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, education, food systems, health care services and refugee and IDP camps in [Sudan](https://insecurityinsight.org/country-pages/sudan). They also provide information on incidents of conflict related sexual violence (CRSV), political-related sexual violence and explosive weapons use affecting aid access, education, food systems and health care services.   Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.   Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "CRSV"
+      - "education"
+      - "explosiveWeapons"
+      - "fivc"
+      - "healthcare"
+      - "protection"
+      - "SVPoliticalViolence"
+      - "water"
+      - "countryYear"
+  SOM:
+    name: "somalia-violence-agaiinst-civilian-and-vital-civilian-facilitites"
+    title: "Somalia (SOM): Attacks on Aid Operations, Education, Food and Water Systems and Health Care"
+    notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, education, food systems and health care services in [Somalia](https://insecurityinsight.org/country-pages/somalia).   Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.   Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "education"
+      - "explosiveWeapons"
+      - "fivc"
+      - "healthcare"
+      - "water"
+      - "countryYear"
+  SSD:
+    name: "south-sudan-attacks-on-civilians-and-vital-civilian-facilities"
+    title: "South Sudan (SSD): Attacks on Aid Operations, Education, Health Care, Food and Water Systems, and IDP/Refugee Camps, and Conflict-Related Sexual Violence Incident Data"
+    notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, education, food systems, health care services and refugee and IDP camps in [South Sudan](https://insecurityinsight.org/country-pages/south-sudan). They also provide information on incidents of conflict related sexual violence (CRSV).   Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.   Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "CRSV"
+      - "education"
+      - "explosiveWeapons"
+      - "fivc"
+      - "healthcare"
+      - "protection"
+      - "water"
+      - "countryYear"
+  SYR:
+    name: "syria-violent-and-threatening-incidents-against-healthcare"
+    title: "Syria (SYR): Attacks on Aid Operations, Education, Food and Water Systems, Health Care and IDP/Refugee Camps, and Conflict-Related Sexual Violence and Explosive Weapons Incident Data"
+    notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, education, food systems, health care services and refugee and IDP camps in [Syria](https://insecurityinsight.org/country-pages/syria). They also provide information on incidents of conflict-related sexual violence (CRSV) and explosive weapons use affecting aid access, education, food systems and health care services.    Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.   Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "CRSV"
+      - "education"
+      - "explosiveWeapons"
+      - "fivc"
+      - "healthcare"
+      - "protection"
+      - "water"
+      - "countryYear"
+  UKR:
+    name: "ukraine-data-on-attacks-on-aid-operations-education-health-and-protection"
+    title: "Ukraine (UKR): Attacks on Aid Operations, Education, Food and Water Systems and Health Care, and Conflict-Related and Explosive Weapons Incident Data"
+    notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, education, food systems, health care services and refugee and IDP camps in [Ukraine](https://insecurityinsight.org/country-pages/ukraine).They also provide information on incidents of conflict-related sexual violence (CRSV) and explosive weapons use affecting aid access, education, food systems and health care services.   Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.   Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "CRSV"
+      - "education"
+      - "explosiveWeapons"
+      - "fivc"
+      - "healthcare"
+      - "water"
+      - "countryYear"
+  YEM:
+    name: "yemen-violence-aganist-civilian-and-vital-civilian-faciltities"
+    title: "Yemen (YEM): Attacks on Aid Operations, Education, Food and Water Systems, Health Care and IDP/Refugee Camps, and Explosive Weapons Incident Data"
+    notes: "This page contains information on reported incidents of violence and threats affecting aid operations and workers, education, food systems, health care services and refugee and IDP camps in [Yemen](https://insecurityinsight.org/country-pages/yemen). They also provide information on incidents of explosive weapons use affecting aid access, food systems, education and health care services.   Also included are datasets cited in the [Safeguarding Health in Conflict Coalition (SHCC)'s](https://www.safeguardinghealth.org/) annual reports.   Please get in touch if you are interested in curated datasets: info@insecurityinsight.org"
+    topics:
+      - "aidworkerKIKA"
+      - "education"
+      - "explosiveWeapons"
+      - "fivc"
+      - "healthcare"
+      - "protection"
+      - "water"
+      - "countryYear"
