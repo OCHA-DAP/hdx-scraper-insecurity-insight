@@ -19,11 +19,11 @@ certifi==2026.2.25
     # via
     #   -c requirements.txt
     #   requests
-chardet==6.0.0.post1
+chardet==7.0.1
     # via
     #   -c requirements.txt
     #   frictionless
-charset-normalizer==3.4.4
+charset-normalizer==3.4.5
     # via
     #   -c requirements.txt
     #   requests
@@ -74,7 +74,7 @@ hdx-python-country==4.1.1
     #   -c requirements.txt
     #   hdx-scraper-insecurity-insight (pyproject.toml)
     #   hdx-python-api
-hdx-python-utilities==4.0.7
+hdx-python-utilities==4.0.8
     # via
     #   -c requirements.txt
     #   hdx-scraper-insecurity-insight (pyproject.toml)
@@ -140,7 +140,7 @@ mdurl==0.1.2
     # via
     #   -c requirements.txt
     #   markdown-it-py
-numpy==2.4.2
+numpy==2.4.3
     # via
     #   -c requirements.txt
     #   pandas
@@ -242,7 +242,7 @@ ruamel-yaml==0.19.1
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
-setuptools==82.0.0
+setuptools==82.0.1
     # via
     #   -c requirements.txt
     #   ckanapi
@@ -273,7 +273,7 @@ tableschema-to-template==0.0.13
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
-tabulate==0.9.0
+tabulate==0.10.0
     # via
     #   -c requirements.txt
     #   frictionless
@@ -296,7 +296,6 @@ typing-extensions==4.15.0
     #   hdx-python-utilities
     #   pydantic
     #   pydantic-core
-    #   referencing
     #   typing-inspection
 typing-inspection==0.4.2
     # via

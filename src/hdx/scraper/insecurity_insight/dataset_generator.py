@@ -281,8 +281,6 @@ class DatasetGenerator:
             [x["id"] for x in resources_check if x["name"] not in resource_list_names]
         )
 
-        revised_dataset.reorder_resources(
-            hxl_update=False, resource_ids=reordered_resource_ids
-        )
+        revised_dataset.reorder_resources(resource_ids=reordered_resource_ids)
 
         return
