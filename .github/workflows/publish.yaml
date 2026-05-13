@@ -47,4 +47,4 @@ jobs:
           context: .
           push: true
 
-          tags: public.ecr.aws/unocha/hdx-scraper-insecurity_insight:${{ steps.tag_info.outputs.IMAGE_TAG }}
+          tags: public.ecr.aws/unocha/hdx-scraper-insecurity-insight:${{ steps.tag_info.outputs.IMAGE_TAG }}
