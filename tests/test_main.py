@@ -141,7 +141,7 @@ class TestInsecurityInsight:
                         {"name": "zmb"},
                     ],
                     "license_id": "cc-by-sa",
-                    "maintainer": "196196be-6037-4488-8b71-d786adf4c081",
+                    "maintainer": "878dc76d-d357-4dce-8562-59f6421714e1",
                     "methodology": "Other",
                     "methodology_other": "Systematically collected from open source using the "
                     "SiND.",
