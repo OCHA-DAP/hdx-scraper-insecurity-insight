@@ -1,7 +1,6 @@
 import re
 from datetime import datetime
 from os.path import basename
-from typing import List, Tuple
 
 from hdx.api.configuration import Configuration
 from hdx.data.dataset import Dataset
@@ -36,7 +35,7 @@ class DatasetGenerator:
         self,
         file_type: str,
         countries: list,
-    ) -> Tuple[datetime | None, datetime | None]:
+    ) -> tuple[datetime | None, datetime | None]:
         start_date_str, end_date_str = get_dates_from_api_response(
             self._api_cache[file_type], countries
         )
@@ -235,7 +234,7 @@ class DatasetGenerator:
         return topic_datasets_to_update + country_datasets_to_update
 
     def delete_and_reorder_resources(
-        self, dataset: Dataset, new_resources: List[Resource]
+        self, dataset: Dataset, new_resources: list[Resource]
     ) -> None:
         resource_list_names = [x["name"] for x in new_resources]
         resources_check = dataset.get_resources()

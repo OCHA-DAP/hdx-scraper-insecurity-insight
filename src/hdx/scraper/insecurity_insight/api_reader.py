@@ -1,5 +1,4 @@
 import logging
-from typing import Optional
 
 from hdx.api.configuration import Configuration
 from hdx.location.country import Country
@@ -23,7 +22,7 @@ class APIReader:
 
     @staticmethod
     def censor_location(
-        api_response: list[dict], countries: Optional[list[str]] = None
+        api_response: list[dict], countries: list[str] | None = None
     ) -> list[dict]:
         censored_rows = []
 
@@ -82,7 +81,7 @@ class APIReader:
         return censored_rows
 
     def fetch_api_responses(self) -> dict:
-        def add_cache(api_url: str, topic: str, topic_type: Optional[str] = None):
+        def add_cache(api_url: str, topic: str, topic_type: str | None = None):
             if topic_type is None:
                 resource = topic
             else:

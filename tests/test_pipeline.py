@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from os.path import basename, join
 
 from hdx.utilities.downloader import Download
@@ -11,7 +11,7 @@ from hdx.scraper.insecurity_insight.dataset_generator import DatasetGenerator
 from hdx.scraper.insecurity_insight.spreadsheet_creator import SpreadsheetCreator
 
 
-class TestInsecurityInsight:
+class TestPipeline:
     def test_insecurity_insight(
         self, configuration, read_dataset, fixtures_dir, input_dir, config_dir
     ):
@@ -61,7 +61,7 @@ class TestInsecurityInsight:
                     configuration,
                     api_cache,
                     file_paths,
-                    datetime(2025, 12, 30, tzinfo=timezone.utc),
+                    datetime(2025, 12, 30, tzinfo=UTC),
                 )
                 datasets = dataset_generator.get_datasets()
 

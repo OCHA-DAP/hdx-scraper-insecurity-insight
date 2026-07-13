@@ -3,7 +3,6 @@
 
 import logging
 from os.path import join
-from typing import Tuple
 
 from hdx.api.configuration import Configuration
 from hdx.utilities.retriever import Retrieve
@@ -41,7 +40,7 @@ class SpreadsheetCreator:
         field_types: dict,
         date_field: str,
         year_filter: int | None = None,
-    ) -> Tuple[DataFrame, int, int]:
+    ) -> tuple[DataFrame, int, int]:
         if year_filter:
             if field_types[date_field] == "datetime64[ns, UTC]":
                 df = df[df[date_field].dt.year >= year_filter]

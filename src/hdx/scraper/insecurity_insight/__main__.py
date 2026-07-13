@@ -14,7 +14,7 @@ from hdx.facades.infer_arguments import facade
 from hdx.utilities.dateparse import now_utc
 from hdx.utilities.downloader import Download
 from hdx.utilities.easy_logging import setup_logging
-from hdx.utilities.path import script_dir_plus_file, temp_dir_batch
+from hdx.utilities.path import script_dir_plus_file, wheretostart_tempdir_batch
 from hdx.utilities.retriever import Retrieve
 
 from hdx.scraper.insecurity_insight._version import __version__
@@ -45,15 +45,16 @@ def main(
     """
     logger.info(f"##### {_LOOKUP} version {__version__} ####")
     configuration = Configuration.read()
-    User.check_current_user_write_access("648d346e-3995-44cc-a559-29f8192a3010")
-    with temp_dir_batch(folder=_LOOKUP) as info:
-        temp_dir = info["folder"]
+    User.check_current_user_write_access("insecurity-insight")
+
+    with wheretostart_tempdir_batch(folder=_LOOKUP) as info:
+        tempdir = info["folder"]
         with Download(rate_limit={"calls": 1, "period": 5}) as downloader:
             retriever = Retrieve(
                 downloader=downloader,
-                fallback_dir=temp_dir,
+                fallback_dir=tempdir,
                 saved_dir=_SAVED_DATA_DIR,
-                temp_dir=temp_dir,
+                temp_dir=tempdir,
                 save=save,
                 use_saved=use_saved,
             )
